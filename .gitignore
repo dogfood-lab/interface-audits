@@ -1,0 +1,19 @@
+node_modules/
+
+# Astro / site build artifacts
+site/.astro/
+site/dist/
+site/node_modules/
+
+# polyglot translation cache
+.polyglot-cache.json
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Local-only scratch
+.scratch/

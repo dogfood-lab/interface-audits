@@ -1,0 +1,38 @@
+{
+  "name": "@dogfood-lab/interface-audits",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proof-backed audits for human-facing product surfaces. Catches load displacement, hidden complexity, AI trust burden, and state-shift failure — failures that pass generic accessibility scanners.",
+  "homepage": "https://dogfood-lab.github.io/interface-audits/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dogfood-lab/interface-audits.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dogfood-lab/interface-audits/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "verify": "bash verify.sh",
+    "verify:schemas": "node scripts/verify-schemas.mjs",
+    "verify:links": "node scripts/verify-links.mjs",
+    "shipcheck": "npx -y @mcptoolshop/shipcheck audit"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "glob": "^11.0.0"
+  },
+  "keywords": [
+    "audit",
+    "cognitive-load",
+    "accessibility",
+    "ux",
+    "interface-design",
+    "load-displacement",
+    "dogfood-lab"
+  ]
+}

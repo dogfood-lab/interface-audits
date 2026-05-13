@@ -31,45 +31,45 @@
   "sections": {
     "text_load": {
       "status": "warn",
-      "finding_ids": ["F-DOG-01", "F-DOG-02", "F-DOG-03", "F-DOG-04", "F-DOG-07"],
-      "positive_observations": ["P-DOG-01"],
-      "notes": "Five findings (1 Medium + 2 Low + F-DOG-04 cross-listed Medium + F-DOG-07 cross-listed Low). Below the 3-Highs Fail threshold. Mostly punch-list polish. P-DOG-01 canonical-source pattern is a positive worth propagating to other org docs."
+      "finding_ids": ["CL-21", "CL-22", "CL-23", "CL-24", "CL-27"],
+      "positive_observations": ["P-06"],
+      "notes": "Five findings (1 Medium + 2 Low + CL-24 cross-listed Medium + CL-27 cross-listed Low). Below the 3-Highs Fail threshold. Mostly punch-list polish. P-06 canonical-source pattern is a positive worth propagating to other org docs."
     },
     "measurable_defaults": {
       "status": "warn",
       "finding_ids": [],
       "open_questions": ["OQ-DOG-01"],
-      "positive_observations": ["P-DOG-03"],
+      "positive_observations": ["P-08"],
       "notes": "Body typography (16px / 28px line-height = 1.75) exceeds WCAG 2.2 1.4.12 minimums. System sans-serif stack. No measured contrast or full Lighthouse pass — OQ-DOG-01 carries from prior PTs."
     },
     "hidden_load": {
       "status": "warn",
-      "finding_ids": ["F-DOG-05", "F-DOG-04", "F-DOG-07"],
-      "positive_observations": ["P-DOG-02"],
-      "notes": "One High (F-DOG-05 mobile menu missing aria-label) + cross-listed F-DOG-04 and F-DOG-07. Below 3-Highs Fail. Search affordance (P-DOG-02) is excellent and mitigates Section 0 jargon concerns."
+      "finding_ids": ["CL-25", "CL-24", "CL-27"],
+      "positive_observations": ["P-07"],
+      "notes": "One High (CL-25 mobile menu missing aria-label) + cross-listed CL-24 and CL-27. Below 3-Highs Fail. Search affordance (P-07) is excellent and mitigates Section 0 jargon concerns."
     },
     "state_shift": {
       "status": "warn",
-      "finding_ids": ["F-DOG-06"],
-      "positive_observations": ["P-DOG-04"],
-      "notes": "F-DOG-06 Medium — no font-size control beyond browser zoom. P-DOG-04 theme toggle is one-action and persistent — the partial offset."
+      "finding_ids": ["CL-26"],
+      "positive_observations": ["P-09"],
+      "notes": "CL-26 Medium — no font-size control beyond browser zoom. P-09 theme toggle is one-action and persistent — the partial offset."
     },
     "ai_compression_risk": {
       "status": "pass",
       "finding_ids": [],
-      "positive_observations": ["P-DOG-01"],
-      "notes": "Static docs surface; no AI generation. P-DOG-01 (canonical-source attribution) is the inverse of PT0's CL-03/CL-04 — exemplary provenance."
+      "positive_observations": ["P-06"],
+      "notes": "Static docs surface; no AI generation. P-06 (canonical-source attribution) is the inverse of PT0's CL-03/CL-04 — exemplary provenance."
     },
     "power_preservation": {
       "status": "warn",
-      "finding_ids": ["F-DOG-08"],
-      "notes": "One Medium (F-DOG-08 narrow-mode on-this-page rail hidden without overflow). Section 5 taxonomy: hidden. Power preserved through Starlight defaults; this is the one gap."
+      "finding_ids": ["CL-28"],
+      "notes": "One Medium (CL-28 narrow-mode on-this-page rail hidden without overflow). Section 5 taxonomy: hidden. Power preserved through Starlight defaults; this is the one gap."
     },
     "configuration_cost": {
       "status": "warn",
-      "finding_ids": ["F-DOG-06"],
-      "positive_observations": ["P-DOG-04"],
-      "notes": "F-DOG-06 cross-listed. P-DOG-04 theme toggle accessibility is good."
+      "finding_ids": ["CL-26"],
+      "positive_observations": ["P-09"],
+      "notes": "CL-26 cross-listed. P-09 theme toggle accessibility is good."
     },
     "evidence": {
       "status": "warn",
@@ -92,13 +92,13 @@
     "hard_failure_patterns_validated": {
       "ui_simple_user_hunts": false,
       "ai_summary_increases_trust_burden": null,
-      "low_load_mode_unreachable_from_constrained_state": "partial (F-DOG-06)",
+      "low_load_mode_unreachable_from_constrained_state": "partial (CL-26)",
       "simple_mode_removes_power": false
     }
   },
   "findings": [
     {
-      "id": "F-DOG-01",
+      "id": "CL-21",
       "title": "First sidebar item 'research-os' duplicates page H1",
       "severity": "low",
       "section": "text_load",
@@ -108,7 +108,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-02",
+      "id": "CL-22",
       "title": "Domain jargon (Cowork, research-pack) used on landing page before being defined",
       "severity": "medium",
       "section": "text_load",
@@ -118,7 +118,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-03",
+      "id": "CL-23",
       "title": "Getting Started jumps from H1 to H2 'Requirements' with no intro paragraph",
       "severity": "low",
       "section": "text_load",
@@ -128,7 +128,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-04",
+      "id": "CL-24",
       "title": "Operator Playbook on-this-page rail is dense (19 anchors)",
       "severity": "medium",
       "section": "text_load",
@@ -139,7 +139,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-05",
+      "id": "CL-25",
       "title": "Mobile menu trigger has no aria-label",
       "severity": "high",
       "section": "hidden_load",
@@ -150,7 +150,7 @@
       "evidence_summary": "document.querySelector('starlight-menu-button').getAttribute('aria-label') returned null."
     },
     {
-      "id": "F-DOG-06",
+      "id": "CL-26",
       "title": "No in-doc font-size or density control beyond theme toggle",
       "severity": "medium",
       "section": "state_shift",
@@ -161,7 +161,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-07",
+      "id": "CL-27",
       "title": "13-item left sidebar is a flat list without grouping",
       "severity": "low",
       "section": "text_load",
@@ -172,7 +172,7 @@
       "evidence_state": "observed"
     },
     {
-      "id": "F-DOG-08",
+      "id": "CL-28",
       "title": "Narrow-mode on-this-page rail is hidden entirely (no overflow path)",
       "severity": "medium",
       "section": "power_preservation",
@@ -199,22 +199,22 @@
   ],
   "positive_observations": [
     {
-      "id": "P-DOG-01",
+      "id": "P-06",
       "section": "ai_compression_risk",
       "summary": "Operator Playbook carries explicit canonical-source attribution at the top: 'Canonical source: research-packs/docs/operator-playbook.md — update there first; this page is a full mirror.' Opposite of PT0's CL-03/CL-04. Worth propagating to other mirrored org docs."
     },
     {
-      "id": "P-DOG-02",
+      "id": "P-07",
       "section": "hidden_load",
       "summary": "Search dialog (Ctrl+K) is prominent, keyboard-accessible, and returns 6 contextual results for the query 'Cowork' across multiple pages with surrounding text shown. Section 2 recognition affordance done right."
     },
     {
-      "id": "P-DOG-03",
+      "id": "P-08",
       "section": "measurable_defaults",
       "summary": "Body typography (16px font, 28px line-height = 1.75 ratio) exceeds WCAG 2.2 1.4.12 minimums. System sans-serif stack. No decorative faces. Section 1 passes by default."
     },
     {
-      "id": "P-DOG-04",
+      "id": "P-09",
       "section": "state_shift",
       "summary": "Theme toggle (Auto/Dark/Light) is one click in the top-right header, accessible from every page, persists across navigation. Section 3 one-action low-bandwidth control done right."
     }

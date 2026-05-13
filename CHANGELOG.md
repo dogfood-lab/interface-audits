@@ -1,22 +1,35 @@
-# Interface Audits — Changelog
+# Changelog
 
-Monorepo-level events. Per-audit changelogs live at `audits/<name>/CHANGELOG.md` and track that audit's rubric versions independently.
+All notable changes to **interface-audits** (the monorepo).
 
-## 2026-05-12 — Repository initialized
+This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) and uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Per-audit changelogs live at `audits/<name>/CHANGELOG.md` and track each audit's rubric version independently of the monorepo version.
 
-- Imported cognitive-load audit at state **Frozen v0.2 + Dogfooded once** from `E:\AI\cognitive-load-audit\` (preserved, not moved).
-- Extracted shared norms into `shared/`: audit lifecycle, evidence states, severity model, finding format, pressure-test protocol, base schemas.
-- Established four-thing rule for official audits: Rubric + Skill + Schema + Evidence.
-- Established audit lifecycle: Draft → Pressure-tested → Frozen → Dogfooded → Revised-with-evidence. Each audit declares its current state in its README.
+## [Unreleased]
 
-### Cognitive Load Audit history (summary, full detail in `audits/cognitive-load/CHANGELOG.md`)
+## [1.0.0] - 2026-05-12
 
-- v0.1 (frozen 2026-05-12) — after PT0 (claude.ai live audit)
-- v0.2 (frozen 2026-05-12) — after PT1 (GitHub research-os narrow audit)
-- PT2 (Outlook Simplified Ribbon) reclassified as doc-fallback; no rubric revision
-- Dogfood Run 1 (research-os handbook) produced actionable findings without rubric churn
+### Added
 
-### Parked at repo level
+- Initial public release of the `interface-audits` monorepo at `dogfood-lab/interface-audits`.
+- **First audit:** `audits/cognitive-load/` imported at rubric version `0.2.0` (Frozen + Dogfooded once). See [`audits/cognitive-load/CHANGELOG.md`](audits/cognitive-load/CHANGELOG.md) for that audit's history.
+- **Shared norms** under `shared/`:
+  - [`audit-lifecycle.md`](shared/audit-lifecycle.md) — 5-state machine (Draft → Pressure-tested → Frozen → Dogfooded → Revised)
+  - [`evidence-states.md`](shared/evidence-states.md) — Observed / Inferred / Open question
+  - [`severity-model.md`](shared/severity-model.md) — Critical / High / Medium / Low + 1-Critical-or-3-Highs section-Fail threshold
+  - [`finding-format.md`](shared/finding-format.md) — finding contract + load-displaced-to enum
+  - [`pressure-test-protocol.md`](shared/pressure-test-protocol.md) — PT vs dogfood, setup, procedure, exit criteria
+  - [`schemas/finding.base.schema.json`](shared/schemas/finding.base.schema.json) and [`schemas/scorecard.base.schema.json`](shared/schemas/scorecard.base.schema.json) — JSON Schema for findings + scorecards
+- **Four-thing rule** for official audits: Rubric + Skill + Schema + Evidence.
+- **Brand asset** (`.brand/readme.png`) and README header wired with logo + badges + threat model + footer.
+- **Quality gates** (Phase 0 shipcheck): SECURITY.md, LICENSE (MIT), SHIP_GATE.md, SCORECARD.md, verify.sh.
+- **CI workflow** (`.github/workflows/verify.yml`) running schema validation, markdown lint, link check, and shipcheck audit on every push and PR.
+- **Dependabot configuration** for GitHub Actions and npm ecosystems.
+- **Repository metadata** — public, MIT-licensed, topics set, homepage pointing to GitHub Pages.
 
-- A future v0.3 of cognitive-load is parked pending a live-observed Section 5 Removed case. See `audits/cognitive-load/CHANGELOG.md` "Pending — not yet versioned" section.
-- A Low-Vision audit is the most-likely second audit. Not started.
+### Security
+
+- Documented threat surface in [`SECURITY.md`](SECURITY.md): skills perform network egress only to the user-supplied target URL; evidence files are local-only; no telemetry; no secret handling.
+- Per-audit `private_content_captured: false` field on the scorecard schema documents whether a run captured sensitive content before commit.
+
+[Unreleased]: https://github.com/dogfood-lab/interface-audits/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/dogfood-lab/interface-audits/releases/tag/v1.0.0

@@ -8,7 +8,7 @@ Below: a punch list ordered by leverage (severity × effort × user-impact). Ite
 
 ---
 
-## P1 — Add `aria-label` to the mobile menu trigger (fixes F-DOG-05)
+## P1 — Add `aria-label` to the mobile menu trigger (fixes CL-25)
 
 **Severity:** High · **Effort:** ~1 line of code or theme override
 **The fix.** The Starlight `<starlight-menu-button>` custom element renders with no `aria-label`. Add one — either via Starlight's theming override or by patching the template:
@@ -23,7 +23,7 @@ Pick up Starlight's localized string if i18n is in play.
 
 ---
 
-## P2 — Add an intro paragraph to Getting Started (fixes F-DOG-03)
+## P2 — Add an intro paragraph to Getting Started (fixes CL-23)
 
 **Severity:** Low · **Effort:** one markdown edit
 **The fix.** Between `# Getting Started` and `## Requirements`, add a single line of orientation:
@@ -36,21 +36,21 @@ Pick up Starlight's localized string if i18n is in play.
 
 ---
 
-## P3 — Inline-define `Cowork`, `research-pack`, `swarm` on first use, OR add an overview-page glossary (fixes F-DOG-02)
+## P3 — Inline-define `Cowork`, `research-pack`, `swarm` on first use, OR add an overview-page glossary (fixes CL-22)
 
 **Severity:** Medium · **Effort:** one markdown edit on the overview page
 **The fix.** On `/handbook/`, the first sentence uses three domain terms (`research-pack`, `Cowork`, `swarm`) before defining any of them. Options:
 
 - **Inline definitions on first use**, with a "see Workflow Chain" link:
-  > `research-os` turns an open-ended research question into a **research-pack** (a structured local repo of sources, claims, and contradiction maps), where Claude, **Cowork** (a runtime contract — see [Workflow Chain](workflow)), or a swarm can work for hours…
+  > `research-os` turns an open-ended research question into a **research-pack** (a structured local repo of sources, claims, and contradiction maps), where Claude, **Cowork** (a runtime contract — see `[Workflow Chain](workflow)`), or a swarm can work for hours…
 - **Or** a small `<dl>` glossary at the bottom of the overview page covering the 5–8 most-used proper nouns.
 - **Or** move Workflow Chain to be the second sidebar item (currently 4th) so first-time readers hit definitions earlier.
 
-**Why P3.** Search mitigates the cost (P-DOG-02 is real — Cowork is findable in 6 pages), but a reader's first impression is still 3 undefined terms in 30 words.
+**Why P3.** Search mitigates the cost (P-07 is real — Cowork is findable in 6 pages), but a reader's first impression is still 3 undefined terms in 30 words.
 
 ---
 
-## P4 — Rename first sidebar item from "research-os" to "Overview" (fixes F-DOG-01)
+## P4 — Rename first sidebar item from "research-os" to "Overview" (fixes CL-21)
 
 **Severity:** Low · **Effort:** one config / frontmatter edit
 **The fix.** Starlight sidebar config: change the title of the index page entry from `research-os` to `Overview` or `Introduction`. Avoids brand/H1/sidebar-item three-way name collision.
@@ -59,7 +59,7 @@ Pick up Starlight's localized string if i18n is in play.
 
 ---
 
-## P5 — At narrow widths, replace the right rail with an expandable "On this page" widget (fixes F-DOG-08)
+## P5 — At narrow widths, replace the right rail with an expandable "On this page" widget (fixes CL-28)
 
 **Severity:** Medium · **Effort:** small Starlight component override
 **The fix.** Below 72em, Starlight currently removes the on-this-page rail entirely. For dense pages like Operator Playbook (19 anchors), this loses the user's in-page nav. Replace the removal with an injected `<details>`-style "On this page (19 sections)" widget at the top of the article body. Could be open-by-default or closed-by-default with a count badge.
@@ -68,7 +68,7 @@ Pick up Starlight's localized string if i18n is in play.
 
 ---
 
-## P6 — Reduce density of the Operator Playbook on-this-page rail (fixes F-DOG-04)
+## P6 — Reduce density of the Operator Playbook on-this-page rail (fixes CL-24)
 
 **Severity:** Medium · **Effort:** Starlight customization OR content split
 **The fix.** Two approaches, pick one:
@@ -80,7 +80,7 @@ Pick up Starlight's localized string if i18n is in play.
 
 ---
 
-## P7 — Group the 13-item sidebar into 3-4 conceptual buckets (fixes F-DOG-07)
+## P7 — Group the 13-item sidebar into 3-4 conceptual buckets (fixes CL-27)
 
 **Severity:** Low · **Effort:** Starlight sidebar config edit
 **The fix.** Replace the flat "Handbook" group with bucketed groups, e.g.:
@@ -97,7 +97,7 @@ Pick up Starlight's localized string if i18n is in play.
 
 ## Not addressed in this pass
 
-- **F-DOG-06 (font-size control)** — Starlight doesn't ship a font-size affordance and Ctrl+/Cmd+ browser zoom works fine. Soft finding; leave for a future polish pass unless user feedback specifically calls it out.
+- **CL-26 (font-size control)** — Starlight doesn't ship a font-size affordance and Ctrl+/Cmd+ browser zoom works fine. Soft finding; leave for a future polish pass unless user feedback specifically calls it out.
 - **OQ-DOG-01 (Lighthouse / axe scan)** — process step, not a code change. Recommend running once and attaching the report to the next handbook release.
 
 ---
@@ -114,8 +114,8 @@ This is **exemplary** AI Compression Risk discipline (Section 4). It's the oppos
 
 ## Verdict on the dogfood
 
-The handbook is in healthy shape. **No Critical, no section Fail, no Removed.** v0.2 of the rubric stands unchanged. The audit produced a small, shippable punch-list (P1–P4 are ~1 hour of editing) plus two structural upgrades (P5–P6) that pay off broadly. Plus a positive pattern (P-DOG-01) worth promoting beyond this single repo.
+The handbook is in healthy shape. **No Critical, no section Fail, no Removed.** v0.2 of the rubric stands unchanged. The audit produced a small, shippable punch-list (P1–P4 are ~1 hour of editing) plus two structural upgrades (P5–P6) that pay off broadly. Plus a positive pattern (P-06) worth promoting beyond this single repo.
 
-The audit also worked as intended: it didn't manufacture findings, it surfaced four positive observations, and it caught one real a11y regression (F-DOG-05) that's worth a same-day fix.
+The audit also worked as intended: it didn't manufacture findings, it surfaced four positive observations, and it caught one real a11y regression (CL-25) that's worth a same-day fix.
 
 End of Dogfood Run 1 remediation.

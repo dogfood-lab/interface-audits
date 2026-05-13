@@ -20,14 +20,14 @@ Four positive observations worth keeping intact while shipping fixes. Eight find
 
 | ID | What | Why it's good |
 |---|---|---|
-| **P-DOG-01** | Operator Playbook header carries `Canonical source: research-packs/docs/operator-playbook.md — update there first; this page is a full mirror.` | This is the **opposite of CL-03/CL-04** from PT0. Source provenance is surfaced inline at the top of the doc. Auditor's note: this pattern should propagate to other mirrored docs across the org. |
-| **P-DOG-02** | Search is prominent (top center, Ctrl+K shortcut visible) and returns rich results with surrounding context (tested with query "Cowork" — 6 results across CLI Reference, Workflow Chain, Getting Started). | Section 2 (Hidden Load) recognition affordance done right. Lowers the cost of jargon terms (see F-DOG-02). |
-| **P-DOG-03** | Body typography: 16px font, 28px line-height (1.75 ratio — exceeds WCAG 2.2 1.4.12 minimum of 1.5). System sans-serif stack (`ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans...`). No decorative faces in work-critical surfaces. | Section 1 (Measurable Defaults) passes by default. |
-| **P-DOG-04** | Theme toggle (Auto / Dark / Light) accessible from every page header in one click. | Section 3 (State Shift) — one-action low-bandwidth control. Persists across pages. |
+| **P-06** | Operator Playbook header carries `Canonical source: research-packs/docs/operator-playbook.md — update there first; this page is a full mirror.` | This is the **opposite of CL-03/CL-04** from PT0. Source provenance is surfaced inline at the top of the doc. Auditor's note: this pattern should propagate to other mirrored docs across the org. |
+| **P-07** | Search is prominent (top center, Ctrl+K shortcut visible) and returns rich results with surrounding context (tested with query "Cowork" — 6 results across CLI Reference, Workflow Chain, Getting Started). | Section 2 (Hidden Load) recognition affordance done right. Lowers the cost of jargon terms (see CL-22). |
+| **P-08** | Body typography: 16px font, 28px line-height (1.75 ratio — exceeds WCAG 2.2 1.4.12 minimum of 1.5). System sans-serif stack (`ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans...`). No decorative faces in work-critical surfaces. | Section 1 (Measurable Defaults) passes by default. |
+| **P-09** | Theme toggle (Auto / Dark / Light) accessible from every page header in one click. | Section 3 (State Shift) — one-action low-bandwidth control. Persists across pages. |
 
 ---
 
-## Finding F-DOG-01 — First sidebar item "research-os" duplicates page H1 of the same name
+## Finding CL-21 — First sidebar item "research-os" duplicates page H1 of the same name
 
 Severity: **Low**
 Section: Text Load (Section 0)
@@ -40,7 +40,7 @@ Fix: Rename the sidebar item to "Overview" or "Introduction" to disambiguate fro
 
 ---
 
-## Finding F-DOG-02 — Domain jargon used on landing page before being defined
+## Finding CL-22 — Domain jargon used on landing page before being defined
 
 Severity: **Medium**
 Section: Text Load (Section 0)
@@ -49,13 +49,13 @@ Load displaced to: `memory` + `search`
 
 Issue: The first paragraph of the landing page reads "research-os turns an open-ended research question into a research-pack: a structured local repo where Claude, Cowork, or a swarm can work for hours..." The terms `research-pack`, `Cowork`, and `swarm` are domain-specific and used before being defined. Cowork in particular is a non-obvious term (it's defined later on the Workflow Chain page as a "runtime contract" — not standard usage).
 
-Mitigation: search (P-DOG-02) does return useful definitions when the user queries "Cowork." The cost is offloaded onto the user knowing to search.
+Mitigation: search (P-07) does return useful definitions when the user queries "Cowork." The cost is offloaded onto the user knowing to search.
 
 Fix: Either (a) inline-define the three terms on first use, with a "(see Workflow Chain for full contract)" link, OR (b) add a small `<dl>` glossary block at the bottom of the overview page covering the 5-8 most-used proper-noun terms, OR (c) make Workflow Chain the second sidebar item (currently 4th) so first-time readers reach the term definitions on their natural reading path.
 
 ---
 
-## Finding F-DOG-03 — Getting Started jumps from H1 directly to H2 "Requirements" with no intro paragraph
+## Finding CL-23 — Getting Started jumps from H1 directly to H2 "Requirements" with no intro paragraph
 
 Severity: **Low**
 Section: Text Load (Section 0)
@@ -68,7 +68,7 @@ Fix: Add a one-line intro paragraph between the H1 and "Requirements," e.g. "Thi
 
 ---
 
-## Finding F-DOG-04 — Operator Playbook on-this-page rail is dense (10 H2 + 9 H3)
+## Finding CL-24 — Operator Playbook on-this-page rail is dense (10 H2 + 9 H3)
 
 Severity: **Medium**
 Section: Text Load (Section 0) + Hidden Load (Section 2)
@@ -81,7 +81,7 @@ Fix: (a) Show only H2 anchors by default, with H3s revealed on hover or on click
 
 ---
 
-## Finding F-DOG-05 — Mobile menu trigger has no aria-label
+## Finding CL-25 — Mobile menu trigger has no aria-label
 
 Severity: **High**
 Section: Hidden Load (Section 2)
@@ -96,7 +96,7 @@ Evidence: **Observed** — `document.querySelector('starlight-menu-button').getA
 
 ---
 
-## Finding F-DOG-06 — No in-doc font-size or density control beyond Auto/Dark/Light theme
+## Finding CL-26 — No in-doc font-size or density control beyond Auto/Dark/Light theme
 
 Severity: **Medium**
 Section: State Shift (Section 3) + Configuration Cost (Section 6)
@@ -111,7 +111,7 @@ Note: Browser-level zoom is a workable fallback. This is a soft finding — the 
 
 ---
 
-## Finding F-DOG-07 — 13-item left sidebar without grouping
+## Finding CL-27 — 13-item left sidebar without grouping
 
 Severity: **Low**
 Section: Text Load (Section 0) + Hidden Load (Section 2)
@@ -124,7 +124,7 @@ Fix: Either (a) group into 3-4 conceptual buckets (e.g., "Start here" / "Core co
 
 ---
 
-## Finding F-DOG-08 — Narrow-mode on-this-page rail is hidden entirely (no overflow path)
+## Finding CL-28 — Narrow-mode on-this-page rail is hidden entirely (no overflow path)
 
 Severity: **Medium**
 Section: Power Preservation (Section 5)
@@ -148,7 +148,7 @@ Resolution path: run Lighthouse against the handbook URL; or `axe-core` against 
 
 ## Open question OQ-DOG-02 — Narrow-mode behavior not directly observed
 
-Same rig limitation as PT1 (DPI scaling prevents viewport reduction below ~2266 CSS px). F-DOG-08 is Inferred from Starlight's documented responsive behavior, not observed in this run.
+Same rig limitation as PT1 (DPI scaling prevents viewport reduction below ~2266 CSS px). CL-28 is Inferred from Starlight's documented responsive behavior, not observed in this run.
 
 Resolution path: re-run on a non-DPI-scaled rig or via headless browser with `setViewport({width: 375, height: 667})`. Or have user verify on a mobile device.
 
@@ -156,14 +156,14 @@ Resolution path: re-run on a non-DPI-scaled rig or via headless browser with `se
 
 ## Auditor notes
 
-This is a **clean dogfood**. The handbook is in good shape. The audit produced one real accessibility regression worth shipping immediately (F-DOG-05 aria-label), three Section 0 polish items (F-DOG-01, F-DOG-02, F-DOG-03), one structural-but-not-urgent issue (F-DOG-04 on-this-page density on Operator Playbook), one Section 5 narrow-mode issue (F-DOG-08), and two soft / boundary findings (F-DOG-06, F-DOG-07).
+This is a **clean dogfood**. The handbook is in good shape. The audit produced one real accessibility regression worth shipping immediately (CL-25 aria-label), three Section 0 polish items (CL-21, CL-22, CL-23), one structural-but-not-urgent issue (CL-24 on-this-page density on Operator Playbook), one Section 5 narrow-mode issue (CL-28), and two soft / boundary findings (CL-26, CL-27).
 
 Most leverage per fix:
-- F-DOG-05 is a one-line template edit.
-- F-DOG-02 + F-DOG-03 are small markdown edits.
-- F-DOG-08 is a Starlight customization but pays off across every dense page.
+- CL-25 is a one-line template edit.
+- CL-22 + CL-23 are small markdown edits.
+- CL-28 is a Starlight customization but pays off across every dense page.
 
-The handbook also exhibits a pattern other repos should adopt: **canonical-source attribution at the top of mirrored docs** (P-DOG-01). Worth surfacing in the next CHANGELOG note or doctrine-update across the org.
+The handbook also exhibits a pattern other repos should adopt: **canonical-source attribution at the top of mirrored docs** (P-06). Worth surfacing in the next CHANGELOG note or doctrine-update across the org.
 
 No rubric revision triggered by this run. v0.2 stands.
 

@@ -103,7 +103,7 @@
       "severity": "high",
       "section": "hidden_load",
       "surface": "sidebar (expanded and collapsed states)",
-      "load_displaced_to": "memory + recall + click-cost",
+      "load_displaced_to": ["memory", "search", "navigation"],
       "evidence_state": "observed",
       "evidence_summary": "Confirmed via baseline + collapsed screenshots and a11y tree comparison."
     },
@@ -113,7 +113,7 @@
       "severity": "critical",
       "section": "state_shift",
       "surface": "active chat",
-      "load_displaced_to": "configuration + multi-surface navigation",
+      "load_displaced_to": ["configuration", "navigation"],
       "evidence_state": "observed",
       "evidence_summary": "Full a11y tree of chat surface inspected; no relevant controls beyond compose, +, model, voice."
     },
@@ -134,7 +134,7 @@
       "severity": "critical",
       "section": "ai_compression_risk",
       "surface": "+ menu + response area",
-      "load_displaced_to": "trust + retrieval-source ambiguity",
+      "load_displaced_to": ["trust", "source recovery"],
       "evidence_state": "observed",
       "evidence_summary": "+ menu shows 'Web search' checked by default; inspected response shows no citations or domain markers."
     },
@@ -144,7 +144,7 @@
       "severity": "high",
       "section": "configuration_cost",
       "surface": "chat -> profile menu -> Settings -> /settings/general -> font dropdown",
-      "load_displaced_to": "configuration + memory + navigation",
+      "load_displaced_to": ["configuration", "memory", "navigation"],
       "evidence_state": "observed",
       "evidence_summary": "Counted live; URL changes from /chat/... to /settings/general; Chat font option visible with 'Dyslexic friendly' in dropdown."
     },
@@ -154,7 +154,7 @@
       "severity": "medium",
       "section": "configuration_cost",
       "surface": "profile menu -> Settings",
-      "load_displaced_to": "navigation + recovery",
+      "load_displaced_to": ["navigation", "recovery / undo"],
       "evidence_state": "observed",
       "evidence_summary": "URL change observed; chat surface fully hidden behind /settings/general."
     },
@@ -164,7 +164,7 @@
       "severity": "medium",
       "section": "configuration_cost",
       "surface": "/settings/general left-nav",
-      "load_displaced_to": "discovery + recall",
+      "load_displaced_to": ["search", "memory"],
       "evidence_state": "observed",
       "evidence_summary": "Settings left-nav has 9 sections; none named Accessibility/Display/Reading. Chat font lives below Profile in General page."
     },
@@ -174,7 +174,7 @@
       "severity": "low",
       "section": "ai_compression_risk",
       "surface": "chat header + sidebar Recents list",
-      "load_displaced_to": "trust + recall",
+      "load_displaced_to": ["trust", "memory"],
       "evidence_state": "observed",
       "evidence_summary": "User input 'Show me how compound interest works' compared against chat title 'How compound interest works' (Claude-generated). Rename button exists but is not surfaced."
     }
