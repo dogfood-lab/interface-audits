@@ -30,7 +30,7 @@ Each audit ships four things:
 3. **Schema** — JSON Schema for findings and scorecards ([`shared/schemas/`](shared/schemas/))
 4. **Evidence** — at least one completed pressure test or dogfood run ([`audits/cognitive-load/evidence/`](audits/cognitive-load/evidence/))
 
-No evidence, no official audit. See [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) for the state machine.
+No evidence, no official audit. See [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) for the state machine and [`ROADMAP.md`](ROADMAP.md) for what's coming next.
 
 ## Install
 
@@ -101,6 +101,7 @@ Future audits in this family may include Low-Vision (visual access under real de
 interface-audits/
 ├── README.md
 ├── CHANGELOG.md                       # monorepo events
+├── ROADMAP.md                         # forward plan: audits, tooling, process rules
 ├── SECURITY.md                        # threat surface + reporting
 ├── SHIP_GATE.md                       # shipcheck quality gate
 ├── SCORECARD.md                       # pre/post-treatment scores
