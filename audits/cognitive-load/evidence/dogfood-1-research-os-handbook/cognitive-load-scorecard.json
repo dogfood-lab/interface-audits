@@ -1,0 +1,231 @@
+{
+  "audit_id": "cla-20260512-dogfood-1-research-os-handbook",
+  "audit_label": "Dogfood Run 1 — research-os handbook (the user's own tool)",
+  "rubric_version": "v0.2 (frozen 2026-05-12)",
+  "rubric_path": "../../RUBRIC.md",
+  "original_rubric_note": "Produced before monorepo migration, when the rubric lived at E:/AI/cognitive-load-audit/cognitive-load-audit.md.",
+  "intent": "Apply v0.2 against a real surface the user controls. NOT for rubric revision. Findings must be actionable.",
+  "target": {
+    "type": "url",
+    "value": "https://mcp-tool-shop-org.github.io/research-os/handbook/",
+    "platform": "Starlight (Astro) docs site, just shipped v0.8.0 with Stage-D presentation polish",
+    "surfaces_audited": [
+      "/handbook/ (overview / landing)",
+      "/handbook/operator-playbook/ (dense page — 2128 words, 19 anchors)",
+      "/handbook/getting-started/ (onboarding page)",
+      "search dialog (Ctrl+K) tested with query 'Cowork'",
+      "theme toggle (Auto/Dark/Light) inspected",
+      "mobile menu trigger DOM-inspected (narrow-mode not directly rendered)"
+    ]
+  },
+  "context": {
+    "user_type": "first-time visitor + returning operator + power user mix",
+    "task": "audit shipped handbook for actionable polish",
+    "dense_state": "Operator Playbook with 19 on-this-page anchors and 85 inline-code references serves as the dense state",
+    "low_bandwidth_state": "auditor not in a constrained state",
+    "ai_features_present": ["none — static docs"],
+    "method": "Path 1 live navigation full-width + DOM/CSS responsive inspection per v0.2 caveat",
+    "session_continuous_minutes": 150,
+    "viewport_render_limitation": "Same rig limitation as PT1 — DPI scaling + Chrome min-window prevents viewport <2266 CSS px. Narrow-mode behavior is Inferred from Starlight responsive breakpoints (50em / 72em) + media-query inspection."
+  },
+  "sections": {
+    "text_load": {
+      "status": "warn",
+      "finding_ids": ["F-DOG-01", "F-DOG-02", "F-DOG-03", "F-DOG-04", "F-DOG-07"],
+      "positive_observations": ["P-DOG-01"],
+      "notes": "Five findings (1 Medium + 2 Low + F-DOG-04 cross-listed Medium + F-DOG-07 cross-listed Low). Below the 3-Highs Fail threshold. Mostly punch-list polish. P-DOG-01 canonical-source pattern is a positive worth propagating to other org docs."
+    },
+    "measurable_defaults": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-DOG-01"],
+      "positive_observations": ["P-DOG-03"],
+      "notes": "Body typography (16px / 28px line-height = 1.75) exceeds WCAG 2.2 1.4.12 minimums. System sans-serif stack. No measured contrast or full Lighthouse pass — OQ-DOG-01 carries from prior PTs."
+    },
+    "hidden_load": {
+      "status": "warn",
+      "finding_ids": ["F-DOG-05", "F-DOG-04", "F-DOG-07"],
+      "positive_observations": ["P-DOG-02"],
+      "notes": "One High (F-DOG-05 mobile menu missing aria-label) + cross-listed F-DOG-04 and F-DOG-07. Below 3-Highs Fail. Search affordance (P-DOG-02) is excellent and mitigates Section 0 jargon concerns."
+    },
+    "state_shift": {
+      "status": "warn",
+      "finding_ids": ["F-DOG-06"],
+      "positive_observations": ["P-DOG-04"],
+      "notes": "F-DOG-06 Medium — no font-size control beyond browser zoom. P-DOG-04 theme toggle is one-action and persistent — the partial offset."
+    },
+    "ai_compression_risk": {
+      "status": "pass",
+      "finding_ids": [],
+      "positive_observations": ["P-DOG-01"],
+      "notes": "Static docs surface; no AI generation. P-DOG-01 (canonical-source attribution) is the inverse of PT0's CL-03/CL-04 — exemplary provenance."
+    },
+    "power_preservation": {
+      "status": "warn",
+      "finding_ids": ["F-DOG-08"],
+      "notes": "One Medium (F-DOG-08 narrow-mode on-this-page rail hidden without overflow). Section 5 taxonomy: hidden. Power preserved through Starlight defaults; this is the one gap."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["F-DOG-06"],
+      "positive_observations": ["P-DOG-04"],
+      "notes": "F-DOG-06 cross-listed. P-DOG-04 theme toggle accessibility is good."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-DOG-01", "OQ-DOG-02"],
+      "notes": "Observed: landing, Operator Playbook, Getting Started, search, theme toggle DOM. Inferred: narrow-mode behavior. Process gap: no Lighthouse pass yet (OQ-DOG-01)."
+    }
+  },
+  "summary": {
+    "overall_status": "warn",
+    "critical_count": 0,
+    "high_count": 1,
+    "medium_count": 4,
+    "low_count": 3,
+    "open_question_count": 2,
+    "sections_passed": 1,
+    "sections_warned": 7,
+    "sections_failed": 0,
+    "positive_observation_count": 4,
+    "hard_failure_patterns_validated": {
+      "ui_simple_user_hunts": false,
+      "ai_summary_increases_trust_burden": null,
+      "low_load_mode_unreachable_from_constrained_state": "partial (F-DOG-06)",
+      "simple_mode_removes_power": false
+    }
+  },
+  "findings": [
+    {
+      "id": "F-DOG-01",
+      "title": "First sidebar item 'research-os' duplicates page H1",
+      "severity": "low",
+      "section": "text_load",
+      "surface": "left sidebar + handbook overview",
+      "load_displaced_to": ["memory"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-02",
+      "title": "Domain jargon (Cowork, research-pack) used on landing page before being defined",
+      "severity": "medium",
+      "section": "text_load",
+      "surface": "/handbook/ overview",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-03",
+      "title": "Getting Started jumps from H1 to H2 'Requirements' with no intro paragraph",
+      "severity": "low",
+      "section": "text_load",
+      "surface": "/handbook/getting-started/",
+      "load_displaced_to": ["memory", "time"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-04",
+      "title": "Operator Playbook on-this-page rail is dense (19 anchors)",
+      "severity": "medium",
+      "section": "text_load",
+      "secondary_section": "hidden_load",
+      "surface": "/handbook/operator-playbook/ right rail",
+      "load_displaced_to": ["visual decoding", "memory"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-05",
+      "title": "Mobile menu trigger has no aria-label",
+      "severity": "high",
+      "section": "hidden_load",
+      "surface": "starlight-menu-button (narrow-mode header)",
+      "load_displaced_to": ["memory"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed",
+      "evidence_summary": "document.querySelector('starlight-menu-button').getAttribute('aria-label') returned null."
+    },
+    {
+      "id": "F-DOG-06",
+      "title": "No in-doc font-size or density control beyond theme toggle",
+      "severity": "medium",
+      "section": "state_shift",
+      "secondary_section": "configuration_cost",
+      "surface": "handbook header (all pages)",
+      "load_displaced_to": ["configuration"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-07",
+      "title": "13-item left sidebar is a flat list without grouping",
+      "severity": "low",
+      "section": "text_load",
+      "secondary_section": "hidden_load",
+      "surface": "handbook left sidebar",
+      "load_displaced_to": ["visual decoding"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed"
+    },
+    {
+      "id": "F-DOG-08",
+      "title": "Narrow-mode on-this-page rail is hidden entirely (no overflow path)",
+      "severity": "medium",
+      "section": "power_preservation",
+      "surface": "all handbook pages at viewport <72em",
+      "load_displaced_to": ["navigation"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "inferred",
+      "evidence_summary": "Starlight media-query (min-width: 72em) gates the right rail; below the breakpoint the rail is removed from layout with no overflow / collapse / jump-to substitute observed in the DOM."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-DOG-01",
+      "section": "measurable_defaults",
+      "summary": "No Lighthouse / axe / contrast measurement run on the handbook.",
+      "resolution_path": "Run Lighthouse against /handbook/ + 3 representative subpages; or axe-core via dev-server build."
+    },
+    {
+      "id": "OQ-DOG-02",
+      "section": "evidence",
+      "summary": "Narrow-mode behavior is Inferred — rig DPI scaling prevents viewport <2266 CSS px.",
+      "resolution_path": "Re-run on non-DPI-scaled rig OR via Playwright with explicit setViewport({width:375,height:667}) OR verify on a mobile device."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "P-DOG-01",
+      "section": "ai_compression_risk",
+      "summary": "Operator Playbook carries explicit canonical-source attribution at the top: 'Canonical source: research-packs/docs/operator-playbook.md — update there first; this page is a full mirror.' Opposite of PT0's CL-03/CL-04. Worth propagating to other mirrored org docs."
+    },
+    {
+      "id": "P-DOG-02",
+      "section": "hidden_load",
+      "summary": "Search dialog (Ctrl+K) is prominent, keyboard-accessible, and returns 6 contextual results for the query 'Cowork' across multiple pages with surrounding text shown. Section 2 recognition affordance done right."
+    },
+    {
+      "id": "P-DOG-03",
+      "section": "measurable_defaults",
+      "summary": "Body typography (16px font, 28px line-height = 1.75 ratio) exceeds WCAG 2.2 1.4.12 minimums. System sans-serif stack. No decorative faces. Section 1 passes by default."
+    },
+    {
+      "id": "P-DOG-04",
+      "section": "state_shift",
+      "summary": "Theme toggle (Auto/Dark/Light) is one click in the top-right header, accessible from every page, persists across navigation. Section 3 one-action low-bandwidth control done right."
+    }
+  ],
+  "exit_criteria_check": {
+    "actionable_findings_produced": true,
+    "findings_count": 8,
+    "positive_observations_recorded": true,
+    "rubric_revision_triggered": false,
+    "all_findings_map_to_sections": true,
+    "evidence_states_recorded": true
+  },
+  "rubric_v0_3_recommendations": []
+}

@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/shared/schemas/scorecard.base.schema.json",
+  "title": "Audit Scorecard (base)",
+  "description": "Base contract for scorecards produced by audits in interface-audits.",
+  "type": "object",
+  "required": [
+    "audit_id",
+    "rubric_version",
+    "target",
+    "context",
+    "sections",
+    "summary",
+    "findings"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "string",
+      "description": "Convention: <scorecard-prefix>-YYYYMMDD-<run-id>, e.g. cla-20260512-claude-ai-pt0"
+    },
+    "audit_label": {
+      "type": "string",
+      "description": "Optional human-readable label, especially for doc-fallback or unusual runs"
+    },
+    "rubric_version": {
+      "type": "string",
+      "description": "Version string of the audit's rubric at the time of the run, e.g. 'v0.2 (frozen 2026-05-12)'"
+    },
+    "rubric_path": {
+      "type": "string",
+      "description": "Relative path from the scorecard file to the audit's RUBRIC.md"
+    },
+    "evidence_mode": {
+      "type": "object",
+      "description": "Optional block for runs with non-default evidence modes (doc-fallback, etc.)",
+      "properties": {
+        "class": { "type": "string" },
+        "live_session": { "type": "boolean" },
+        "private_content_captured": { "type": "boolean" },
+        "default_evidence_state": { "type": "string", "enum": ["observed", "inferred", "open_question"] },
+        "limitations": { "type": "string" }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "type": "string", "description": "url | screenshot | component_code | app_flow_description | product_surface_notes | documentation" },
+        "value": { "type": "string" },
+        "platform": { "type": "string" },
+        "primary_sources": { "type": "array", "items": { "type": "string" } },
+        "surfaces_audited": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Run-time context",
+      "properties": {
+        "user_type": { "type": "string" },
+        "task": { "type": "string" },
+        "dense_state": { "type": "string" },
+        "low_bandwidth_state": { "type": "string" },
+        "ai_features_present": { "type": "array", "items": { "type": "string" } },
+        "method": { "type": "string" },
+        "session_continuous_minutes": { "type": "integer", "minimum": 0 },
+        "viewport_render_limitation": { "type": "string" }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "description": "Per-section results; keys are section names in snake_case",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+          "finding_ids": { "type": "array", "items": { "type": "string" } },
+          "open_questions": { "type": "array", "items": { "type": "string" } },
+          "positive_observations": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "overall_status",
+        "critical_count",
+        "high_count",
+        "medium_count",
+        "low_count"
+      ],
+      "properties": {
+        "overall_status": { "type": "string", "enum": ["audited_clean", "warn", "fail"] },
+        "critical_count": { "type": "integer", "minimum": 0 },
+        "high_count": { "type": "integer", "minimum": 0 },
+        "medium_count": { "type": "integer", "minimum": 0 },
+        "low_count": { "type": "integer", "minimum": 0 },
+        "open_question_count": { "type": "integer", "minimum": 0 },
+        "sections_passed": { "type": "integer", "minimum": 0 },
+        "sections_warned": { "type": "integer", "minimum": 0 },
+        "sections_failed": { "type": "integer", "minimum": 0 },
+        "positive_observation_count": { "type": "integer", "minimum": 0 },
+        "hard_failure_patterns_validated": {
+          "type": "object",
+          "description": "Per-audit; cognitive-load uses ui_simple_user_hunts / ai_summary_increases_trust_burden / low_load_mode_unreachable_from_constrained_state / simple_mode_removes_power"
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "finding.base.schema.json" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "section": { "type": "string" },
+          "summary": { "type": "string" },
+          "resolution_path": { "type": "string" }
+        }
+      }
+    },
+    "positive_observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "section": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "exit_criteria_check": {
+      "type": "object",
+      "description": "Audit-specific exit criteria results"
+    }
+  },
+  "additionalProperties": true
+}

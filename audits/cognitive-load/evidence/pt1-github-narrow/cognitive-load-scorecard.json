@@ -1,0 +1,192 @@
+{
+  "audit_id": "cla-20260512-github-narrow-pt1",
+  "rubric_version": "v0.1 (frozen 2026-05-12)",
+  "rubric_path": "../../RUBRIC.md",
+  "original_rubric_note": "Produced before monorepo migration, when the rubric lived at E:/AI/cognitive-load-audit/cognitive-load-audit.md.",
+  "target": {
+    "type": "url",
+    "value": "https://github.com/mcp-tool-shop-org/research-os",
+    "surfaces_audited": [
+      "/ (repo home)",
+      "/blob/master/README.md (file view)",
+      "/pulls?q=is%3Apr (PR list)",
+      "/pull/10 (PR detail)",
+      "/actions (workflow runs)"
+    ]
+  },
+  "context": {
+    "user_type": "logged-in developer, repo owner",
+    "task": "audit narrow/responsive power preservation, validate Section 5 sub-taxonomy",
+    "dense_state": "active repo with 10 open PRs, 61 workflow runs, 97 commits, full file tree (8 dirs + README.md and translations + CHANGELOG)",
+    "low_bandwidth_state": "auditor not in a self-reported constrained state — see OQ-04 carried from PT0",
+    "ai_features_present": ["Copilot button in nav", "no AI features exercised in this audit"],
+    "method": "Path 1 live navigation at full width + DOM/CSS class inference for narrow behavior (rig could not reduce viewport below ~2266 CSS px)",
+    "session_continuous_minutes": 75,
+    "viewport_render_limitation": "Windows 150% display scaling + Chrome min-window-width clamp prevented inner viewport reflow below 2266 CSS px; narrow findings carry Inferred evidence state"
+  },
+  "sections": {
+    "text_load": {
+      "status": "warn",
+      "finding_ids": ["CL-13"],
+      "notes": "Per-file commit message truncation at full width already drops info; narrow worsens. One Low. No process gap."
+    },
+    "measurable_defaults": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-01 (carried from PT0 — Lighthouse/axe still not run)"],
+      "notes": "No first-hand CSS measurement. Visual inspection acceptable."
+    },
+    "hidden_load": {
+      "status": "warn",
+      "finding_ids": ["CL-14"],
+      "notes": "Global nav permanently in hamburger even at wide viewports — a constant Hidden pattern, not a narrow-mode delta. One Low. CL-09 and CL-12 also touch Section 2 but are filed under Section 5 as their primary axis."
+    },
+    "state_shift": {
+      "status": "pass",
+      "finding_ids": [],
+      "notes": "Not applicable. Narrow mode is layout-driven by viewport, not a user-toggled state. No State Shift surface tested."
+    },
+    "ai_compression_risk": {
+      "status": "pass",
+      "finding_ids": [],
+      "notes": "Not applicable. No AI surfaces exercised in this audit (Copilot present but not invoked)."
+    },
+    "power_preservation": {
+      "status": "warn",
+      "finding_ids": ["CL-09", "CL-10", "CL-11", "CL-12"],
+      "open_questions": ["OQ-05"],
+      "notes": "Four findings: one High (CL-09 repo nav overflow), three Medium (CL-10 PR sidebar reflow, CL-11 About sidebar reflow, CL-12 file tree collapse). Below 3-Highs Fail threshold. No Critical / no Removed-power findings observed on GitHub web. Section 5 sub-taxonomy (Compressed/Delayed/Hidden/Removed) validated as useful — see v0.2 recommendation."
+    },
+    "configuration_cost": {
+      "status": "pass",
+      "finding_ids": [],
+      "notes": "Narrow mode is automatic from viewport, not user-configured. Not exercised."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-05"],
+      "notes": "Most Section 5 findings carry Inferred evidence due to viewport-render limitation on the test rig. Full-width direct observation + DOM/CSS class inspection. Findings hold in shape; specific pixel/spacing measurements would require a re-run on a non-DPI-scaled rig or via headless browser with explicit viewport metrics."
+    }
+  },
+  "summary": {
+    "overall_status": "warn",
+    "critical_count": 0,
+    "high_count": 1,
+    "medium_count": 3,
+    "low_count": 2,
+    "open_question_count": 2,
+    "sections_passed": 3,
+    "sections_warned": 5,
+    "sections_failed": 0,
+    "hard_failure_patterns_validated": {
+      "ui_simple_user_hunts": true,
+      "ai_summary_increases_trust_burden": null,
+      "low_load_mode_unreachable_from_constrained_state": null,
+      "simple_mode_removes_power": false
+    }
+  },
+  "findings": [
+    {
+      "id": "CL-09",
+      "title": "Repo nav uses overflow-into-'...' menu at narrow widths",
+      "severity": "high",
+      "section": "power_preservation",
+      "secondary_section": "hidden_load",
+      "surface": "repository nav strip",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "inferred",
+      "evidence_summary": "Full-width DOM confirmed 8 tabs in `prc-components-UnderlineWrapper`; narrow-width overflow behavior is Primer's documented ResizeObserver pattern. Could not directly render at narrow widths (see OQ-05)."
+    },
+    {
+      "id": "CL-10",
+      "title": "PR right sidebar reflows above/below main thread at narrow widths",
+      "severity": "medium",
+      "section": "power_preservation",
+      "surface": "/pull/{N} detail page",
+      "load_displaced_to": ["navigation", "time"],
+      "section_5_taxonomy": "delayed",
+      "evidence_state": "inferred",
+      "evidence_summary": "Full-width DOM confirmed 8 widget sections in right rail at PR #10; narrow stacks via Primer/Bootstrap grid behavior. No skip-link observed for narrow-mode."
+    },
+    {
+      "id": "CL-11",
+      "title": "Repo About sidebar stacks below file tree + README at narrow widths",
+      "severity": "medium",
+      "section": "power_preservation",
+      "surface": "repo home `/{org}/{repo}`",
+      "load_displaced_to": ["navigation", "time"],
+      "section_5_taxonomy": "delayed",
+      "evidence_state": "inferred",
+      "evidence_summary": "Full-width About sidebar with 15 topics + license/CoC/contributing/security quick-links. Bootstrap grid stacking behavior inferred for narrow."
+    },
+    {
+      "id": "CL-12",
+      "title": "File tree collapses to toggle in file view at narrow widths",
+      "severity": "medium",
+      "section": "power_preservation",
+      "secondary_section": "hidden_load",
+      "surface": "/blob/{ref}/{path} file blob view",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "inferred",
+      "evidence_summary": "Full-width file tree confirmed at README.md view; `ExpandFileTreeButton-module__expand` class observed in DOM, GitHub's documented collapse-on-navigate pattern."
+    },
+    {
+      "id": "CL-13",
+      "title": "Per-file commit message in repo home file tree is truncated even at full width",
+      "severity": "low",
+      "section": "text_load",
+      "surface": "repo home file tree rows",
+      "load_displaced_to": ["memory", "verification"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "observed",
+      "evidence_summary": "Direct: '.github' row shows 'fix: Stage B Wave 3 — proactive resilience + supply-chain hyg…' truncated mid-word at 2266 CSS px."
+    },
+    {
+      "id": "CL-14",
+      "title": "Global account nav permanently in hamburger even at desktop widths",
+      "severity": "low",
+      "section": "hidden_load",
+      "surface": "GitHub global header (all pages)",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "n/a (constant, not narrow-mode delta)",
+      "evidence_state": "observed",
+      "evidence_summary": "Direct: hamburger click revealed 11 items at 2266 CSS px desktop width; identical behavior expected at narrow widths."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-05",
+      "section": "evidence",
+      "summary": "Could not reduce inner viewport below 2266 CSS px on test rig due to Windows 150% display scaling + Chrome min-window-width clamp. Narrow-mode findings carry Inferred evidence state.",
+      "resolution_path": "Re-run on machine without DPI scaling, OR with Chrome DevTools device emulation enabled via the DevTools toolbar (Ctrl+Shift+M), OR via headless browser (Playwright/Puppeteer) with setViewport({width: 375, height: 667})."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "P-04",
+      "section": "power_preservation",
+      "summary": "No Removed-power instances observed on GitHub web. Every power feature traces to Compressed, Delayed, or Hidden. GitHub's narrow-mode strategy is overflow-and-stack, not feature subset — strong Section 5 behavior."
+    },
+    {
+      "id": "P-05",
+      "section": "power_preservation",
+      "summary": "Hamburger menu hides global nav (not repo nav). The repo-specific surface is structurally protected from being subsumed into global overflow — a load-bearing power-preservation decision."
+    }
+  ],
+  "exit_criteria_check": {
+    "at_least_3_section_5_findings": true,
+    "comparison_table_provided": true,
+    "every_removed_power_claim_names_feature_and_access_path": "true (zero Removed claims; pattern not present on target)",
+    "no_generic_density_findings": true,
+    "section_5_taxonomy_validated_or_rejected": "validated as useful — adopt in rubric v0.2"
+  },
+  "rubric_v0_2_recommendations": [
+    "Adopt the Compressed / Delayed / Hidden / Removed sub-taxonomy in Section 5 of the rubric. Add as a 'Severity classification for this section' block similar to Section 4's precondition.",
+    "Default severity mapping: Compressed = Pass/Low, Delayed = Medium, Hidden = High, Removed = Critical. Auditors can override with justification.",
+    "Add an explicit field to each finding: `section_5_taxonomy` (one of compressed/delayed/hidden/removed/n_a) when the finding falls under Section 5.",
+    "Note in Section 7 (Evidence) that responsive/narrow-mode audits may require a non-DPI-scaled rig or headless browser to reach the actual narrow viewport. Inferred evidence is acceptable for class-based analysis but should be flagged."
+  ]
+}

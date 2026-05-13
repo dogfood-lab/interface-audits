@@ -1,0 +1,233 @@
+{
+  "audit_id": "cla-20260512-claude-ai-pt0",
+  "rubric_version": "v0.1",
+  "rubric_path": "../../RUBRIC.md",
+  "original_rubric_note": "Produced before monorepo migration, when the rubric lived at E:/AI/cognitive-load-audit/cognitive-load-audit.md.",
+  "target": {
+    "type": "url",
+    "value": "https://claude.ai",
+    "surfaces_audited": [
+      "/new (new chat surface)",
+      "/chat/f1fcc100-f027-4ff4-82c4-dbda0792a70c (existing chat with widget artifact)",
+      "/settings/general (settings page)",
+      "sidebar (expanded and collapsed states)",
+      "user profile menu",
+      "+ menu (files / connectors / research / web search hub)"
+    ]
+  },
+  "context": {
+    "user_type": "returning Max-plan user, signed in",
+    "task": "audit, not a real user task",
+    "dense_state": "Recents list with 16+ visible chats; one chat opened with rendered interactive widget (compound interest calculator) representing a typical 'AI-generated artifact embedded in conversation' state",
+    "low_bandwidth_state": "auditor not in a self-reported constrained state — see OQ-04",
+    "ai_features_present": [
+      "chat with adaptive model selection (Opus 4.7 / Sonnet 4.6)",
+      "inline artifact widgets",
+      "web search (default on)",
+      "Research mode",
+      "Style presets",
+      "Voice mode"
+    ],
+    "method": "Path 1 live navigation via Claude-in-Chrome MCP; ~1 hour active inspection",
+    "session_continuous_minutes": 60
+  },
+  "sections": {
+    "text_load": {
+      "status": "pass",
+      "finding_ids": [],
+      "positive_observations": ["P-03"],
+      "notes": "Compose placeholder, settings labels, + menu label all clear and action-oriented. 'Dyslexic friendly' previewed in face — small UX win."
+    },
+    "measurable_defaults": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-01"],
+      "notes": "No first-hand CSS/contrast measurement collected. Visual inspection of body text suggests acceptable, but unverified against WCAG 2.2 1.4.12 thresholds."
+    },
+    "hidden_load": {
+      "status": "warn",
+      "finding_ids": ["CL-01"],
+      "notes": "One High; below the 3-High threshold. Sidebar collapse displaces visual-recognition load to recall, but a11y tree preserves labels for screen reader users."
+    },
+    "state_shift": {
+      "status": "fail",
+      "finding_ids": ["CL-02"],
+      "positive_observations": ["P-01"],
+      "notes": "Critical: no in-chat one-action low-bandwidth control. Partial offset: sidebar-collapse state persists across reload (P-01). One Critical triggers section Fail."
+    },
+    "ai_compression_risk": {
+      "status": "fail",
+      "finding_ids": ["CL-03", "CL-04", "CL-08"],
+      "open_questions": ["OQ-02"],
+      "notes": "One Critical (CL-04, web search active without provenance indicator) + one High (CL-03, confident numeric output without source/assumption trace — classified as provenance ambiguity per Section 4 severity precondition since no source was claimed) + one Low (auto-titled chats). One Critical triggers Fail. Summary-of-source surface untested — see OQ-02."
+    },
+    "power_preservation": {
+      "status": "pass",
+      "finding_ids": [],
+      "positive_observations": ["P-02"],
+      "notes": "+ menu compresses 8 features into one hub; collapsed sidebar reflows chat content. Section 5's 'simple mode removes power' pattern does NOT manifest on claude.ai."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["CL-05", "CL-06", "CL-07"],
+      "notes": "One High (4-click + page-nav path to dyslexia-friendly font) and two Mediums (full-page settings nav loses chat context; no Accessibility section). Below threshold for Fail but the friction stack is real."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-04"],
+      "notes": "All findings observed in live navigation, but auditor was not in a self-reported constrained state. Should be addressed with a human auditor pass before this audit's findings ship as user-facing recommendations."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 2,
+    "high_count": 3,
+    "medium_count": 2,
+    "low_count": 1,
+    "open_question_count": 4,
+    "sections_passed": 2,
+    "sections_warned": 4,
+    "sections_failed": 2,
+    "hard_failure_patterns_validated": {
+      "ui_simple_user_hunts": true,
+      "ai_summary_increases_trust_burden": true,
+      "low_load_mode_unreachable_from_constrained_state": true,
+      "simple_mode_removes_power": false
+    }
+  },
+  "findings": [
+    {
+      "id": "CL-01",
+      "title": "Sidebar collapse strips visual labels and removes chat history from view",
+      "severity": "high",
+      "section": "hidden_load",
+      "surface": "sidebar (expanded and collapsed states)",
+      "load_displaced_to": "memory + recall + click-cost",
+      "evidence_state": "observed",
+      "evidence_summary": "Confirmed via baseline + collapsed screenshots and a11y tree comparison."
+    },
+    {
+      "id": "CL-02",
+      "title": "No in-chat one-action low-bandwidth control",
+      "severity": "critical",
+      "section": "state_shift",
+      "surface": "active chat",
+      "load_displaced_to": "configuration + multi-surface navigation",
+      "evidence_state": "observed",
+      "evidence_summary": "Full a11y tree of chat surface inspected; no relevant controls beyond compose, +, model, voice."
+    },
+    {
+      "id": "CL-03",
+      "title": "Confident numeric output with no source-recovery or assumption-trace affordance",
+      "severity": "high",
+      "severity_note": "Provenance ambiguity per Section 4 severity precondition (no source was promised, claimed, or fetched — generated content). High, not Critical.",
+      "section": "ai_compression_risk",
+      "surface": "existing chat with widget artifact",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "observed",
+      "evidence_summary": "Widget rendered with $20,194 / 4.0x figures and silent default inputs; message action bar has no 'show source' or 'show assumptions' affordance."
+    },
+    {
+      "id": "CL-04",
+      "title": "Web search runs by default with no provenance indicator in response",
+      "severity": "critical",
+      "section": "ai_compression_risk",
+      "surface": "+ menu + response area",
+      "load_displaced_to": "trust + retrieval-source ambiguity",
+      "evidence_state": "observed",
+      "evidence_summary": "+ menu shows 'Web search' checked by default; inspected response shows no citations or domain markers."
+    },
+    {
+      "id": "CL-05",
+      "title": "Reaching dyslexia-friendly font from a chat takes 4 clicks + scroll + full-page nav",
+      "severity": "high",
+      "section": "configuration_cost",
+      "surface": "chat -> profile menu -> Settings -> /settings/general -> font dropdown",
+      "load_displaced_to": "configuration + memory + navigation",
+      "evidence_state": "observed",
+      "evidence_summary": "Counted live; URL changes from /chat/... to /settings/general; Chat font option visible with 'Dyslexic friendly' in dropdown."
+    },
+    {
+      "id": "CL-06",
+      "title": "Settings opens via full-page navigation, breaking chat task context",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "profile menu -> Settings",
+      "load_displaced_to": "navigation + recovery",
+      "evidence_state": "observed",
+      "evidence_summary": "URL change observed; chat surface fully hidden behind /settings/general."
+    },
+    {
+      "id": "CL-07",
+      "title": "No dedicated Accessibility section in Settings; reading controls bundled into General > Preferences",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "/settings/general left-nav",
+      "load_displaced_to": "discovery + recall",
+      "evidence_state": "observed",
+      "evidence_summary": "Settings left-nav has 9 sections; none named Accessibility/Display/Reading. Chat font lives below Profile in General page."
+    },
+    {
+      "id": "CL-08",
+      "title": "Auto-generated chat title silently rewrites the user's original question",
+      "severity": "low",
+      "section": "ai_compression_risk",
+      "surface": "chat header + sidebar Recents list",
+      "load_displaced_to": "trust + recall",
+      "evidence_state": "observed",
+      "evidence_summary": "User input 'Show me how compound interest works' compared against chat title 'How compound interest works' (Claude-generated). Rename button exists but is not surfaced."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "measurable_defaults",
+      "summary": "Computed CSS for line-height, letter-spacing, paragraph-spacing, contrast-ratio not measured against WCAG 2.2 1.4.12 thresholds. Visual inspection only.",
+      "resolution_path": "Run Lighthouse/axe against /chat/* and /settings/general; or use javascript_tool to extract getComputedStyle() on body and label elements."
+    },
+    {
+      "id": "OQ-02",
+      "section": "ai_compression_risk",
+      "summary": "Did not test the 'paste long source then ask for summary, attempt source recovery' scenario. Compound-interest chat is generative, not summarization.",
+      "resolution_path": "Paste a public document into a fresh test chat, request summary, audit source-recovery and omission-visibility. Avoided here to not consume billed context on synthetic tasks."
+    },
+    {
+      "id": "OQ-03",
+      "section": "state_shift",
+      "summary": "Sidebar state persisted across F5 reload; cross-session (logout/login) and cross-device (mobile/desktop) persistence not tested.",
+      "resolution_path": "Logout/login; or sign in on a second device and observe state inheritance."
+    },
+    {
+      "id": "OQ-04",
+      "section": "evidence",
+      "summary": "Auditor was not in a self-reported constrained state. Section 3 / Section 6 findings still observable from any state, but the felt cost of the 4-click settings path is not validated.",
+      "resolution_path": "Human user in a low-bandwidth state attempts the dyslexia-friendly font change from a chat. Time it. Compare against the audit's click count."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "P-01",
+      "section": "state_shift",
+      "summary": "Sidebar collapse state persists across F5 reload."
+    },
+    {
+      "id": "P-02",
+      "section": "power_preservation",
+      "summary": "+ menu compresses 8 power features into one one-click hub; collapsed sidebar reflows chat content rather than removing features. Section 5 'simple mode removes power' pattern does not manifest on claude.ai."
+    },
+    {
+      "id": "P-03",
+      "section": "text_load",
+      "summary": "Chat font dropdown previews each option in its own face, including OpenDyslexic rendering for the 'Dyslexic friendly' option."
+    }
+  ],
+  "exit_criteria_check": {
+    "at_least_5_findings": true,
+    "all_findings_map_to_sections": true,
+    "at_least_one_load_displacement_finding": true,
+    "evidence_gaps_preserved_as_open_questions": true,
+    "report_obeys_audit_rules": "report obeys Section 0 and Section 1 conventions (plain language, structured, scannable); not stress-tested against a human reader in a constrained state",
+    "no_new_rubric_section_obviously_missing": true
+  }
+}

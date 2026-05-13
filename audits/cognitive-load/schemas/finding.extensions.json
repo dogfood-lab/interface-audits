@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/cognitive-load/schemas/finding.extensions.json",
+  "title": "Cognitive Load Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields; does not redefine the base contract.",
+  "type": "object",
+  "properties": {
+    "section_5_taxonomy": {
+      "type": "string",
+      "enum": ["compressed", "delayed", "hidden", "removed", "n/a"],
+      "description": "Required for Section 5 (Power Preservation) findings; optional/omitted for findings in other sections. Maps to default severity per the rubric's Section 5 sub-taxonomy: compressed = pass/low, delayed = medium, hidden = high, removed = critical/high."
+    }
+  }
+}

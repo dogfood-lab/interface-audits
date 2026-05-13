@@ -1,0 +1,205 @@
+{
+  "audit_id": "cla-20260512-outlook-doc-fallback-pt2",
+  "audit_label": "PT2 — documentation fallback (not full PT2)",
+  "rubric_version": "v0.2 (frozen 2026-05-12)",
+  "rubric_path": "../../RUBRIC.md",
+  "original_rubric_note": "Produced before monorepo migration, when the rubric lived at E:/AI/cognitive-load-audit/cognitive-load-audit.md.",
+  "evidence_mode": {
+    "class": "documentation_fallback",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "Live access to outlook.live.com blocked by auth gate (no cached session). Findings draw on Microsoft canonical Support documentation + side-by-side comparison image + community Q&A. Strong for vendor-described intent and command-path mappings. Weak for felt cost, keyboard-shortcut behavior, edge-case interactions, and verification of community-described claims. Does NOT replace live observation of Outlook under real task state."
+  },
+  "target": {
+    "type": "documentation + image",
+    "value": "Microsoft Outlook — Classic Ribbon vs Simplified Ribbon (desktop + new Outlook)",
+    "primary_sources": [
+      "https://support.microsoft.com/en-us/office/use-the-simplified-ribbon-44bef9c3-295d-4092-b7f0-f471fa629a98",
+      "https://support.microsoft.com/en-us/office/simplified-ribbon-reference-792ddf33-8b10-4265-a001-8e81cdfeb74a",
+      "Microsoft's official Classic-vs-Simplified comparison image embedded in the first article",
+      "Microsoft documentation of recall-message paths in both ribbon modes",
+      "Microsoft documentation of add-ins / More apps / pinning",
+      "Microsoft Q&A community responses on new Outlook customization"
+    ],
+    "surfaces_audited": [
+      "Outlook desktop ribbon tab row (Classic vs Simplified comparison image)",
+      "Home tab content mapping per Microsoft reference guide (Inbox / Message / Calendar / Contact / Task categories)",
+      "Tell Me search documented behavior",
+      "Three-dots overflow documented contents (Rules / Respond with Meeting / Read Aloud)",
+      "Ribbon customization affordances per Microsoft documentation and Q&A community"
+    ]
+  },
+  "context": {
+    "user_type": "Outlook user, full-fluency in Classic Ribbon, considering Simplified Ribbon",
+    "task": "audit Simplified Ribbon's preservation of Classic Ribbon power; calibrate Section 5 taxonomy via documentation",
+    "dense_state": "implied by Microsoft's documentation scope; not directly verified",
+    "low_bandwidth_state": "auditor not in a constrained state",
+    "ai_features_present": ["Copilot in modern Outlook, not in scope"],
+    "method": "Documentation fallback. Auth gate prevented live audit; pivoted to vendor-canonical Microsoft Support docs per v0.2 Section 7 responsive-evidence caveat.",
+    "session_continuous_minutes": 130,
+    "viewport_render_limitation": "n/a — not a viewport issue. The limitation is the absence of a live signed-in session entirely."
+  },
+  "sections": {
+    "text_load": {
+      "status": "pass",
+      "finding_ids": [],
+      "notes": "Microsoft documentation is plain-language. No Section 0 findings."
+    },
+    "measurable_defaults": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-01 (carried from PT0/PT1)"],
+      "notes": "Not exercised."
+    },
+    "hidden_load": {
+      "status": "warn",
+      "finding_ids": ["CL-16", "CL-17", "CL-20"],
+      "notes": "Three findings touch Section 2 as secondary. Section 5 is the primary classification for each."
+    },
+    "state_shift": {
+      "status": "warn",
+      "finding_ids": ["CL-18"],
+      "notes": "CL-18 medium — unlabeled caret toggle for Classic <-> Simplified switch. Below Fail threshold."
+    },
+    "ai_compression_risk": {
+      "status": "pass",
+      "finding_ids": [],
+      "notes": "Not exercised."
+    },
+    "power_preservation": {
+      "status": "fail",
+      "finding_ids": ["CL-15", "CL-16", "CL-17", "CL-19", "CL-20"],
+      "notes": "Four Highs (CL-15 Folder-tab Hidden, CL-16 Tell-Me-only Hidden, CL-17 ...-overflow Hidden, CL-19 reduced-shape customization Hidden) + one Medium (CL-20 reference-guide meta-evidence). Three Highs trigger Section Fail. **No Critical, no Removed observations.** Section 5 fails on hidden-load accumulation, not on power removal. Earlier draft of PT2 produced CL-15 and CL-19 as Removed findings; honest reading of Microsoft's docs reclassifies both to Hidden — capability preserved via alternate paths."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["CL-18", "CL-19"],
+      "notes": "CL-19 secondary section (Configuration Cost) reflects the reduced-shape customization. CL-18 toggle caret labeling. Below Fail threshold."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-06", "OQ-07"],
+      "notes": "All findings rest on Microsoft documentation (Observed for direct Microsoft Support articles) plus community Q&A (Inferred). Live signed-in verification would promote CL-19 and several others to Observed."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 0,
+    "high_count": 4,
+    "medium_count": 2,
+    "low_count": 0,
+    "open_question_count": 4,
+    "sections_passed": 2,
+    "sections_warned": 5,
+    "sections_failed": 1,
+    "hard_failure_patterns_validated": {
+      "ui_simple_user_hunts": true,
+      "ai_summary_increases_trust_burden": null,
+      "low_load_mode_unreachable_from_constrained_state": "partial",
+      "simple_mode_removes_power": "not_conclusively_observed"
+    }
+  },
+  "findings": [
+    {
+      "id": "CL-15",
+      "title": "Folder tab is absent from Simplified Ribbon tab row",
+      "severity": "high",
+      "section": "power_preservation",
+      "surface": "Outlook ribbon tab row",
+      "load_displaced_to": ["memory", "search", "navigation"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "observed",
+      "evidence_summary": "Microsoft's side-by-side comparison image shows Classic with seven tabs (incl. Folder), Simplified with six (no Folder). Folder commands reachable via right-click in nav pane, `...` overflow, or Tell Me search. Reclassified from Removed-with-workaround (earlier overclaim) to Hidden — capability preserved through alternate entry points; only the tab-row visual entry point is removed."
+    },
+    {
+      "id": "CL-16",
+      "title": "Hidden commands reachable only via 'Tell me what you want to do' search",
+      "severity": "high",
+      "section": "power_preservation",
+      "secondary_section": "hidden_load",
+      "surface": "Simplified Ribbon all views",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "observed",
+      "evidence_summary": "Microsoft docs explicitly direct users to Tell Me as the first-line solution for missing buttons."
+    },
+    {
+      "id": "CL-17",
+      "title": "`...` overflow contains accessibility features (Read Aloud) and power features (Rules)",
+      "severity": "high",
+      "section": "power_preservation",
+      "secondary_section": "hidden_load",
+      "surface": "Simplified Ribbon `...` overflow",
+      "load_displaced_to": ["memory", "search"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "observed",
+      "evidence_summary": "Microsoft docs name Rules, Respond with Meeting, Read Aloud as `...`-overflow contents. Hiding accessibility features behind discovery-cost is recursive. Pin/unpin can restore them — Hidden-with-restoration."
+    },
+    {
+      "id": "CL-18",
+      "title": "Switch-back to Classic Ribbon is an unlabeled caret in lower-right corner",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "secondary_section": "state_shift",
+      "surface": "ribbon corner toggle",
+      "load_displaced_to": ["memory", "visual decoding"],
+      "section_5_taxonomy": "n/a",
+      "evidence_state": "inferred",
+      "evidence_summary": "Microsoft docs describe the caret position; absence of label description implies unlabeled."
+    },
+    {
+      "id": "CL-19",
+      "title": "Granular ribbon customization is reduced (not removed) in new Outlook + Simplified",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "secondary_section": "power_preservation",
+      "surface": "ribbon customization affordances in new Outlook",
+      "load_displaced_to": ["configuration", "feature loss"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "inferred",
+      "evidence_summary": "Microsoft docs confirm 'users can customize commands shown in the simplified ribbon' (pin/unpin available). Community Q&A describes granular custom-tab / custom-group authoring (Classic Customize Ribbon dialog) as more limited or absent. Reclassified from Removed-without-equivalent / Critical (earlier overclaim) to Hidden / reduced-shape Medium — basic customization concept preserved via pin/unpin; granular authoring path is reduced."
+    },
+    {
+      "id": "CL-20",
+      "title": "Vendor 'Simplified Ribbon reference' guide is meta-evidence of Hidden classification",
+      "severity": "medium",
+      "section": "power_preservation",
+      "secondary_section": "hidden_load",
+      "surface": "Microsoft Support documentation",
+      "load_displaced_to": ["memory", "search", "verification"],
+      "section_5_taxonomy": "hidden",
+      "evidence_state": "observed",
+      "evidence_summary": "Direct: `simplified-ribbon-reference-792ddf33-...` exists with five command categories mapping Classic to Simplified. Vendor publishing a compensation doc is structural evidence of Hidden severity."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-06",
+      "section": "power_preservation",
+      "summary": "CL-19 reclassification (Hidden / reduced-shape Medium) rests on community Q&A; not directly verified via signed-in new Outlook.",
+      "resolution_path": "Sign into new Outlook, enable Simplified Ribbon, attempt to create a custom tab or group. Refine description of what's preserved vs reduced. Promote to Observed."
+    },
+    {
+      "id": "OQ-07",
+      "section": "evidence",
+      "summary": "Live Outlook surface not exercised at all. Per-button cost, keyboard-shortcut behavior, edge-case interactions not directly tested.",
+      "resolution_path": "Re-run with signed-in Outlook session. Capture screenshots of actual Simplified Ribbon. Exercise toggle, Tell Me, `...` overflow, pin/unpin, customization affordances."
+    }
+  ],
+  "positive_observations": [],
+  "exit_criteria_check": {
+    "produced_clean_removed_finding": false,
+    "documented_conclusion_no_removed_observed": true,
+    "every_removed_claim_names_feature_and_access_path": "n/a — no Removed claims survived honest reclassification",
+    "remediation_distinguishes_restore_vs_overflow": true,
+    "scorecard_confirms_removed_severity_default": "deferred — PT2-doc-fallback did not produce live-observed Removed cases. v0.3 sub-distinction recommendation is parked pending a future PT on a target with true feature subsetting."
+  },
+  "rubric_v0_3_recommendations": [
+    "DEFERRED: the proposed Removed sub-distinction (removed_with_workaround vs removed_without_equivalent) is parked. PT2-doc-fallback did not produce live-observed Removed cases — the original draft overclaimed two findings as Removed, both reclassified to Hidden on honest reading.",
+    "Document the 'vendor reference guide as Hidden meta-evidence' pattern (CL-20). When a vendor publishes a separate documentation artifact whose purpose is to help users find moved features, that itself is structural evidence of Hidden classification severity. Worth folding into Section 5's failure-modes list.",
+    "Future PT3 should target a product with strict feature subsetting (a lite/free tier with documented absent features, a feature-stripped mobile app, an enterprise-vs-consumer split). Outlook Simplified Ribbon was the wrong target for Removed calibration — it is mostly a Hidden/Delayed power model, not a Removed one.",
+    "Continue carrying OQ-01 forward across all PTs."
+  ]
+}

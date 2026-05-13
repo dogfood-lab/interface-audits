@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/shared/schemas/finding.base.schema.json",
+  "title": "Audit Finding (base)",
+  "description": "Base contract for findings produced by audits in interface-audits. Audit-specific extensions live in audits/<name>/schemas/finding.extensions.json and may only add fields.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "severity",
+    "section",
+    "surface",
+    "load_displaced_to",
+    "evidence_state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Audit-prefixed finding ID, e.g. CL-01. Pattern: 2-4 uppercase letters, hyphen, digits.",
+      "pattern": "^[A-Z]{2,4}-[0-9]+$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short summary (under ~80 chars).",
+      "maxLength": 200
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"]
+    },
+    "section": {
+      "type": "string",
+      "description": "Audit section name in snake_case (e.g. power_preservation)."
+    },
+    "secondary_section": {
+      "type": "string",
+      "description": "Optional cross-section listing if the finding touches multiple sections."
+    },
+    "surface": {
+      "type": "string",
+      "description": "Where in the product the finding was observed."
+    },
+    "load_displaced_to": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "search",
+          "memory",
+          "trust",
+          "verification",
+          "navigation",
+          "configuration",
+          "source recovery",
+          "visual decoding",
+          "time",
+          "recovery / undo",
+          "feature loss"
+        ]
+      }
+    },
+    "evidence_state": {
+      "type": "string",
+      "enum": ["observed", "inferred", "open_question"]
+    },
+    "evidence_summary": {
+      "type": "string",
+      "description": "Inline description of the evidence captured for this finding. Should describe state, surface, dataset, screenshot ref, etc."
+    },
+    "severity_note": {
+      "type": "string",
+      "description": "Optional explanation of severity classification, especially when an audit precondition applies."
+    }
+  },
+  "additionalProperties": true
+}
