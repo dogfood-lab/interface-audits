@@ -1,6 +1,6 @@
 {
   "name": "@dogfood-lab/interface-audits",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Proof-backed audits for human-facing product surfaces. Catches load displacement, hidden complexity, AI trust burden, and state-shift failure — failures that pass generic accessibility scanners.",
   "homepage": "https://dogfood-lab.github.io/interface-audits/",

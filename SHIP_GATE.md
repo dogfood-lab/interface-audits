@@ -45,7 +45,7 @@
 ## D. Shipping Hygiene
 
 - [x] `[all]` `verify` script exists (2026-05-12) — [`verify.sh`](verify.sh) runs schema validation + link check + shipcheck audit in one command. Also exposed as `npm run verify`.
-- [x] `[all]` Version in manifest matches git tag (2026-05-12, on release) — [`package.json`](package.json) version `1.0.0`; tag `v1.0.0` cut at the end of the full-treatment pass (Phase 7).
+- [x] `[all]` Version in manifest matches git tag (2026-05-12, on release) — [`package.json`](package.json) version `0.1.0`; tag `v0.1.0` cut at the end of the full-treatment pass (Phase 7). This is initial public release; future audits and schema refinements may bring breaking changes. v1.0.0 is reserved for when the schema and shared norms are stable enough that breaking changes warrant a major bump.
 - [x] `[all]` Dependency scanning runs in CI (2026-05-12) — `npm audit` runs as part of `npm ci` in CI (`.github/workflows/verify.yml`), Dependabot opens PRs weekly on vulnerabilities (`.github/dependabot.yml`).
 - [x] `[all]` Automated dependency update mechanism exists (2026-05-12) — [`.github/dependabot.yml`](.github/dependabot.yml) covers `github-actions` and `npm` ecosystems, weekly schedule.
 - [ ] `[npm]` SKIP: `package.json` declares `"private": true`. This repo is not currently published to npm. When/if a runner package is split out and published, this gate must be re-checked.

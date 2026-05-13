@@ -35,7 +35,7 @@
 | 6 | Landing page + Starlight handbook | ~1 hour | Done (Phase 2-3) |
 | 7 | GitHub metadata + repo-knowledge entry | ~20 min | Done (Phase 4-5) |
 | 8 | Translations | ~5 min user time + ~10 min local Ollama | Pending — user runs locally |
-| 9 | Tag v1.0.0 + verify deploy | ~10 min | Done (Phase 7) |
+| 9 | Tag v0.1.0 + verify deploy | ~10 min | Done (Phase 7) |
 
 ## Post-Remediation
 
@@ -57,4 +57,4 @@ This is honest, not flattering. A 50/50 would require:
 - Publishing at least one runner package on npm (which removes the `"private": true`)
 - Translations completed (`npm run` cannot run them; user runs locally via polyglot-mcp / TranslateGemma)
 
-None of those are blockers for v1.0.0 of the audit library itself. The audit is a contract + skill + evidence package, and at 44/50 it ships clean. The remaining 6 points are about extending the package surface, not fixing what's here.
+None of those are blockers for v0.1.0 of the audit library itself. The audit is a contract + skill + evidence package, and at 44/50 it ships clean. The remaining 6 points are about extending the package surface, not fixing what's here.

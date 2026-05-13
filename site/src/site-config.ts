@@ -9,7 +9,7 @@ export const config: SiteConfig = {
   footerText: 'MIT Licensed — part of <a href="https://github.com/dogfood-lab" style="color:var(--color-muted);text-decoration:underline">dogfood-lab</a>, sister to <a href="https://github.com/mcp-tool-shop-org" style="color:var(--color-muted);text-decoration:underline">mcp-tool-shop-org</a>',
 
   hero: {
-    badge: 'v1.0.0 · MIT',
+    badge: 'v0.1.0 · MIT',
     headline: 'Reduce the Burden.',
     headlineAccent: 'Improve the Experience.',
     description: 'Proof-backed audits for human-facing product surfaces. Generic scanners catch WCAG violations. These audits catch interfaces that pass scanners but still make users hunt — load displacement, hidden complexity, AI trust burden, state-shift failure.',

@@ -6,7 +6,7 @@ This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-05-12
+## [0.1.0] - 2026-05-12
 
 ### Added
 
@@ -31,5 +31,5 @@ This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)
 - Documented threat surface in [`SECURITY.md`](SECURITY.md): skills perform network egress only to the user-supplied target URL; evidence files are local-only; no telemetry; no secret handling.
 - Per-audit `private_content_captured: false` field on the scorecard schema documents whether a run captured sensitive content before commit.
 
-[Unreleased]: https://github.com/dogfood-lab/interface-audits/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/dogfood-lab/interface-audits/releases/tag/v1.0.0
+[Unreleased]: https://github.com/dogfood-lab/interface-audits/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/dogfood-lab/interface-audits/releases/tag/v0.1.0
