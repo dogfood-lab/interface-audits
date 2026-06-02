@@ -19,24 +19,24 @@
 
 ## Cos'è questo
 
-`interface-audits` è una libreria di linee guida per le verifiche e delle funzionalità che le eseguono. Ogni verifica individua una specifica tipologia di errore che si manifesta all'utente e che i normali strumenti di verifica dell'accessibilità non riescono a rilevare. Gli strumenti di verifica rilevano le violazioni delle linee guida WCAG; queste verifiche individuano le interfacce che **superano le verifiche, ma che comunque rendono difficile l'utilizzo da parte degli utenti**.
+`interface-audits` è una libreria di criteri di audit e delle funzionalità eseguibili che li implementano. Ogni audit individua una specifica categoria di problemi di usabilità che gli strumenti di accessibilità generici non rilevano. Gli strumenti di scansione rilevano le violazioni delle WCAG; questi audit rilevano le interfacce che **superano i controlli degli strumenti di scansione, ma che comunque rendono difficile l'utilizzo per gli utenti**.
 
-La prima verifica in questa libreria è **Carico Cognitivo**, che individua situazioni in cui l'interfaccia impone un carico eccessivo all'utente in termini di memoria, ricerca, fiducia, verifica, navigazione, configurazione, recupero dei dati, interpretazione visiva, tempo, possibilità di annullare azioni o perdita di funzionalità.
+Il primo audit in questa libreria è **Cognitive Load** (Carico cognitivo), che individua i problemi di sovraccarico cognitivo: interfacce che trasferiscono il carico sulla memoria, sulla ricerca, sulla fiducia, sulla verifica, sulla navigazione, sulla configurazione, sul recupero delle informazioni, sulla decodifica visiva, sul tempo, sul ripristino/annullamento o sulla perdita di funzionalità.
 
-Ogni verifica include quattro elementi:
+Ogni audit include quattro elementi:
 
-1. **Linee guida** — principi, sezioni, regole di gravità ([`audits/cognitive-load/RUBRIC.md`](audits/cognitive-load/RUBRIC.md))
-2. **Funzionalità** — contratto e procedura di esecuzione ([`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md))
-3. **Schema** — Schema JSON per i risultati e le valutazioni ([`shared/schemas/`](shared/schemas/))
-4. **Prove** — almeno un test di carico completato o una sessione di test interni ([`audits/cognitive-load/evidence/`](audits/cognitive-load/evidence/))
+1. **Criteri** — principi, sezioni, regole di gravità ([`audits/cognitive-load/RUBRIC.md`](audits/cognitive-load/RUBRIC.md))
+2. **Funzionalità** — contratto di invocazione e procedura ([`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md))
+3. **Schema** — schema JSON per i risultati e le schede di valutazione ([`shared/schemas/`](shared/schemas/))
+4. **Evidenza** — almeno un test di pressione o una prova pratica completati ([`audits/cognitive-load/evidence/`](audits/cognitive-load/evidence/))
 
-Senza prove, non c'è una verifica ufficiale. Consultare [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) per lo stato della macchina a stati.
+Senza evidenza, l'audit non è considerato ufficiale. Consultare [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) per la macchina a stati e [`ROADMAP.md`](ROADMAP.md) per le prossime novità.
 
 ## Installazione
 
-La maggior parte degli utenti non "installa" questo repository, ma lo consulta. Le verifiche sono linee guida e funzionalità in formato Markdown, interpretate da [Claude](https://claude.ai) o da un altro sistema di intelligenza artificiale compatibile, dotato degli strumenti MCP appropriati (navigazione web, acquisizione di schermate, lettura del DOM).
+La maggior parte degli utenti non "installa" questo repository, ma lo consulta. Gli audit sono criteri e funzionalità in formato Markdown, interpretati da [Claude](https://claude.ai) o da un altro motore di intelligenza artificiale compatibile, con gli strumenti MCP appropriati (navigazione nel browser, acquisizione di schermate, lettura del DOM).
 
-Per gli sviluppatori che desiderano eseguire gli strumenti di verifica locali (validazione dello schema, controlli dei link, verifica di integrazione):
+Per gli sviluppatori che desiderano eseguire gli strumenti di verifica locali (validazione dello schema, controllo dei collegamenti, audit di verifica):
 
 ```bash
 git clone https://github.com/dogfood-lab/interface-audits.git
@@ -45,55 +45,72 @@ npm install        # installs ajv, ajv-formats, glob (dev-only)
 npm run verify     # runs schema + link + shipcheck checks
 ```
 
-**Requisiti:** Node 20+ per gli strumenti di verifica. Le verifiche stesse sono in formato Markdown, indipendenti dalla piattaforma.
+**Requisiti:** Node 20+ per gli strumenti di verifica. Gli audit stessi sono indipendenti dalla piattaforma e sono in formato Markdown.
 
 ## Utilizzo
 
-### Esecuzione di una verifica
+### Esecuzione di un audit
 
-Eseguire la verifica tramite Claude (o un sistema compatibile):
+Invocare tramite Claude (o un motore compatibile):
 
-> Esegui la verifica del carico cognitivo su `<URL o sezione di destinazione>`
+> Esegui l'audit "cognitive-load" su `<target-url-or-surface>`
 
 Consultare [`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md) per l'elenco completo dei trigger, degli input, degli output e della procedura.
 
-### Consultazione delle verifiche esistenti
+### Lettura degli audit esistenti
 
-Le esecuzioni delle verifiche precedenti si trovano nella directory `audits/<nome>/evidence/<id_esecuzione>/` e sono composte da tre file:
+Le esecuzioni degli audit precedenti sono archiviate in `audits/<name>/evidence/<run-id>/` e consistono in tre file:
 
-- `<nome_verifica>-findings.md` — risultati completi in formato di linee guida
-- `<nome_verifica>-scorecard.json` — valutazione per sezione (superato/avvertimento/fallito) + riepilogo
-- `remediation-priority-list.md` — risultati ordinati per gravità moltiplicata per l'impatto
+- `<audit>-findings.md` — risultati completi in formato criteri
+- `<audit>-scorecard.json` — valutazione per sezione (superato/avviso/fallimento) + riepilogo
+- `remediation-priority-list.md` — risultati ordinati per gravità × impatto
 
-Le verifiche attuali e le relative prove sono elencate nella tabella "Verifiche attuali" sottostante.
+Gli audit correnti e le relative prove sono riportati nella tabella [Audit correnti](#current-audits) qui sotto.
 
-### Creazione di una nuova verifica
+### Creazione di un nuovo audit
 
-Una nuova verifica attraversa cinque stati del ciclo di vita: Bozza → Testata con carico → Congelata → Test interna → Revisionata. Consultare [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) per lo stato della macchina a stati, [`shared/pressure-test-protocol.md`](shared/pressure-test-protocol.md) per la procedura e la verifica del carico cognitivo in `audits/cognitive-load/` come esempio.
+Un nuovo audit passa attraverso cinque fasi del ciclo di vita: Bozza → Test di pressione → Congelato → Test pratico → Revisionato. Consultare [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) per la macchina a stati, [`shared/pressure-test-protocol.md`](shared/pressure-test-protocol.md) per la procedura e l'audit "cognitive-load" in `audits/cognitive-load/` come implementazione di riferimento.
 
 ## Superficie di rischio
 
-Quando viene eseguita una funzionalità di verifica, il sistema (Claude con gli strumenti MCP appropriati) esegue operazioni sull'elemento di destinazione fornito dall'utente:
+Quando viene invocata una funzionalità di audit, il motore (Claude con gli strumenti MCP appropriati) esegue operazioni sull'elemento di destinazione fornito dall'utente:
 
-- **Uscita di rete:** solo verso l'URL di destinazione specificato dall'utente. Le funzionalità non chiamano altri servizi.
-- **Acquisizione del DOM e screenshot:** la funzionalità può leggere il DOM della pagina, acquisire screenshot e analizzare le classi CSS responsive. Il contenuto acquisito può includere qualsiasi elemento visibile durante la sessione autenticata dell'utente all'URL di destinazione, inclusi nomi, corpi dei messaggi e stato dell'account.
-- **Scrittura di file locali:** i file di evidenza vengono scritti nella directory `audits/<nome>/evidence/<id_esecuzione>/` all'interno dell'albero di lavoro del repository. Le funzionalità non scrivono al di fuori di questo ambito.
-- **Nessuna trasmissione in uscita dei dati:** i file di evidenza rimangono sul disco locale a meno che l'utente non li committi e li pubblichi esplicitamente.
-- **Nessuna telemetria, nessuna gestione di segreti:** questo repository non raccoglie dati analitici e non legge credenziali.
+- **Trasmissione di dati in uscita dalla rete** — solo verso l'URL di destinazione specificato dall'utente. Le funzionalità non chiamano altri servizi.
+- **Acquisizione del DOM e di schermate** — la funzionalità può leggere il DOM della pagina, acquisire schermate e ispezionare le classi CSS responsive. Il contenuto acquisito può includere qualsiasi elemento visibile nella sessione autenticata dell'utente all'URL di destinazione, inclusi nomi, corpi dei messaggi e stato dell'account.
+- **Scrittura di file locali** — i file di evidenza vengono scritti in `audits/<name>/evidence/<run-id>/` all'interno dell'albero di lavoro del repository. Le funzionalità non scrivono al di fuori di questo ambito.
+- **Nessuna trasmissione di evidenza verso l'esterno** — i file di evidenza rimangono sul disco locale a meno che l'utente non li committa e li invia esplicitamente.
+- **Nessun telemetria, nessuna gestione di segreti** — questo repository non raccoglie dati analitici e non legge credenziali.
 
-Prima di commettere i file di evidenza in un repository pubblico, l'utente è responsabile della revisione di ciò che è stato acquisito. Consultare il file [`SECURITY.md`](SECURITY.md) per il modello di minacce completo, la politica di segnalazione delle vulnerabilità e l'ambito.
+Prima di committare i file di evidenza in un repository pubblico, l'utente è responsabile della revisione dei dati acquisiti. Consultare [`SECURITY.md`](SECURITY.md) per il modello di minaccia completo, le politiche di segnalazione delle vulnerabilità e l'ambito.
 
 ## Audit correnti
 
-| Audit | Stato | Problemi rilevati | Evidenze |
+| Audit | Stato | Individua | Evidenza |
 |---|---|---|---|
-| [cognitive-load](audits/cognitive-load/) | Versione stabile v0.2 + test interni | Carico cognitivo, complessità nascosta, onere di fiducia nell'IA, errore di transizione di stato | PT0 (claude.ai), PT1 (GitHub), PT2-doc-fallback (Outlook), Dogfood-1 (manuale di research-os) |
+| [cognitive-load](audits/cognitive-load/) | Versione 0.2 congelata + test pratico eseguito una volta | Sovraccarico cognitivo, complessità nascosta, carico di fiducia nell'IA, errore di cambio di stato | PT0 (claude.ai), PT1 (GitHub), PT2-doc-fallback (Outlook), Test pratico-1 (manuale di ricerca) |
+| [low-vision](audits/low-vision/) | Test di pressione versione 0.1.0 | Accesso visivo in condizioni di densità reale (zoom/riflusso, contrasto su foto e grafici, focus con temi personalizzati, orientamento spaziale) | PT0 (documentazione MDN ARIA) — 10 risultati, 2C/4H, ha individuato 4/4 modelli di errore critici |
+| [screen-reader-task](audits/screen-reader-task/) | Test di pressione versione 0.1.0 | Continuità e completamento delle attività tramite un lettore di schermo — non solo validità ARIA | PT0 (react.dev/learn) — 13 risultati, 2C/5H, ha individuato 3/4 modelli di errore critici |
+| [color-dependence](audits/color-dependence/) | Test di pressione versione 0.1.0 | Significato trasmesso esclusivamente tramite il colore, inclusa la soglia tra "contrasto sufficiente" e "fallimento del colore" | PT0 (Microsoft/vscode GitHub Actions) — 10 risultati, 1C/4H, ha individuato 3/5 modelli di errore critici |
+| [motor-access](audits/motor-access/) | Test di pressione versione 0.1.0 | Costo di interazione per gli utenti con disabilità motorie (percorso della tastiera, dimensione del bersaglio, dipendenza dal trascinamento, timeout, annullamento) | PT0 (modello multi-step del sistema di progettazione GOV.UK) — 8 risultati + 12 osservazioni positive, 0C/2H |
 
 ## Famiglia di audit
 
-Ogni audit deve dichiarare *quale problema risolve questo audit che i normali scanner non rilevano?* Per il carico cognitivo, la risposta è il carico aggiuntivo.
+Ogni audit deve dichiarare *quale tipo di problema individua questo audit che gli strumenti di scansione generici non rilevano?* Per il Cognitive Load, la risposta è il sovraccarico cognitivo.
 
-I futuri audit in questa famiglia potrebbero includere: accessibilità per persone con problemi di vista (accesso visivo in condizioni di densità reale), attività per lettori di schermo (continuità delle attività, non solo validità ARIA), dipendenza dal colore, accesso per persone con disabilità motorie, sensibilità al movimento e superficie di fiducia nell'IA. Gli audit vengono aggiunti uno alla volta, con evidenze, quando un target reale giustifica il lavoro, e non per speculazione.
+### Bozze in corso di elaborazione (create il 2026-06-02, non ancora sottoposte a test di pressione)
+
+Nel repository sono presenti quattro bozze di audit, ciascuna con la struttura completa (Rubrica + Competenza + Schema + elenco ristretto di candidati PT0), a cui manca però la parte relativa alle evidenze. In base al ciclo di vita, non sono elencate nella tabella *Audit in corso* fino a quando non hanno superato almeno un test di verifica. Consultare la sezione CHANGELOG di ciascun audit per visualizzare la cronologia delle modifiche (le citazioni sono state verificate tramite un sistema di recupero dati rispetto alle fonti arXiv/DOI/W3C; un DOI fabbricato e diverse attribuzioni errate sono state corrette prima del commit).
+
+| Bozza di audit | Prefisso | Individua |
+|---|---|---|
+| [low-vision](audits/low-vision/) | `LV` | Accessibilità visiva in condizioni di densità reale: zoom e ridisposizione del contenuto, contrasto su foto e grafici, visibilità a fuoco con temi personalizzati, orientamento spaziale con ingrandimento |
+| [screen-reader-task](audits/screen-reader-task/) | `SR` | Completamento di un compito tramite un lettore di schermo, non solo verifica della validità ARIA |
+| [color-dependence](audits/color-dependence/) | `CD` | Significato comunicato esclusivamente tramite il colore, compresa la soglia di superamento/mancato superamento del contrasto che gli scanner non riescono a rilevare |
+| [motor-access](audits/motor-access/) | `MA` | Costo dell’interazione per gli utenti con difficoltà motorie: percorso tramite tastiera, precisione del targeting, dipendenza dal trascinamento, pressione dei tempi limite, funzione di annullamento |
+
+### Audit futuri (non ancora completati)
+
+Sensibilità al movimento (stimoli vestibolari, `prefers-reduced-motion`) e livello di fiducia nell’IA (fiducia forzata, comportamento opaco dell’IA, provenienza) rimangono nella [ROADMAP](ROADMAP.md). Gli audit vengono aggiunti uno alla volta, con le relative evidenze, quando un obiettivo reale giustifica il lavoro, e non sulla base di mere speculazioni.
 
 ## Struttura del repository
 
@@ -101,6 +118,7 @@ I futuri audit in questa famiglia potrebbero includere: accessibilità per perso
 interface-audits/
 ├── README.md
 ├── CHANGELOG.md                       # monorepo events
+├── ROADMAP.md                         # forward plan: audits, tooling, process rules
 ├── SECURITY.md                        # threat surface + reporting
 ├── SHIP_GATE.md                       # shipcheck quality gate
 ├── SCORECARD.md                       # pre/post-treatment scores
@@ -129,18 +147,18 @@ interface-audits/
         └── evidence/                  # pressure tests + dogfood runs
 ```
 
-## Cosa questo non è
+## Cosa non è
 
-- Non è uno scanner di conformità WCAG (utilizzare [axe](https://www.deque.com/axe/), [Lighthouse](https://developer.chrome.com/docs/lighthouse), [Pa11y](https://pa11y.org/) per questo).
-- Non è una revisione del design visivo.
-- Non è una checklist generica di accessibilità.
-- Non è un pacchetto npm pubblicato (ancora: il file `package.json` dichiara `private: true` fino a quando non verrà creato un pacchetto di esecuzione).
+- Non è uno scanner di conformità WCAG (utilizzare [axe](https://www.deque.com/axe/), [Lighthouse](https://developer.chrome.com/docs/lighthouse), [Pa11y](https://pa11y.org/) per questo)
+- Non è una revisione del design visivo
+- Non è una checklist di accessibilità generica
+- Non è un pacchetto npm pubblicato (per ora: il file `package.json` dichiara `private: true` fino a quando non verrà creato un pacchetto eseguibile separato)
 
-Gli audit in questo repository sono progettati per essere eseguiti su interfacce che **superano i controlli automatici ma che comunque rendono difficile l'utilizzo da parte degli utenti**.
+Gli audit presenti in questo repository sono progettati per essere applicati a interfacce che **superano i test degli scanner, ma che comunque costringono gli utenti a cercare**.
 
 ## Contributi
 
-Questo repository è attualmente mantenuto da [dogfood-lab](https://github.com/dogfood-lab). Sono benvenuti contributi esterni: aprire prima un'issue per discutere eventuali nuovi audit o modifiche alle linee guida. Come previsto dal ciclo di vita: nessuna evidenza, nessun audit ufficiale.
+Questo repository è attualmente gestito da [dogfood-lab](https://github.com/dogfood-lab). Sono benvenuti contributi esterni: aprire prima una segnalazione per discutere eventuali nuove modifiche agli audit o alle rubriche. In base al ciclo di vita: senza evidenze, non è possibile effettuare un audit ufficiale.
 
 ## Licenza
 

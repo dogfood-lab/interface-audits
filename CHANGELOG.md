@@ -6,6 +6,12 @@ This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-02
+
+### npm
+
+First release on npm under the `@dogfood-lab/interface-audits` package name. Published via OIDC Trusted Publishing from `release.yml` (no long-lived `NPM_TOKEN` secret), with Sigstore provenance attestation. `package.json` `"private": true` flag removed for this cut. The package ships the audit rubrics + skills + shared schemas as read-references; the `audit-cli` and `audit-mcp` runner artifacts remain separate future packages (ROADMAP TL-1 / TL-2).
+
 ### Pressure-tested — 4 PT0s, 2026-06-02
 
 Same-day PT0 dogfood swarm on the 4 Draft audits authored earlier in the day. **All 4 audits advanced Draft → Pressure-tested.**
