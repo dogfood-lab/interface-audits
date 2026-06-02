@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/low-vision/schemas/finding.extensions.json",
+  "title": "Low-Vision Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields; does not redefine the base contract. Does NOT extend the shared load_displaced_to enum — low-vision failures map onto the fixed shared enum (see the mapping table in RUBRIC.md).",
+  "type": "object",
+  "properties": {
+    "lv_reflow_pattern": {
+      "type": "string",
+      "enum": [
+        "text_loss",
+        "horizontal_scroll",
+        "reflow_content_loss",
+        "sticky_block",
+        "overlap",
+        "spacing_collapse",
+        "n/a"
+      ],
+      "description": "Optional. For Section 0 (Zoom & Reflow) findings, classifies the reflow failure shape: text_loss = text clipped/hidden via overflow at 200% (LV-200-LOSS); horizontal_scroll = two-directional scrolling forced at 320 px (LV-320-SCROLL); reflow_content_loss = content unreachable, not merely restyled (LV-REFLOW-LOSS); sticky_block = sticky chrome consuming disproportionate viewport height at 400% (LV-STICKY-BLOCK); overlap = columns/sections overlapping when enlarged; spacing_collapse = line spacing collapsing under magnification. Optional/omitted (or 'n/a') for findings in other sections."
+    }
+  }
+}

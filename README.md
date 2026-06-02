@@ -93,7 +93,20 @@ Before committing evidence files to a public repository, the user is responsible
 
 Each audit must declare *what burden does this audit catch that generic scanners miss?* For Cognitive Load, the answer is load displacement.
 
-Future audits in this family may include Low-Vision (visual access under real density), Screen Reader Task (task continuity, not just ARIA validity), Color Dependence, Motor Access, Motion Sensitivity, and AI Trust Surface. Audits are added one at a time, with evidence, when a real target justifies the work — not by speculation.
+### Drafts in progress (authored 2026-06-02, not yet pressure-tested)
+
+Four Draft audits live in the repo, each with the full four-thing skeleton (Rubric + Skill + Schema + PT0 candidate shortlist) minus evidence. Per the lifecycle, they are not listed in the *Current audits* table above until they have at least one pressure test. See each audit's CHANGELOG for the per-audit hardening trail (the citations were verified by a retrieval oracle against arXiv/DOI/W3C sources; one fabricated DOI and several misattributions were corrected before commit).
+
+| Draft audit | Prefix | Catches |
+|---|---|---|
+| [low-vision](audits/low-vision/) | `LV` | Visual access under real density — zoom & reflow, contrast on photos and charts, focus visibility under custom themes, spatial orientation under magnification |
+| [screen-reader-task](audits/screen-reader-task/) | `SR` | Task *completion* through a screen reader — not just ARIA validity |
+| [color-dependence](audits/color-dependence/) | `CD` | Meaning conveyed by color alone — including the contrast-pass / hue-fail boundary that scanners cannot see |
+| [motor-access](audits/motor-access/) | `MA` | Interaction cost for motor-impaired users — keyboard path, target precision, drag dependence, timeout pressure, undo |
+
+### Future audits (not yet authored)
+
+Motion Sensitivity (vestibular triggers, `prefers-reduced-motion`) and AI Trust Surface (forced trust, opaque AI behavior, provenance) remain on the [ROADMAP](ROADMAP.md). Audits are added one at a time, with evidence, when a real target justifies the work — not by speculation.
 
 ## Repository structure
 

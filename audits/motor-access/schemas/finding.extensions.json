@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/motor-access/schemas/finding.extensions.json",
+  "title": "Motor Access Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields; does not redefine the base contract. The Load displaced to field continues to use ONLY the shared 11-value enum defined in shared/finding-format.md — this extension introduces no new displacement values.",
+  "type": "object",
+  "properties": {
+    "interaction_cost_class": {
+      "type": "string",
+      "enum": ["exclusion", "cost", "n/a"],
+      "description": "The boundary distinction that runs through every MA section. 'exclusion' = the task is impossible by any available path for a population (no keyboard path, drag with no single-pointer alternative, non-extendable timeout, keyboard trap) — defaults to Critical. 'cost' = the task is completable by an available path, but at elevated motor effort, precision, or time (small target, drag with a working alternative, extendable-but-tight timeout) — scales Low to High by task centrality. 'n/a' for findings where the distinction does not apply. Optional but recommended on every finding; it is the field that keeps MA severities honest. Severity itself remains the base-schema Critical/High/Medium/Low.",
+      "default": "n/a"
+    }
+  }
+}

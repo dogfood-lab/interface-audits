@@ -19,6 +19,12 @@ Each audit ships four things — Rubric, Skill, Schema, Evidence — and advance
 | Audit | State | Catches | Calibration evidence |
 |---|---|---|---|
 | cognitive-load | Frozen v0.2 + Dogfooded once | Load displacement, hidden complexity, AI trust burden, state-shift failure | PT0, PT1, PT2-doc-fallback, Dogfood-1 |
+| low-vision | Draft (authored 2026-06-02, externally hardened) | Visual access under real density (zoom/reflow, contrast on photos & charts, focus under custom themes, spatial orientation, magnifier behavior) | — (PT0 pending) |
+| screen-reader-task | Draft (authored 2026-06-02, externally hardened) | Task continuity and completion through a screen reader (landmarks, action discoverability, route changes, dynamic updates, error recovery) — not just ARIA validity | — (PT0 pending) |
+| color-dependence | Draft (authored 2026-06-02, externally hardened) | Meaning conveyed by color alone, including the contrast-pass / hue-fail boundary scanners cannot see | — (PT0 pending) |
+| motor-access | Draft (authored 2026-06-02, externally hardened) | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout pressure, undo) | — (PT0 pending) |
+
+The 4 new Draft audits were authored by a parallel study swarm (16 research agents, 4 verifier agents, 4 author agents) and then hardened by a two-stage external-verifier pass: a retrieval oracle (WebFetch against every arXiv/DOI/W3C source, family-independent) and a decorrelated different-family LLM lens (Mistral + IBM Granite, via local Ollama). The oracle caught one fabricated DOI (CD F13 Sajek, resolving to an unrelated dental paper), five misattributions, and one ungrounded numeric figure — all fixed in the same commit. The LLM lenses produced only false positives, again confirming the protocol's prior receipt that parametric LLMs miss what retrieval catches. Per the lifecycle, Drafts are not listed in the [README](README.md)'s "Current audits" table until pressure-tested.
 
 ---
 
@@ -41,9 +47,17 @@ The `simple_mode_removes_power` hard-failure pattern remains uncalibrated. PT2 w
 
 Carried forward through PT0, PT1, PT2-doc-fallback, Dogfood-1. Section 1 (Measurable Defaults) cannot fully Pass without quantitative WCAG conformance numbers. Plan: add `npm run verify:wcag` step that runs Lighthouse + axe-core against the repo's own handbook URL, attaches a JSON report to `audits/cognitive-load/evidence/<run-id>/scanner-pass.json`. Treat scanner output as Section 1 measurement, not Section 1 judgment.
 
-### NT-3 · First non-cognitive-load audit
+### NT-3 · First PT0 against one of the 4 new Drafts
 
-Pick from the audit family below (favored next: **Low-Vision**, because it's close enough to cognitive-load to reuse the evidence model but different enough to prove the monorepo can hold multiple audits without collapsing them into one mega-rubric). Authoring procedure: see [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) Draft → Pressure-tested → Frozen.
+Four Draft audits now exist: [low-vision](audits/low-vision/), [screen-reader-task](audits/screen-reader-task/), [color-dependence](audits/color-dependence/), [motor-access](audits/motor-access/). The next step for each is **its first pressure test**, which advances it Draft → Pressure-tested. Each audit ships a ranked PT0 target shortlist in `audits/<slug>/evidence/PT0-candidates.md`.
+
+Recommended ordering (cheapest calibration first):
+1. **Color-dependence** — the Contrast-Pass / Hue-Fail boundary rule is the audit's load-bearing claim and needs a live target to calibrate. Candidate: a CI dashboard or monitoring tool with red/green status badges and a multi-series chart.
+2. **Motor-access** — best target is a long government / banking multi-step form with a session timeout (Reuschel 2023's 27× exposure ratio); calibrates Sections 3 and 4 in one run.
+3. **Low-vision** — the `LV-STICKY-BLOCK` 30% threshold and the "focus reset on every reflow" Critical bump are parked candidates waiting on a real target.
+4. **Screen-reader-task** — needs AT/browser-pair coverage on a route-driven SPA to exercise SR-TC-1/2/3 (the route-change announcement gap).
+
+Each PT0 is independent and can run in any order; this is the recommended ordering by calibration value, not a hard sequence.
 
 ---
 
@@ -51,39 +65,7 @@ Pick from the audit family below (favored next: **Low-Vision**, because it's clo
 
 Each audit declares the same three header fields in its README: `state:`, `audit_prefix:`, `catches:`. Each audit adds its own extension schema; it does not redefine base fields.
 
-### Low-Vision Audit (prefix: `LV`)
-
-**Catches:** Visual access under real density — not just contrast.
-
-Proposed sections:
-
-0. Zoom & Reflow at 200% / 400%
-1. Contrast under real density (text on photos, charts, dynamic content)
-2. Focus visibility under custom themes
-3. Spatial orientation (when content reflows, where am I?)
-4. Font + spacing defaults (overlaps with cognitive-load Section 1 — decision deferred)
-5. Mode switching (high-contrast / dark / OS theme respect)
-6. Configuration cost (how to enable accommodations from a constrained state)
-7. Evidence
-
-**Boundary question** (resolve during Draft phase): does the Low-Vision audit reference cognitive-load's Section 1 or duplicate it? Probably reference + extend with low-vision-specific thresholds (e.g., 4.5:1 contrast is fine for cog-load but Low-Vision may demand 7:1 for body text in dense surfaces).
-
-### Screen Reader Task Audit (prefix: `SR`)
-
-**Catches:** Task continuity through a screen reader — not just ARIA validity.
-
-Proposed sections:
-
-0. Landmark quality (does heading structure tell the story?)
-1. Action discoverability (can you find what to do next without sighted help?)
-2. Task path continuity (does navigating to a related view preserve where you were?)
-3. Dynamic update handling (live regions, focus management on async)
-4. Error recovery (when something goes wrong, can you tell?)
-5. Mode switching
-6. Configuration cost
-7. Evidence
-
-**Discriminator from axe/aXe:** axe checks ARIA validity. This audit checks whether the experience completes the task — a fundamentally different question. A screen reader walking through a "passes axe" form may still not be able to submit it.
+The 4 Draft audits (`low-vision`, `screen-reader-task`, `color-dependence`, `motor-access`) authored 2026-06-02 used to live in this section as proposals; they are now real Drafts in the repo (see **Current state** above). The remaining medium-term proposals are:
 
 ### AI Trust Surface Audit (prefix: `AT`)
 
@@ -101,35 +83,6 @@ Proposed sections:
 7. Evidence
 
 **Reference inputs:** Microsoft HAX Toolkit (Amershi et al. CHI 2019 — Guidelines for Human-AI Interaction, G1–G18 across four phases: Initially / During / When Wrong / Over Time), Anthropic's safety/policy guidance, the cognitive-load audit's Section 4 (already calibrated by PT0 + the severity precondition).
-
-### Color Dependence Audit (prefix: `CD`)
-
-**Catches:** Meaning-by-color-only failures, status ambiguity, chart/graph failures.
-
-Proposed sections:
-
-0. Color-only information conveyance (status badges, required-field indicators)
-1. Chart/graph color encoding (does the chart still read without color?)
-2. Form validation signaling
-3. Mode/state indication
-4. Color-blindness simulation (deuteranopia / protanopia / tritanopia / monochromacy)
-5. Configuration cost
-6. Evidence
-
-### Motor Access Audit (prefix: `MA`)
-
-**Catches:** Interaction cost, error recovery, drag dependence, timeout pressure.
-
-Proposed sections:
-
-0. Keyboard path (can every interactive action complete by keyboard?)
-1. Pointer precision (target sizes per WCAG 2.5.5)
-2. Drag dependence (is there a non-drag alternative for every drag?)
-3. Timeout pressure (per WCAG 2.2.1; can the user extend?)
-4. Undo / recovery (one-key reverse?)
-5. Error recovery
-6. Configuration cost
-7. Evidence
 
 ### Motion Sensitivity Audit (prefix: `MO`)
 

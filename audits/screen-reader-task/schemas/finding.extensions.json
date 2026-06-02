@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/screen-reader-task/schemas/finding.extensions.json",
+  "title": "Screen Reader Task Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields only; does not redefine or remove base fields. The Severity enum, Section, Load-displaced-to enum, and Evidence-state enum are inherited from the base schema unchanged.",
+  "type": "object",
+  "properties": {
+    "at_browser_pairs": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The assistive-technology + browser pairs on which this finding reproduced. Results are pair-dependent (e.g. aria-errormessage, modal containment, and route-change focus diverge across pairs), so the reproducing pairs are recorded per finding. Free-form labels; no fixed enum, because the relevant AT/browser matrix evolves. Examples: 'NVDA+Firefox', 'JAWS+Chrome', 'VoiceOver+Safari', 'VoiceOver iOS', 'TalkBack+Chrome'.",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

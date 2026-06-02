@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/color-dependence/schemas/finding.extensions.json",
+  "title": "Color Dependence Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields only; does not redefine or remove any base field. The load_displaced_to enum is owned by the base schema and is NOT extended here.",
+  "type": "object",
+  "properties": {
+    "cvd_class_affected": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Which color-vision-deficiency class(es) this finding fires for. Drives severity weighting per the rubric: deuteranomaly/deuteranopia are the dominant, highest-weight modes; tritan is scored on a lighter threshold; monochromacy is the worst-case luminance-only check.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "deuteranomaly",
+          "deuteranopia",
+          "protanomaly",
+          "protanopia",
+          "tritanomaly",
+          "tritanopia",
+          "monochromacy"
+        ]
+      }
+    },
+    "contrast_pass_hue_fail": {
+      "type": "boolean",
+      "description": "True when the color pair passes WCAG 1.4.3 luminance contrast yet the distinction collapses under CVD simulation (the boundary case this audit exists to catch). Findings with this set true are the ones generic contrast scanners cannot detect."
+    },
+    "simulation_confirmation": {
+      "type": "string",
+      "enum": ["physiological_model", "dichromacy_only", "cvd_tester_confirmed", "unqualified"],
+      "description": "How the finding was confirmed. 'dichromacy_only' findings are POTENTIAL-FAIL (Medium) per Section 4 until confirmed by a physiological/anomalous-trichromacy model. 'cvd_tester_confirmed' is required before a finding may be marked Observed-blocking / BLOCK per the Section 6 two-tier rule. 'unqualified' findings are not valid findings."
+    }
+  }
+}
