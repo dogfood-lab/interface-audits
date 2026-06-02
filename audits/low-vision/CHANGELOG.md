@@ -8,6 +8,24 @@ The rubric ([`RUBRIC.md`](RUBRIC.md)) is canonical. The skill ([`skill/SKILL.md`
 
 ## [Unreleased]
 
+### Pressure-tested — 2026-06-02 PT0 on MDN ARIA docs
+
+**Status:** Draft → **Pressure-tested**. Rubric `0.1.0` unchanged; revision candidates parked for the next PT.
+
+**Run:** [`evidence/pt0-mdn-aria/`](evidence/pt0-mdn-aria/) · `lv-20260602-mdn-aria-pt0` · target: `https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA` · Path 2 / WebFetch DOM-fallback (no live browser, no zoom interaction, no Windows High Contrast Mode). All findings Inferred; raw HTML (170 KB) and all seven MDN Yari CSS files fetched and analyzed statically.
+
+**Findings:** 10 (Critical 2 · High 4 · Medium 3 · Low 0) + 5 open questions. Sections: 1 pass, 5 warn, **2 fail** (`focus_visibility`, `mode_switching`).
+
+**Headline finding (single root cause for both Criticals):** **zero `forced-colors` media queries anywhere in MDN Yari CSS**. The canonical web-docs site that low-vision users actually read for hours ships custom interactive-state CSS but never adapts to Windows High Contrast Mode. LV-05 (Section 2) and LV-08 (Section 5) are the same root cause cross-listed; one fix — a `@media (forced-colors: active)` block on every interactive-element selector — addresses both.
+
+**Hard-failure patterns exercised (4/4):** `text_disappears_on_reflow`, `contrast_fails_on_real_surfaces`, `focus_vanishes_in_high_contrast`, `place_lost_on_reflow` — full coverage on this single target.
+
+**Rubric-revision candidates surfaced (parked for next PT, NOT applied):**
+
+- **RC-LV-01.** Reflow check at the user's zoom-induced effective viewport width, not only the 320 CSS px WCAG floor — catches "TOC disappears at 200% zoom" failures that pass the 320 px check.
+- **RC-LV-02.** Promotional / ad banner above nav as a distinct sticky pattern contributing to compound `LV-STICKY-BLOCK` height.
+- **RC-LV-03.** Generalize the `forced-colors` failure-mode: absence of any `forced-colors` media query on a site with custom interactive-state CSS could be a High/Critical pattern, not just the specific `box-shadow` case. The MDN PT0 surfaced the broader class.
+
 ### Hardened — 2026-06-02 external-verifier pass
 
 Two-stage citation hardening per the research-grounded-advisor protocol (Step 4). 23 unique citations checked; all 23 existence-confirmed against the live source.

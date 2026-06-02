@@ -8,6 +8,20 @@ The rubric ([`RUBRIC.md`](RUBRIC.md)) is canonical. The skill ([`skill/SKILL.md`
 
 ## [Unreleased]
 
+### Pressure-tested — 2026-06-02 PT0 on react.dev/learn
+
+**Status:** Draft → **Pressure-tested**. Rubric `0.1.0` unchanged; revision candidates parked.
+
+**Run:** [`evidence/pt0-react-dev-learn/`](evidence/pt0-react-dev-learn/) · `sr-20260602-react-dev-learn-pt0` · target: `https://react.dev/learn` · Path 2 (WebFetch + GitHub-API source analysis; no live AT). All findings Inferred from markup / ARIA / framework analysis; `at_browser_pairs` set to `["inferred-from-DOM"]`.
+
+**Findings:** 13 (Critical 2 · High 5 · Medium 4 · Low 1) + 5 open questions. Sections: 0 pass, 6 warn, **2 fail** (`dynamic_update_handling`, `error_recovery`).
+
+**Headline finding (single root cause for both Criticals):** **the Sandpack live-code preview's error state has no `aria-live` region**. SR-08 (Section 3) and SR-10 (Section 4) are the same root cause cross-listed — when a code edit raises a runtime error, the rendered output silently changes; a screen reader user has no signal anything went wrong (the NKWYDK pattern, Bigham et al. 2017 — F13 in the rubric). One fix — wrap Sandpack's error pane in an `aria-live="polite"` region with `role="status"` — closes both. Five remaining open questions require live NVDA+Firefox and VoiceOver+Safari to resolve.
+
+**Hard-failure patterns exercised (3/4):** `passes-axe-cannot-complete-task`, `dynamic-update-never-announced`, `cannot-tell-failure-from-not-found`. The fourth pattern (`view-changed-SR-left-behind`) was tested but couldn't be confirmed via DOM alone — left as an open question for live AT resolution.
+
+**Rubric-revision candidates surfaced (parked for next PT, NOT applied):** noted in the findings file's Auditor notes; 3 candidates around mobile-AT pair coverage, Sandpack-class custom-widget framing, and the boundary between Section 3 (dynamic updates) and Section 4 (error recovery) when they share a root cause.
+
 ### Hardened — 2026-06-02 external-verifier pass
 
 Two-stage citation hardening per the research-grounded-advisor protocol (Step 4). 21 unique citations checked; 19 existence-confirmed.

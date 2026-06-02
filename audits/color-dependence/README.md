@@ -1,4 +1,4 @@
-state: Draft
+state: Pressure-tested v0.1.0 (PT0 on GitHub Actions / microsoft/vscode, 2026-06-02)
 audit_prefix: CD
 catches: meaning conveyed by color alone (status badges, chart/graph encodings, form-validation signals, mode/state indication) and hue-confusion that hides behind a passing luminance-contrast check
 

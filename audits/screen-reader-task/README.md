@@ -1,4 +1,4 @@
-state: Draft
+state: Pressure-tested v0.1.0 (PT0 on react.dev/learn, 2026-06-02)
 audit_prefix: SR
 catches: task continuity and completion through a screen reader (landmark quality, action discoverability, task-path continuity, dynamic-update handling, error recovery) — not just ARIA validity
 

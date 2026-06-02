@@ -100,13 +100,13 @@ A new audit that needs a custom field declares it in `schemas/finding.extensions
 Each audit catches a different shape of failure with a different evidence model:
 
 - **Cognitive Load** — load displacement under bandwidth constraint *(Frozen v0.2 + Dogfooded once)*
-- **Low-Vision** *(Draft, 2026-06-02)* — visual access under real density, not just contrast
-- **Screen Reader Task** *(Draft, 2026-06-02)* — task continuity and completion, not just ARIA validity
-- **Color Dependence** *(Draft, 2026-06-02)* — meaning conveyed only by color, including the contrast-pass / hue-fail boundary
-- **Motor Access** *(Draft, 2026-06-02)* — interaction cost and error recovery (the exclusion vs cost boundary)
+- **Low-Vision** *(Pressure-tested v0.1.0; PT0 on MDN ARIA docs, 2026-06-02)* — visual access under real density, not just contrast
+- **Screen Reader Task** *(Pressure-tested v0.1.0; PT0 on react.dev/learn, 2026-06-02)* — task continuity and completion, not just ARIA validity
+- **Color Dependence** *(Pressure-tested v0.1.0; PT0 on microsoft/vscode GitHub Actions, 2026-06-02)* — meaning conveyed only by color, including the contrast-pass / hue-fail boundary
+- **Motor Access** *(Pressure-tested v0.1.0; PT0 on GOV.UK Design System, 2026-06-02)* — interaction cost and error recovery (the exclusion vs cost boundary)
 - Motion Sensitivity (future) — animation, parallax, vestibular triggers
 - AI Trust Surface (future) — source traceability and uncertainty display
 
 Folding them all into one rubric would collapse distinctions that matter. Each audit answers "what burden does this catch that generic scanners miss?" with a specific answer. They share the severity model, finding format, lifecycle, and schema base — but each owns its own sections.
 
-Audits are added one at a time, with grounding, then pressure-tested when a real target justifies the work. The 4 Drafts authored 2026-06-02 advance to **Pressure-tested** state only after each has at least one live PT in `evidence/pt0/` — they are not listed in the [README](https://github.com/dogfood-lab/interface-audits)'s *Current audits* table until then. Per-audit PT0 target shortlists live in `audits/<slug>/evidence/PT0-candidates.md`.
+Audits are added one at a time, with grounding, then pressure-tested when a real target justifies the work. Five audits now share the repo. The 4 new audits authored and pressure-tested 2026-06-02 advance next to **Frozen** state once a second PT runs without rubric change (per [`shared/audit-lifecycle.md`](https://github.com/dogfood-lab/interface-audits/blob/main/shared/audit-lifecycle.md)). PT0 evidence for each lives at `audits/<slug>/evidence/pt0-<target>/`.

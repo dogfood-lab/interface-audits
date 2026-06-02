@@ -88,6 +88,10 @@ Before committing evidence files to a public repository, the user is responsible
 | Audit | State | Catches | Evidence |
 |---|---|---|---|
 | [cognitive-load](audits/cognitive-load/) | Frozen v0.2 + Dogfooded once | Load displacement, hidden complexity, AI trust burden, state-shift failure | PT0 (claude.ai), PT1 (GitHub), PT2-doc-fallback (Outlook), Dogfood-1 (research-os handbook) |
+| [low-vision](audits/low-vision/) | Pressure-tested v0.1.0 | Visual access under real density (zoom/reflow, contrast on photos & charts, focus under custom themes, spatial orientation) | PT0 (MDN ARIA docs) — 10 findings, 2C/4H, hit 4/4 hard-failure patterns |
+| [screen-reader-task](audits/screen-reader-task/) | Pressure-tested v0.1.0 | Task continuity and completion through a screen reader — not just ARIA validity | PT0 (react.dev/learn) — 13 findings, 2C/5H, hit 3/4 hard-failure patterns |
+| [color-dependence](audits/color-dependence/) | Pressure-tested v0.1.0 | Meaning conveyed by color alone, including the Contrast-Pass / Hue-Fail boundary | PT0 (microsoft/vscode GitHub Actions) — 10 findings, 1C/4H, hit 3/5 hard-failure patterns |
+| [motor-access](audits/motor-access/) | Pressure-tested v0.1.0 | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout, undo) | PT0 (GOV.UK Design System multi-step pattern) — 8 findings + 12 positive observations, 0C/2H |
 
 ## Audit family
 

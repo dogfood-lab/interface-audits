@@ -1,0 +1,347 @@
+{
+  "audit_id": "sr-20260602-react-dev-learn-pt0",
+  "audit_label": "PT0 — react.dev/learn — WebFetch DOM-fallback + GitHub source analysis",
+  "rubric_version": "0.1.0 (Draft, externally hardened 2026-06-02)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "dom-fallback",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "This rig (win32, Omen 45L) cannot launch a browser session, run NVDA/JAWS/VoiceOver, or interact with the live page. Evidence was gathered via: (1) WebFetch of https://react.dev/learn returning source/markdown content; (2) GitHub API source-code analysis of reactjs/react.dev — all layout, navigation, sidebar, search, Sandpack, and page components. All findings are Inferred from component source code and ARIA attribute analysis. Live AT behavior (announcement firing, focus landing, modal containment by element-listing) cannot be confirmed without a live session. Open questions record the gaps."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://react.dev/learn",
+    "platform": "web",
+    "surfaces_audited": [
+      "top navigation bar",
+      "sidebar documentation tree",
+      "right-hand table of contents",
+      "main article content",
+      "Sandpack interactive code editors (multiple per page)",
+      "DocSearch search modal",
+      "DocsPageFooter previous/next navigation",
+      "page heading area with CopyAsMarkdown button",
+      "footer",
+      "theme toggle"
+    ]
+  },
+  "context": {
+    "user_type": "screen reader user, non-expert, first-time visitor to react.dev/learn",
+    "task": "Navigate to react.dev/learn, read the Quick Start introduction using heading navigation, reach and operate interactive Sandpack code examples, use the search modal to find a related topic, and follow the Next link to the subsequent learn page",
+    "dense_state": "Full /learn page with 12 h2 sections and 10+ Sandpack interactive editors",
+    "method": "Path 2 / WebFetch DOM-fallback + GitHub source analysis",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "No browser session, no live AT. Source analysis only via GitHub API (reactjs/react.dev). Cannot confirm: announcement firing for aria-live regions, actual focus placement after route change, JAWS element-listing escape from search modal, CodeMirror editor keyboard trapping interaction with NVDA virtual-cursor mode, or DocSearch live-region empty-at-insertion behavior.",
+    "spa": true,
+    "at_browser_pairs": ["inferred-from-DOM"],
+    "ai_features_present": []
+  },
+  "sections": {
+    "landmark_quality": {
+      "status": "warn",
+      "finding_ids": ["SR-01", "SR-02"],
+      "open_questions": [],
+      "positive_observations": ["PO-01", "PO-02", "PO-05", "PO-06"],
+      "notes": "Three nav landmarks lack distinguishing aria-label (SR-01, Medium). Sidebar expand/collapse button missing aria-expanded (SR-02, High). Heading structure is clean: single h1, 12 descriptive h2s, no skipped levels. lang=en set correctly. One High = WARN."
+    },
+    "action_discoverability": {
+      "status": "warn",
+      "finding_ids": ["SR-03", "SR-04", "SR-05"],
+      "open_questions": ["OQ-05"],
+      "positive_observations": ["PO-03"],
+      "notes": "Sandpack Clear/Reload/Download buttons use title-only accessible names unreliable on VoiceOver+Safari (SR-03, Medium). Sandpack multi-file picker button accessible name derived from filename only with no context label (SR-04, High). CopyAsMarkdown state change not announced via live region (SR-05, Medium). Theme toggle and search button have good accessible names. One High = WARN."
+    },
+    "task_path_continuity": {
+      "status": "warn",
+      "finding_ids": ["SR-06", "SR-07"],
+      "open_questions": ["OQ-01"],
+      "positive_observations": ["PO-04"],
+      "notes": "No focus management or aria-live announcement on client-side route changes (SR-06, High). document.title updates alone are insufficient on VoiceOver+Safari (SR-07, Medium). aria-current=page on active sidebar link is correct. One High = WARN. Note: rubric-revision candidate — zero-signal route change may warrant Critical band."
+    },
+    "dynamic_update_handling": {
+      "status": "fail",
+      "finding_ids": ["SR-08", "SR-09"],
+      "open_questions": ["OQ-02", "OQ-03"],
+      "positive_observations": [],
+      "notes": "Sandpack compile/runtime error state has no aria-live region, no role=alert, no focus management — Critical per Section 3 severity guidance (SR-08). Search modal dynamic updates delegated entirely to @docsearch/react third-party library with no host-side verification or fallback (SR-09, High). One Critical = section FAIL."
+    },
+    "error_recovery": {
+      "status": "fail",
+      "finding_ids": ["SR-10"],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "Sandpack error state (compile error, runtime error, lint error) matches the NKWYDK pattern: no landmark, no live region, no heading wraps the error container. Section 4 Critical precondition fires (Bigham et al. 2017 [13]). SR-08 and SR-10 share the same root cause and the same fix. One Critical = section FAIL."
+    },
+    "mode_switching": {
+      "status": "warn",
+      "finding_ids": ["SR-11"],
+      "open_questions": ["OQ-04"],
+      "positive_observations": [],
+      "notes": "Search modal rendered via createPortal relies on aria-modal=true from @docsearch/react but react.dev does not apply aria-hidden to background containers on modal open (SR-11, High). Background content is accessible via JAWS element listing and VoiceOver rotor. Focus management on modal open/close is handled by @docsearch/react (focus to search input on open, back to trigger on close) — positive. One High = WARN."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["SR-12", "SR-13"],
+      "open_questions": [],
+      "positive_observations": ["PO-07"],
+      "notes": "No skip navigation link present anywhere in the react.dev source tree (SR-12, High). Top navigation has 8+ interactive elements before main content; skip link absence taxes every page visit and compounds SR-06. Theme toggle lacks confirmation announcement (SR-13, Low). One High = WARN."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-05"],
+      "positive_observations": [],
+      "notes": "Path 2 (WebFetch DOM-fallback + GitHub source analysis). All findings are Inferred. Rig limitation documented. Five open questions requiring live AT session to resolve: OQ-01 (ghost focus), OQ-02 (DocSearch live region empty-at-insertion), OQ-03 (Sandpack loading transition), OQ-04 (sidebar collapse announcement), OQ-05 (CodeMirror ARIA and Tab-trapping). Evidence chains for all confirmed findings cite specific component files and ARIA attribute patterns. WARN because method limitation prevents Observed evidence state."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 2,
+    "high_count": 5,
+    "medium_count": 4,
+    "low_count": 1,
+    "open_question_count": 5,
+    "sections_passed": 0,
+    "sections_warned": 6,
+    "sections_failed": 2,
+    "positive_observation_count": 7,
+    "hard_failure_patterns_validated": {
+      "passes_axe_cannot_submit": false,
+      "view_changed_sr_left_behind": true,
+      "dynamic_update_never_announced": true,
+      "cannot_tell_failure_from_not_found": true
+    }
+  },
+  "findings": [
+    {
+      "id": "SR-01",
+      "title": "Three nav landmarks lack distinguishing aria-label — all read as 'navigation'",
+      "severity": "medium",
+      "section": "landmark_quality",
+      "surface": "Top navigation bar; sidebar documentation tree; right-hand table of contents",
+      "load_displaced_to": ["navigation", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: TopNav.tsx <nav className='...'> — no aria-label. Source: SidebarNav.tsx <nav role='navigation' ...> — no aria-label. Source: Toc.tsx <nav role='navigation' ...> — no aria-label. All three landmarks expose to AT as identically named 'navigation'.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-02",
+      "title": "Sidebar expand/collapse button missing aria-expanded — state invisible to AT",
+      "severity": "high",
+      "section": "landmark_quality",
+      "surface": "Sidebar collapsible section headings (SidebarButton component)",
+      "load_displaced_to": ["memory", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/Layout/Sidebar/SidebarButton.tsx — <button> element receives isExpanded prop but does not set aria-expanded={isExpanded}. The prop is used only for IconNavArrow displayDirection (visual output). No ARIA state attribute in the button JSX.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-03",
+      "title": "Sandpack Clear/Reload/Download buttons use title-only accessible name — unreliable on VoiceOver+Safari",
+      "severity": "medium",
+      "section": "action_discoverability",
+      "surface": "Sandpack interactive code editor toolbar (every code example on /learn)",
+      "load_displaced_to": ["memory", "feature loss"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: ClearButton.tsx — <button title='Clear all edits and reload sandbox'> no aria-label. Source: ReloadButton.tsx — <button title='Keep your edits and reload sandbox'> no aria-label. Source: DownloadButton.tsx — <button title='Download Sandbox'> no aria-label. title attribute is not reliably announced by VoiceOver+Safari when the button has no other accessible name.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-04",
+      "title": "Sandpack multi-file picker button accessible name is filename only — no context label",
+      "severity": "high",
+      "section": "action_discoverability",
+      "surface": "Sandpack NavigationBar file picker dropdown (multi-file examples)",
+      "load_displaced_to": ["feature loss", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/MDX/Sandpack/NavigationBar.tsx — Listbox.Button renders <button> containing filename text and IconChevron. No aria-label, no aria-labelledby. Accessible name computed from text content (filename only). @headlessui/react injects aria-haspopup='listbox' and aria-expanded automatically, but the button name gives no indication of the control's purpose.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-05",
+      "title": "CopyAsMarkdown 'Copied!' state change not announced via live region",
+      "severity": "medium",
+      "section": "action_discoverability",
+      "surface": "Page heading area — Copy page button",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/PageHeading.tsx CopyAsMarkdownButton — button text toggles from 'Copy page' to 'Copied!' via React state (copied boolean). No aria-live region. No role=status. VoiceOver+Safari does not re-announce button text changes for an already-focused button.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-06",
+      "title": "Client-side route change leaves focus on triggering link — no announcement, no focus-to-h1",
+      "severity": "high",
+      "section": "task_path_continuity",
+      "surface": "All client-side navigation (sidebar links, top nav links, prev/next footer links)",
+      "load_displaced_to": ["navigation", "time"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/pages/_app.tsx — routeChangeComplete handler fires only gtag pageview; no focus(), no aria-live injection. Source: src/components/Layout/Page.tsx — <main> has no tabindex='-1', no ref, no focus call on route change. Source: SidebarLink.tsx — useEffect calls scrollIntoViewIfNeeded() (not focus()) on selected link. No aria-live region in any layout component. Pattern matches Sutton/Fable 2019 [16] exactly.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-07",
+      "title": "document.title update is only route-change signal — insufficient on VoiceOver+Safari",
+      "severity": "medium",
+      "section": "task_path_continuity",
+      "surface": "Next.js client-side routing — all route changes",
+      "load_displaced_to": ["navigation", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/Seo.tsx — <title key='title'>{pageTitle}</title> updated on render. Subordinate to SR-06: title update is necessary but not sufficient; VoiceOver+Safari does not announce title changes without focus movement per Parker 2020 [17] and BBC GEL 2021 [18].",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-08",
+      "title": "Sandpack compile/runtime error has no aria-live region or focus management — invisible to AT",
+      "severity": "critical",
+      "section": "dynamic_update_handling",
+      "surface": "Sandpack interactive code editor preview panel (every code example on /learn)",
+      "load_displaced_to": ["verification", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/MDX/Sandpack/Preview.tsx — {error && <div ...><ErrorMessage error={error} /></div>} conditionally rendered with no aria-live, no role='alert', no role='status', no programmatic focus. Dynamic result area with no live region and no focus management — Critical per Section 3 rubric guidance citing [8][14].",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-09",
+      "title": "Search modal dynamic updates delegated entirely to @docsearch/react — no host-side verification",
+      "severity": "high",
+      "section": "dynamic_update_handling",
+      "surface": "DocSearch Algolia search modal",
+      "load_displaced_to": ["verification", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/Search.tsx — delegates to DocSearchModal from @docsearch/react/modal with no additional aria-live regions. Third-party library ARIA implementation not verified for SR-DU-1 (empty-at-insertion) or SR-DU-2 (survives React batching). Structural risk — host has no control over library live-region timing.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-10",
+      "title": "Sandpack error state unperceivable via AT — NKWYDK pattern fires Section 4 Critical precondition",
+      "severity": "critical",
+      "section": "error_recovery",
+      "surface": "Sandpack interactive code editor error state",
+      "load_displaced_to": ["recovery / undo", "verification"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/MDX/Sandpack/Preview.tsx — error container has no landmark, no aria-live, no heading. Section 4 precondition [13]: error/empty state with none of landmark, live region, or heading = Critical. User cannot distinguish 'code has an error' from 'preview not yet loaded' — NKWYDK pattern (Bigham et al. 2017). Shares root cause and fix with SR-08.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-11",
+      "title": "Search modal background not hidden with aria-hidden — JAWS element listing and VoiceOver rotor escape",
+      "severity": "high",
+      "section": "mode_switching",
+      "surface": "DocSearch search modal (portal into document.body)",
+      "load_displaced_to": ["navigation", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/pages/_app.tsx — no aria-hidden toggling on background. Source: src/components/Search.tsx — createPortal into document.body; no aria-hidden applied to sibling containers. @docsearch/react uses aria-modal='true' but per O'Hara 2019 [19] this is insufficient for JAWS element listing and VoiceOver rotor containment.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-12",
+      "title": "No skip navigation link — AT user must traverse 8+ nav elements before main content on every visit",
+      "severity": "high",
+      "section": "configuration_cost",
+      "surface": "All pages on react.dev — top navigation bar",
+      "load_displaced_to": ["navigation", "time"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Repository-wide search via GitHub API for skip link patterns in reactjs/react.dev returned no results. Examined: _document.tsx, TopNav.tsx, Page.tsx, SidebarNav.tsx, Breadcrumbs.tsx — no <a href='#main-content'> or equivalent. <main> element has no id. High per rubric Section 6: 'No reachable skip mechanism on a navigation-heavy task surface is High [7].'",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    },
+    {
+      "id": "SR-13",
+      "title": "Theme toggle lacks confirmation announcement — user cannot confirm state change via AT",
+      "severity": "low",
+      "section": "configuration_cost",
+      "surface": "Theme toggle button (top navigation bar)",
+      "load_displaced_to": ["configuration"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Source: src/components/Layout/TopNav/TopNav.tsx — onClick calls window.__setPreferredTheme() with no aria-live announcement. Button labels do reflect the action ('Use Dark Mode' / 'Use Light Mode') but no explicit confirmation of success is provided.",
+      "at_browser_pairs": ["inferred-from-DOM"]
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "task_path_continuity",
+      "summary": "Does pressing the DocsPageFooter 'Next' link produce a ghost-focus artifact after the route change — focus jumping erratically due to the previous footer link being removed from the DOM?",
+      "resolution_path": "Live NVDA+Firefox session on react.dev/learn: click the Next footer link, then press Tab several times and observe whether focus lands at the expected first interactive element on the new page or jumps unpredictably."
+    },
+    {
+      "id": "OQ-02",
+      "section": "dynamic_update_handling",
+      "summary": "Does the DocSearch modal (@docsearch/react) inject its result-count aria-live container empty before first population, or is it pre-populated at insertion? Pre-populated live regions are dropped by Firefox+NVDA and Firefox+Orca per Lauke 2024 [14].",
+      "resolution_path": "Live NVDA+Firefox session: open the search modal, inspect the DOM before typing to confirm the result-count container is present and empty. Type one character and observe whether the count announcement fires."
+    },
+    {
+      "id": "OQ-03",
+      "section": "dynamic_update_handling",
+      "summary": "Does the Sandpack bundler loading-to-ready transition produce any AT announcement, or is the transition silent?",
+      "resolution_path": "Live NVDA+Firefox session on /learn: Tab into a Sandpack code editor, wait for the bundler ready state (bundlerIsReady transitions from false to true), observe whether any announcement fires."
+    },
+    {
+      "id": "OQ-04",
+      "section": "mode_switching",
+      "summary": "After SR-02 is applied (aria-expanded on SidebarButton), does pressing the button announce 'expanded' or 'collapsed' correctly on NVDA+Firefox and VoiceOver+Safari?",
+      "resolution_path": "After applying SR-02 fix, live NVDA+Firefox session: Tab to a sidebar section button, press Enter to expand/collapse, observe announcement."
+    },
+    {
+      "id": "OQ-05",
+      "section": "evidence",
+      "summary": "The Sandpack editor uses CodeMirror 6 via @codesandbox/sandpack-react. Does CodeMirror 6 expose the editor as role='textbox' with an accessible label, and does Tab-key trapping interact correctly with NVDA virtual-cursor mode?",
+      "resolution_path": "Live NVDA+Firefox session on /learn: Tab into the Sandpack code editor, press Tab, observe whether Tab inserts indentation (CodeMirror default) or moves focus out (NVDA virtual-cursor override), and whether the editor's role and accessible name are announced on entry."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "landmark_quality",
+      "summary": "Single h1 ('Quick Start') anchors the page. Twelve descriptive h2 elements with differentiated topic names. No heading levels skipped. Heading structure reflects content structure, not visual treatment."
+    },
+    {
+      "id": "PO-02",
+      "section": "landmark_quality",
+      "summary": "lang='en' set on <html> element via siteConfig.languageCode in _document.tsx. Screen readers apply correct language pronunciation. dir attribute also set for RTL language support."
+    },
+    {
+      "id": "PO-03",
+      "section": "action_discoverability",
+      "summary": "Theme toggle buttons have exemplary accessible names: 'Use Dark Mode' and 'Use Light Mode' — verb-object phrasing that describes the action, not the current state. Unique and unambiguous."
+    },
+    {
+      "id": "PO-04",
+      "section": "task_path_continuity",
+      "summary": "SidebarLink correctly applies aria-current='page' to the active route link. Correct ARIA usage for current-page indication across NVDA, JAWS, and VoiceOver."
+    },
+    {
+      "id": "PO-05",
+      "section": "landmark_quality",
+      "summary": "<main>, <article>, <nav>, <footer>, and <aside> elements are all used in Page.tsx. The document has semantic landmark structure even though labels are missing on some nav elements."
+    },
+    {
+      "id": "PO-06",
+      "section": "landmark_quality",
+      "summary": "document.title is updated on each route change with the pattern '{page title} – React'. Provides partial route-change signal on JAWS+Chrome and NVDA+Firefox."
+    },
+    {
+      "id": "PO-07",
+      "section": "configuration_cost",
+      "summary": "Theme toggle preference is persisted to localStorage. User does not need to reconfigure the theme on every page visit or route change. Preference survives sessions."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 13,
+    "every_finding_maps_to_rubric_section": true,
+    "every_finding_records_at_browser_pairs": true,
+    "at_least_one_task_completion_failure": true,
+    "task_completion_failures": ["SR-06", "SR-08", "SR-10", "SR-12"],
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_question_count": 5,
+    "report_obeys_plain_language_conventions": true,
+    "no_new_rubric_section_obviously_missing": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidate_count": 3,
+    "load_displaced_to_enum_valid": true,
+    "load_displaced_to_values_used": ["navigation", "memory", "feature loss", "trust", "verification", "time", "recovery / undo", "configuration"]
+  }
+}

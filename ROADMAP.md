@@ -19,12 +19,12 @@ Each audit ships four things — Rubric, Skill, Schema, Evidence — and advance
 | Audit | State | Catches | Calibration evidence |
 |---|---|---|---|
 | cognitive-load | Frozen v0.2 + Dogfooded once | Load displacement, hidden complexity, AI trust burden, state-shift failure | PT0, PT1, PT2-doc-fallback, Dogfood-1 |
-| low-vision | Draft (authored 2026-06-02, externally hardened) | Visual access under real density (zoom/reflow, contrast on photos & charts, focus under custom themes, spatial orientation, magnifier behavior) | — (PT0 pending) |
-| screen-reader-task | Draft (authored 2026-06-02, externally hardened) | Task continuity and completion through a screen reader (landmarks, action discoverability, route changes, dynamic updates, error recovery) — not just ARIA validity | — (PT0 pending) |
-| color-dependence | Draft (authored 2026-06-02, externally hardened) | Meaning conveyed by color alone, including the contrast-pass / hue-fail boundary scanners cannot see | — (PT0 pending) |
-| motor-access | Draft (authored 2026-06-02, externally hardened) | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout pressure, undo) | — (PT0 pending) |
+| low-vision | Pressure-tested v0.1.0 (PT0 on MDN ARIA, 2026-06-02) | Visual access under real density (zoom/reflow, contrast on photos & charts, focus under custom themes, spatial orientation, magnifier behavior) | PT0 — 10 findings (2C/4H), exercised 4/4 hard-failure patterns; rubric unchanged |
+| screen-reader-task | Pressure-tested v0.1.0 (PT0 on react.dev/learn, 2026-06-02) | Task continuity and completion through a screen reader — not just ARIA validity | PT0 — 13 findings (2C/5H), exercised 3/4 hard-failure patterns; rubric unchanged |
+| color-dependence | Pressure-tested v0.1.0 (PT0 on microsoft/vscode GitHub Actions, 2026-06-02) | Meaning conveyed by color alone, including the contrast-pass / hue-fail boundary scanners cannot see | PT0 — 10 findings (1C/4H), exercised 3/5 hard-failure patterns; direct CP-HF evidence from Primer's own token source; rubric unchanged |
+| motor-access | Pressure-tested v0.1.0 (PT0 on GOV.UK Design System, 2026-06-02) | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout pressure, undo) | PT0 — 8 findings + 12 positive observations (0C/2H), overall **warn**; calibration result on a healthy target; rubric unchanged |
 
-The 4 new Draft audits were authored by a parallel study swarm (16 research agents, 4 verifier agents, 4 author agents) and then hardened by a two-stage external-verifier pass: a retrieval oracle (WebFetch against every arXiv/DOI/W3C source, family-independent) and a decorrelated different-family LLM lens (Mistral + IBM Granite, via local Ollama). The oracle caught one fabricated DOI (CD F13 Sajek, resolving to an unrelated dental paper), five misattributions, and one ungrounded numeric figure — all fixed in the same commit. The LLM lenses produced only false positives, again confirming the protocol's prior receipt that parametric LLMs miss what retrieval catches. Per the lifecycle, Drafts are not listed in the [README](README.md)'s "Current audits" table until pressure-tested.
+The 4 new audits were authored by a parallel study swarm (16 research agents → 4 verifier agents → 4 author agents), hardened by a two-stage external-verifier pass (retrieval-oracle WebFetch against arXiv/DOI/W3C — caught 1 fabricated DOI and 5 misattributions; plus a decorrelated different-family LLM lens, which produced only false positives), and then **pressure-tested** by a 4-target dogfood swarm on 2026-06-02. PT0 produced 41 findings total (5 Critical, 15 High, 14 Medium, 5 Low, 19 open questions) on real public targets. **All 4 audits advanced Draft → Pressure-tested in the same day.** 13 rubric-revision candidates were surfaced across the 4 PT0s and are parked per the discipline rule — none load-bearing — for a future PT2 that produces calibrating evidence. The PT0 evidence is in each audit's `evidence/pt0-<target>/`.
 
 ---
 
@@ -47,17 +47,23 @@ The `simple_mode_removes_power` hard-failure pattern remains uncalibrated. PT2 w
 
 Carried forward through PT0, PT1, PT2-doc-fallback, Dogfood-1. Section 1 (Measurable Defaults) cannot fully Pass without quantitative WCAG conformance numbers. Plan: add `npm run verify:wcag` step that runs Lighthouse + axe-core against the repo's own handbook URL, attaches a JSON report to `audits/cognitive-load/evidence/<run-id>/scanner-pass.json`. Treat scanner output as Section 1 measurement, not Section 1 judgment.
 
-### NT-3 · First PT0 against one of the 4 new Drafts
+### NT-3 · Second-PT freeze candidate for the 4 new audits
 
-Four Draft audits now exist: [low-vision](audits/low-vision/), [screen-reader-task](audits/screen-reader-task/), [color-dependence](audits/color-dependence/), [motor-access](audits/motor-access/). The next step for each is **its first pressure test**, which advances it Draft → Pressure-tested. Each audit ships a ranked PT0 target shortlist in `audits/<slug>/evidence/PT0-candidates.md`.
+PT0 done for all four on 2026-06-02 (see *Current state* above). Each is now at **Pressure-tested v0.1.0** — the next state transition is **Pressure-tested → Frozen**, which per [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) requires a *second* PT where the rubric did NOT change.
 
-Recommended ordering (cheapest calibration first):
-1. **Color-dependence** — the Contrast-Pass / Hue-Fail boundary rule is the audit's load-bearing claim and needs a live target to calibrate. Candidate: a CI dashboard or monitoring tool with red/green status badges and a multi-series chart.
-2. **Motor-access** — best target is a long government / banking multi-step form with a session timeout (Reuschel 2023's 27× exposure ratio); calibrates Sections 3 and 4 in one run.
-3. **Low-vision** — the `LV-STICKY-BLOCK` 30% threshold and the "focus reset on every reflow" Critical bump are parked candidates waiting on a real target.
-4. **Screen-reader-task** — needs AT/browser-pair coverage on a route-driven SPA to exercise SR-TC-1/2/3 (the route-change announcement gap).
+Two paths forward, per audit (advisor's call, not a hard sequence):
 
-Each PT0 is independent and can run in any order; this is the recommended ordering by calibration value, not a hard sequence.
+**A. Apply the parked PT0 candidates → cut v0.2.** Each PT0 surfaced 3–4 revision candidates (see per-audit CHANGELOGs). Applying any one promotes the rubric Pressure-tested → **Revised** at `v0.2`. Worth doing where a candidate is genuinely load-bearing — e.g. CD RC-CD-03 (formalize the palette-swap rule with Primer's `light-protanopia-deuteranopia` theme as the live exemplar) is a clean v0.2 cut.
+
+**B. Run a second PT (PT1) on a different target, aiming for no-rubric-change → Freeze.** This is the path cog-load took (PT1 GitHub → froze at v0.2 after the PT1 patches; PT2 doc-fallback then dogfooded). Second-PT candidates from the rubric strengths:
+- **LV PT1** on a target with **live forced-colors / WHCM behavior** (since MDN's lack of any `forced-colors` query was the headline finding, a target that *does* use forced-colors is the next calibration step).
+- **SR PT1** on a route-driven SPA with **a working live-region implementation** (calibrate against a passing example, not just react.dev's failures).
+- **CD PT1** with **a qualified CVD simulator on a live session** (close out PT0's Section 4 open question — the methods gate is currently unexercised).
+- **MA PT1** on a **live service with an actual session timeout** (GOV.UK pattern docs were silent on timeouts; calibrate Section 3 against a real one).
+
+### NT-4 · Close the open questions PT0 left on the table
+
+19 open questions across the 4 PT0s (LV 5, SR 5, CD 5, MA 4). Most need live AT, live browser zoom, or a qualified CVD simulator — i.e. the live-session capabilities the Path 2 / WebFetch DOM-fallback couldn't provide. A natural second wave is a single live-session run per audit that resolves the parked open questions and either promotes them to confirmed findings or retires them.
 
 ---
 

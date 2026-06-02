@@ -1,0 +1,273 @@
+{
+  "audit_id": "ma-20260602-govuk-multi-step-form-pt0",
+  "audit_label": "GOV.UK multi-step form pattern — PT0 (DOM-fallback)",
+  "rubric_version": "0.1.0 (Draft, externally hardened 2026-06-02)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "dom-fallback",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "No live keyboard navigation, focus-trap test, screen reader, or touch-device interaction was performed. All findings are Inferred from static HTML fetched from live component example iframes and from govuk-frontend CSS/JS source. Touch target measurements are CSS-computed (not live bounding-box). A keyboard trap cannot be confirmed absent without a live Tab-cycle. The primary pattern URL (https://design-system.service.gov.uk/patterns/multi-step-form/) returned 404; the audit was conducted against the canonical equivalent at /patterns/complete-multiple-tasks/ plus all referenced component example pages."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://design-system.service.gov.uk/patterns/complete-multiple-tasks/",
+    "platform": "web",
+    "primary_sources": [
+      "https://design-system.service.gov.uk/components/button/default/index.html",
+      "https://design-system.service.gov.uk/components/button/start/index.html",
+      "https://design-system.service.gov.uk/components/error-summary/default/index.html",
+      "https://design-system.service.gov.uk/components/skip-link/default/index.html",
+      "https://design-system.service.gov.uk/components/date-input/default/index.html",
+      "https://design-system.service.gov.uk/components/file-upload/default/index.html",
+      "https://design-system.service.gov.uk/components/back-link/default/index.html",
+      "https://design-system.service.gov.uk/patterns/question-pages/default/index.html",
+      "https://design-system.service.gov.uk/patterns/complete-multiple-tasks/default/index.html",
+      "https://design-system.service.gov.uk/patterns/check-answers/default/index.html",
+      "govuk-frontend@6.1.0 CSS (govuk-frontend-a1d59e2f53f39da59930a50925e5ecdf.min.css)",
+      "govuk-frontend@6.1.0 button.mjs source",
+      "govuk-frontend@6.1.0 skip-link.mjs source"
+    ],
+    "surfaces_audited": [
+      "task-list page (complete-multiple-tasks pattern)",
+      "question page (radio buttons, text inputs)",
+      "date input component",
+      "file upload component",
+      "check-your-answers / summary-list page",
+      "error-summary component",
+      "skip-link component",
+      "back-link component",
+      "govuk-button (default and start variants)"
+    ]
+  },
+  "context": {
+    "user_type": "citizen completing a multi-step government service application (e.g. licence, benefit, permit)",
+    "task": "Complete a multi-step government application form: navigate task list, answer question pages, review answers, submit",
+    "dense_state": "Task list with 7 items across 2 groups (some Completed, some Incomplete); check-your-answers page with 9 data rows and 9 adjacent Change links; date input with 3 adjacent narrow fields",
+    "method": "Path 2 / WebFetch DOM-fallback — curl fetch of live example iframes and govuk-frontend CSS/JS source; no live interaction",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "Desktop-class rig (Windows 11, no touch screen, no mobile viewport emulator). Cannot produce a phone contact-patch σ_a footprint. Cannot render the mobile viewport (<768px) to confirm width:100% button layout. All target-size measurements are CSS-computed, not live bounding-box measurements. A live browser with setViewport and rendered element.getBoundingClientRect() would produce stronger evidence.",
+    "ai_features_present": []
+  },
+  "sections": {
+    "keyboard_path": {
+      "status": "warn",
+      "finding_ids": ["MA-01"],
+      "open_questions": ["OQ-01", "OQ-02"],
+      "positive_observations": ["PO-01", "PO-02", "PO-03", "PO-04"],
+      "notes": "No keyboard trap found in observed markup. All interactive elements are semantic HTML. Skip link present and correctly targeted. Focus indicator exceeds WCAG 2.4.13. Low finding MA-01 (role=button on anchor with JS Space-key compensation) keeps the section at Warn. Two open questions on mobile nav toggle and tab-panel arrow keys cannot be resolved without live interaction."
+    },
+    "pointer_precision": {
+      "status": "warn",
+      "finding_ids": ["MA-02", "MA-03"],
+      "open_questions": [],
+      "positive_observations": ["PO-05", "PO-06"],
+      "notes": "Radio/checkbox inputs are 44x44px (exemplary). Task-list rows have full-row touch target. govuk-button computed height ~40px — 4px below AAA threshold but above 2.5.8 minimum. Change links on check-your-answers are inline text with no padding expansion — Medium finding."
+    },
+    "drag_dependence": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": [],
+      "positive_observations": ["PO-07", "PO-08"],
+      "notes": "No drag-operated functions found. File upload uses native input. Date input avoids calendar picker. No sortable lists, kanban, or custom sliders. draggable=false on start-button anchor suppresses (not enables) drag. Section passes cleanly."
+    },
+    "timeout_pressure": {
+      "status": "warn",
+      "finding_ids": ["MA-04"],
+      "open_questions": ["OQ-03"],
+      "positive_observations": [],
+      "notes": "One High finding: pattern provides no timeout mechanism or guidance. govuk-frontend v6 has no session-timeout component. The pattern targets complex, long-duration flows where this gap is consequential. Cannot elevate to Fail (1 Critical threshold not met; 3 Highs not met — only 1 High). Open question on live service implementations."
+    },
+    "undo_recovery": {
+      "status": "warn",
+      "finding_ids": ["MA-05", "MA-06"],
+      "open_questions": [],
+      "positive_observations": ["PO-09", "PO-10"],
+      "notes": "govuk-button uses click (up-event) — WCAG 2.5.2 satisfied. Back link provides pre-submission undo. One High finding (MA-05): Accept and send has no post-submission undo. One Low finding (MA-06): adjacent Change links close together on CYA page. 1 High is below the 3-High Fail threshold; section Warn."
+    },
+    "error_recovery": {
+      "status": "warn",
+      "finding_ids": ["MA-07"],
+      "open_questions": ["OQ-04"],
+      "positive_observations": ["PO-11"],
+      "notes": "Error summary links navigate directly to failing fields. Error-summary focus management is JS-dependent — one Medium finding. No hover-only content in core components. Open question on custom tooltip usage in real service implementations."
+    },
+    "configuration_cost": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": [],
+      "positive_observations": ["PO-12"],
+      "notes": "No in-app accommodation controls to audit; the recursive failure mode is absent. GOV.UK relies on OS-level motor accommodation. Section passes."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": ["MA-08"],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "Path 2 DOM-fallback run. No live keyboard session. MA-08 records the keyboard-trap gap. Evidence is substantive (live rendered HTML, govuk-frontend source code), not documentation-only, but the method constraint prevents a Pass. Section 7 Warn is the correct and honest outcome."
+    }
+  },
+  "summary": {
+    "overall_status": "warn",
+    "critical_count": 0,
+    "high_count": 2,
+    "medium_count": 2,
+    "low_count": 4,
+    "open_question_count": 4,
+    "sections_passed": 2,
+    "sections_warned": 6,
+    "sections_failed": 0,
+    "positive_observation_count": 12,
+    "hard_failure_patterns_validated": {
+      "mouse_only_control_no_keyboard_path": false,
+      "target_too_small_or_crowded": false,
+      "drag_only_no_single_pointer_alternative": false,
+      "timeout_faster_than_user_no_extension": null,
+      "misactivation_no_recovery": false
+    }
+  },
+  "findings": [
+    {
+      "id": "MA-01",
+      "title": "Start button uses role=button on anchor with JS Space-key compensation",
+      "severity": "low",
+      "section": "keyboard_path",
+      "surface": "Start now button — any GOV.UK service start page",
+      "load_displaced_to": ["navigation"],
+      "evidence_state": "observed",
+      "evidence_summary": "Rendered HTML from /components/button/start/index.html: <a href=\"#\" role=\"button\" draggable=\"false\" class=\"govuk-button govuk-button--start\" data-module=\"govuk-button\">. govuk-frontend button.mjs source confirms Space key handling via keydown event synthesis.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-02",
+      "title": "Change links on check-your-answers page are inline-text targets (~16-24px tall)",
+      "severity": "medium",
+      "section": "pointer_precision",
+      "surface": "Check-your-answers / summary-list — govuk-summary-list__actions column",
+      "load_displaced_to": ["time", "recovery / undo"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Rendered HTML from /patterns/check-answers/default/index.html shows <a class=\"govuk-link\">Change<span class=\"govuk-visually-hidden\"> name</span></a> as inline text link. govuk-link CSS adds no padding or min-height. CSS-computed target height ~24px (font 16px * line-height 1.5). WCAG 2.5.8 spacing exception may apply but cannot be confirmed without live bounding-box measurement.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-03",
+      "title": "govuk-button computed height (~40px) below 44px AAA target",
+      "severity": "low",
+      "section": "pointer_precision",
+      "surface": "All question pages, task list, check-your-answers",
+      "load_displaced_to": ["time"],
+      "evidence_state": "inferred",
+      "evidence_summary": "CSS: .govuk-button { padding: 8px 10px 7px; border: 2px solid transparent; font-size: 1.1875rem; line-height: 1 }. Computed height = 19 + 8 + 7 + 4 = 38px visible, ~40px with drop-shadow. Passes 2.5.8 (24px) but falls short of 2.5.5 (44px) AAA.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-04",
+      "title": "Pattern provides no timeout mechanism; implementations may silently discard form data",
+      "severity": "high",
+      "section": "timeout_pressure",
+      "surface": "GOV.UK multi-step form pattern (complete-multiple-tasks, question-pages, check-answers)",
+      "load_displaced_to": ["time", "recovery / undo"],
+      "evidence_state": "inferred",
+      "evidence_summary": "govuk-frontend v6 package list has no session-timeout component (404 at /components/timeout-warning/). complete-multiple-tasks/default HTML has no timeout warning. Pattern documentation does not prescribe WCAG 2.2.1 compliance for implementing services. Reuschel et al. 2023 (finding 27) documents 27x form-completion time ratio on similar complex forms.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-05",
+      "title": "Accept and send final submission has no post-activation undo path",
+      "severity": "high",
+      "section": "undo_recovery",
+      "surface": "Check-your-answers pattern — final form submission button",
+      "load_displaced_to": ["recovery / undo"],
+      "evidence_state": "inferred",
+      "evidence_summary": "check-answers/default/index.html: <button type=\"submit\" class=\"govuk-button\">Accept and send</button> in <form action=\"/form-handler\" method=\"post\">. No undo button, no confirmation dialog, no post-submission correction path shown in pattern. govuk-button.mjs binds to click (up-event) — WCAG 2.5.2 satisfied during press, but post-submit no undo exists.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-06",
+      "title": "Adjacent Change links on check-your-answers may cause tremor overshoot to wrong row",
+      "severity": "low",
+      "section": "undo_recovery",
+      "surface": "Check-your-answers summary list — multiple adjacent Change links",
+      "load_displaced_to": ["recovery / undo"],
+      "evidence_state": "inferred",
+      "evidence_summary": "check-answers/default/index.html shows 5 sequential govuk-summary-list__row entries each with a Change link. Rows separated by 1px border only. No dead space between adjacent Change link targets. CSS does not add padding to summary-list action links.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-07",
+      "title": "Error summary focus management is JS-dependent; no-JS path leaves focus at page top",
+      "severity": "medium",
+      "section": "error_recovery",
+      "surface": "All question pages with validation errors — govuk-error-summary component",
+      "load_displaced_to": ["navigation", "time"],
+      "evidence_state": "inferred",
+      "evidence_summary": "govuk-error-summary rendered HTML: <div class=\"govuk-error-summary\" data-module=\"govuk-error-summary\"><div role=\"alert\">. The data-module attribute is a JS hook; the error-summary module programmatically adds tabindex=-1 and calls .focus() on the container. Without JS, tabindex is absent and focus after form submission stays at top of page. Confirmed by govuk-frontend source analysis.",
+      "interaction_cost_class": "cost"
+    },
+    {
+      "id": "MA-08",
+      "title": "Keyboard trap absence not confirmable from static DOM alone",
+      "severity": "low",
+      "section": "evidence",
+      "surface": "Full multi-step form flow — audit methodology gap",
+      "load_displaced_to": ["feature loss"],
+      "evidence_state": "open_question",
+      "evidence_summary": "No live keyboard Tab-cycle was run. The absence of complex ARIA widgets (no custom date-picker dialogs, no carousels, no embedded players) in observed markup makes a keyboard trap unlikely, but WCAG 2.1.2 keyboard-trap absence requires a live confirmation.",
+      "interaction_cost_class": "n/a"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "keyboard_path",
+      "summary": "Mobile navigation menu toggle keyboard operability under no-JS",
+      "resolution_path": "Open the Design System site with JavaScript disabled and Tab-cycle through the navigation. Also test with JS enabled: Tab to the mobile menu toggle, press Enter and Escape, confirm arrow-key or Tab navigation between nav items."
+    },
+    {
+      "id": "OQ-02",
+      "section": "keyboard_path",
+      "summary": "Design System tab-panel (HTML/Nunjucks tabs) arrow-key pattern implementation",
+      "resolution_path": "Tab to any HTML/Nunjucks tab pair on a component page, press Left/Right arrow keys, confirm inter-tab navigation and that Tab moves to tabpanel content. Confirm Escape does not dismiss."
+    },
+    {
+      "id": "OQ-03",
+      "section": "timeout_pressure",
+      "summary": "Real-world GOV.UK service session timeout keyboard accessibility",
+      "resolution_path": "Select 3-5 live GOV.UK services using the multi-step form pattern. Trigger the session timeout. Attempt extension keyboard-only. Record whether warning appears with adequate time, the extension control is Tab-reachable, the dialog is Escape-dismissible, and form data survives timeout."
+    },
+    {
+      "id": "OQ-04",
+      "section": "error_recovery",
+      "summary": "Hover-only tooltips or custom help text in real service implementations",
+      "resolution_path": "Audit 3-5 live GOV.UK services using the multi-step pattern. Tab through each page with no mouse. Confirm all visible content on hover is also available on focus."
+    }
+  ],
+  "positive_observations": [
+    { "id": "PO-01", "section": "keyboard_path", "summary": "Skip link present and correctly targeted on every example page; govuk-skip-link JS validates target on init" },
+    { "id": "PO-02", "section": "keyboard_path", "summary": "Focus indicator exceeds WCAG 2.4.13: yellow background fill + 4px black underline shadow, applied consistently across all interactive elements" },
+    { "id": "PO-03", "section": "keyboard_path", "summary": "All interactive elements use semantic HTML (button, a, input, fieldset) — no div-with-click-handler pattern found" },
+    { "id": "PO-04", "section": "keyboard_path", "summary": "Back link is a native anchor (govuk-back-link) — keyboard-native, no ARIA override, no JS dependency" },
+    { "id": "PO-05", "section": "pointer_precision", "summary": "Radio and checkbox inputs are 44x44px (WCAG 2.5.5 AAA) — exemplary for the most-tapped targets in question pages" },
+    { "id": "PO-06", "section": "pointer_precision", "summary": "Task-list row links expand to full-row touch target via absolute-positioned pseudo-element — correct pattern for large touch targets on list items" },
+    { "id": "PO-07", "section": "drag_dependence", "summary": "File upload is a native input type=file — always presents Choose File button; WCAG 2.5.7 satisfied by default" },
+    { "id": "PO-08", "section": "drag_dependence", "summary": "Date input uses plain text fields (no calendar picker widget) — eliminates drag-dependence and keyboard-trap risk" },
+    { "id": "PO-09", "section": "undo_recovery", "summary": "govuk-button binds to click event (up-event) — satisfies WCAG 2.5.2 Pointer Cancellation; slide-off abort is available to pointer users" },
+    { "id": "PO-10", "section": "undo_recovery", "summary": "Back link on every question page and check-your-answers enables pre-submission correction with a single keyboard interaction" },
+    { "id": "PO-11", "section": "error_recovery", "summary": "Error summary links navigate directly to the failing field by ID — correct, motor-efficient recovery pattern" },
+    { "id": "PO-12", "section": "configuration_cost", "summary": "Pattern relies on OS/browser-level accommodation (prefers-reduced-motion, forced colours, browser zoom) by design — avoids the recursive failure mode where an accessibility control requires the capability it grants" }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 8,
+    "all_findings_map_to_sections": true,
+    "at_least_one_interaction_cost_or_exclusion_barrier": true,
+    "both_input_modes_exercised": false,
+    "input_mode_gap_documented": "Path 2 DOM-fallback; no live keyboard-only or single-pointer-no-drag interaction performed; gap documented in Section 7 finding MA-08 and scorecard evidence_mode",
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_question_count": 4,
+    "report_plain_language_compliant": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_revision_candidates_noted": 4
+  }
+}

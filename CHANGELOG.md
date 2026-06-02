@@ -6,6 +6,27 @@ This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+### Pressure-tested — 4 PT0s, 2026-06-02
+
+Same-day PT0 dogfood swarm on the 4 Draft audits authored earlier in the day. **All 4 audits advanced Draft → Pressure-tested.**
+
+| Audit | Target | Findings | Sections | Overall |
+|---|---|---|---|---|
+| low-vision | MDN ARIA docs | 10 (2C / 4H / 3M) + 5 OQ | 1 pass · 5 warn · **2 fail** | **fail** |
+| screen-reader-task | react.dev/learn | 13 (2C / 5H / 4M / 1L) + 5 OQ | 0 pass · 6 warn · **2 fail** | **fail** |
+| color-dependence | microsoft/vscode GitHub Actions | 10 (1C / 4H / 5M) + 5 OQ | 0 pass · 5 warn · **1 fail** | **fail** |
+| motor-access | GOV.UK Design System | 8 (0C / 2H / 2M / 4L) + 4 OQ + **12 positive observations** | 2 pass · 6 warn · 0 fail | **warn** |
+
+Totals: 41 findings (5C / 15H / 14M / 5L), 19 open questions. All findings Inferred (Path 2 / WebFetch DOM-fallback — no live browser, AT, or simulator). 13 rubric-revision candidates surfaced and parked per the discipline rule (none load-bearing; each is a polish/refinement for a future PT2). Per-audit headline findings + parked candidates in each audit's CHANGELOG.
+
+**Three headline catches across the 4 PTs:**
+
+- **CD-03 on Primer (vscode-actions):** Primer's own design-token source ships a `light-protanopia-deuteranopia` theme override swapping green→blue and red→orange. *The vendor's own configuration is direct evidence the default red/green pair fails under CVD even when contrast passes* — the audit's central Contrast-Pass / Hue-Fail discriminator, observed in the wild.
+- **LV-05 / LV-08 on MDN Yari:** zero `forced-colors` media queries in any MDN Yari CSS file. The canonical web-docs site silently breaks for users in Windows High Contrast Mode.
+- **SR-08 / SR-10 on react.dev:** Sandpack's runtime-error pane has no `aria-live` region — a screen reader user gets no signal when their code throws.
+
+The MA result on GOV.UK (0 fails, 12 positive observations) is the calibration anti-control: the audit produces honest bounded findings on a motor-access-conscious design system without inventing drama. Same shape as cog-load's Dogfood-1 result.
+
 ### Added — 4 Draft audits (2026-06-02)
 
 - **`audits/low-vision/`** (`LV`) — visual access under real density. 8 sections; 25 research-grounded findings; reference-and-extend boundary with cognitive-load Section 1.

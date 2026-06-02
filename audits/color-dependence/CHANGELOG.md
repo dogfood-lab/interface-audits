@@ -8,7 +8,28 @@ The rubric ([`RUBRIC.md`](RUBRIC.md)) is canonical. The skill ([`skill/SKILL.md`
 
 ## [Unreleased]
 
-Draft rubric authored (study-swarm, research-grounded); not yet pressure-tested.
+### Pressure-tested — 2026-06-02 PT0 on GitHub Actions / microsoft/vscode
+
+**Status:** Draft → **Pressure-tested**. Rubric `0.1.0` unchanged; revision candidates parked.
+
+**Run:** [`evidence/pt0-vscode-actions/`](evidence/pt0-vscode-actions/) · `cd-20260602-vscode-actions-pt0` · target: `https://github.com/microsoft/vscode/actions` · Path 2 / WebFetch DOM-fallback. No qualified CVD simulator on this rig — all findings Inferred with `simulation_confirmation: "unqualified"`; per the rubric's Section 4 dichromacy-only POTENTIAL-FAIL rule, no finding promoted past Inferred.
+
+**Findings:** 10 (Critical 1 · High 4 · Medium 5 · Low 0) + 5 open questions. Sections: 0 pass, 5 warn, **1 fail** (`color_only_conveyance`).
+
+**Headline findings:**
+
+- **CD-01 (Critical, Section 0).** GitHub Actions distinguishes run **success** from **failure** by Primer's `green.5` vs `danger.red` color alone, with no persistent text label on the row. Excludes ~1 in 12 male users (Birch 2012, F1) — a textbook 1.4.1 Use-of-Color failure.
+- **CD-03 (High, Section 0) — direct evidence of the Contrast-Pass / Hue-Fail boundary the audit was built to catch.** Primer's own design-token source ships a `light-protanopia-deuteranopia` theme override swapping green→blue and red→orange. *The vendor's own configuration is direct evidence that the default green/red pair collapses under CVD even when contrast passes.* The audit's central discriminator is real and observed in the wild.
+
+**Hard-failure patterns exercised (3/5):** `status_color_only`, `form_error_hue_only`, `contrast_pass_hue_fail`. `chart_unreadable_without_color` was not exercisable (timing/duration charts did not render in WebFetch); `mode_state_hue_only` was inconclusive without live state changes.
+
+**Positive observations:** Primer's `light-protanopia-deuteranopia` theme is a correctly-designed genuine fix (blue/orange, not a re-skin — satisfies Section 5's palette-swap rule). Run-duration is text-only (inherently CVD-safe). ActionList uses `CheckIcon` for selections.
+
+**Rubric-revision candidates surfaced (parked for next PT, NOT applied):**
+
+- **RC-CD-01.** Section 4 — clarify that design-system token evidence qualifies as a named inference chain (stronger than visual observation without a tool) in DOM-fallback runs.
+- **RC-CD-02.** Section 0 — add an icon-only density threshold: at 30+ rows simultaneously, icon shape alone at 16px is insufficient; text label is the preferred secondary cue at list density.
+- **RC-CD-03.** Section 5 — clarify that swapping from a confusion-axis pair (red/green) to a non-confusion-axis pair (blue/orange) is a *genuine fix*, not a re-skin, when the new pair is confirmed safe under simulation. (Primer's `light-protanopia-deuteranopia` theme is the live exemplar.)
 
 ### Hardened — 2026-06-02 external-verifier pass
 

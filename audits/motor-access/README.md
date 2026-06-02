@@ -1,4 +1,4 @@
-state: Draft
+state: Pressure-tested v0.1.0 (PT0 on GOV.UK Design System, 2026-06-02)
 audit_prefix: MA
 catches: interaction cost for motor-impaired users (keyboard-path completeness, pointer precision / target size, drag dependence, timeout pressure, undo/error recovery)
 

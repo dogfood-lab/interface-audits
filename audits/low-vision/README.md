@@ -1,4 +1,4 @@
-state: Draft
+state: Pressure-tested v0.1.0 (PT0 on MDN ARIA docs, 2026-06-02)
 audit_prefix: LV
 catches: visual access under real density (zoom/reflow, contrast on photos & charts, focus visibility under custom themes, spatial orientation on reflow, magnifier behavior)
 

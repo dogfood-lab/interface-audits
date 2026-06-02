@@ -1,0 +1,281 @@
+{
+  "audit_id": "lv-20260602-mdn-aria-pt0",
+  "rubric_version": "0.1.0 (Draft, externally hardened 2026-06-02)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "dom-fallback",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "No live browser session, AT software, or zoom render was produced. The page HTML (170 KB), seven named MDN Yari CSS files, and inline Shadow DOM styles were fetched via curl and analyzed statically. The following checks could not be completed: actual computed font-size at 200% zoom, focus indicator visibility against rendered backgrounds at 400%, sticky header viewport fraction at 400% zoom, Windows High Contrast Mode (forced-colors) rendering, reading-anchor behavior on resize, and hover/tooltip persistence. All findings are Inferred. The preferred path — headless browser with explicit setViewport — should replace this run for Section 0 and Section 2 confirmations."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA",
+    "platform": "web",
+    "surfaces_audited": [
+      "sticky navigation bar (header.page-layout__header)",
+      "sticky breadcrumbs bar",
+      "promotional banner slot (mdn-placement-top)",
+      "left sidebar section navigation (nav.left-sidebar) — 80+ linked items",
+      "right sidebar in-page TOC (nav.reference-toc) — 7 items",
+      "main article body (7 sections, code examples, notecards)",
+      "skip links (.a11y-menu)",
+      "color-theme toggle (mdn-color-theme custom element)",
+      "language switcher (mdn-language-switcher custom element)",
+      "footer"
+    ]
+  },
+  "context": {
+    "user_type": "low-vision user — developer reading ARIA documentation at 200%–400% browser zoom for an extended session",
+    "task": "Reading and cross-referencing the ARIA overview page and its linked reference sections (attributes, roles) to understand ARIA usage patterns",
+    "dense_state": "Page as rendered at default state — no interactive state changes; the left sidebar contains 80+ links fully rendered; 7 article sections visible",
+    "method": "Path 2 / WebFetch DOM-fallback",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "Windows 11 rig without live browser zoom. All Section 0 and Section 2 findings are Inferred from CSS layout rules and class patterns. The sticky header fraction at 400% zoom was calculated from CSS-declared heights divided by a modeled effective viewport (1080p display at 400% = 270px effective height); this is a conservative inference, not a measured value. The absence of forced-colors media queries was confirmed by static grep of all fetched CSS files — this is a confirmable static finding.",
+    "ai_features_present": []
+  },
+  "sections": {
+    "zoom_and_reflow": {
+      "status": "warn",
+      "finding_ids": ["LV-01", "LV-02"],
+      "open_questions": ["OQ-01"],
+      "positive_observations": [],
+      "notes": "One High (LV-01: sticky header ≥30% of viewport at 400% zoom) and one Medium (LV-02: promotional banner compounds sticky height). Does not reach the Fail threshold of 3 Highs in this section. OQ-01 on TOC reachability at 320 CSS px could promote LV-07 or produce a new High/Critical if unresolved."
+    },
+    "contrast_under_density": {
+      "status": "warn",
+      "finding_ids": ["LV-03", "LV-04"],
+      "open_questions": ["OQ-02"],
+      "positive_observations": [],
+      "notes": "One High (LV-03: code syntax token contrast ~5.2:1 in light mode on dense monospace surface, below 7:1 threshold) and one Medium (LV-04: secondary text color ~5.5:1). No photographs or data charts on this page — the MANUAL-ONLY photo/chart checks are not applicable. OQ-02 on dark-theme code contrast may promote to a second High if confirmed."
+    },
+    "focus_visibility": {
+      "status": "fail",
+      "finding_ids": ["LV-05", "LV-06"],
+      "open_questions": ["OQ-03", "OQ-04"],
+      "positive_observations": [],
+      "notes": "Section Fail on one Critical finding (LV-05: no forced-colors media query anywhere in the MDN Yari CSS — all interactive hover/focus states relying on background-color will lose visual distinctiveness in Windows High Contrast Mode). LV-06 is High (navigation toolbar focus uses background-color change only, inadequate at 400% zoom under custom themes). Critical alone triggers section Fail."
+    },
+    "spatial_orientation": {
+      "status": "warn",
+      "finding_ids": ["LV-07"],
+      "open_questions": ["OQ-05"],
+      "positive_observations": [],
+      "notes": "One High (LV-07: in-page TOC disappears at 200% zoom on a typical 1440px monitor). Does not reach the 3-High Fail threshold in this section. OQ-05 on reading-anchor behavior on zoom/theme change could produce another High if confirmed."
+    },
+    "font_and_spacing": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": [],
+      "positive_observations": ["PO-01", "PO-02"],
+      "notes": "All font sizes are rem-based tokens — no viewport-unit font sizing found. Line-height 1.75 for article content. Code blocks use pre-wrap. The WCAG-floor spacing checks are deferred to Cognitive Load Section 1 per the audit boundary. Section passes cleanly on the low-vision extension checks."
+    },
+    "mode_switching": {
+      "status": "fail",
+      "finding_ids": ["LV-08", "LV-09"],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "Section Fail on one Critical finding (LV-08: cross-listed with LV-05 — no forced-colors accommodation). LV-09 is Medium (dark-theme navigation focus states not validated). Critical alone triggers section Fail. The MDN dark theme implementation is otherwise sound (light-dark() tokens, prefers-color-scheme handling) — the gap is specifically forced-colors."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["LV-10"],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "One Medium finding (LV-10: theme toggle moves two clicks deep at 200% zoom). Does not reach Fail threshold. Configuration cost is moderate — the toggle is reachable, just not in one click at 200%+ zoom."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-01", "OQ-02", "OQ-03", "OQ-04", "OQ-05"],
+      "positive_observations": [],
+      "notes": "Path 2 DOM-fallback run. All findings correctly marked Inferred. Five open questions capture genuine evidence gaps requiring live browser sessions. No finding was laundered from Open Question to Inferred without an explicit CSS-derived inference chain. Section 7 passes the procedural requirement but is Warn due to the live-session gap."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 2,
+    "high_count": 4,
+    "medium_count": 3,
+    "low_count": 0,
+    "open_question_count": 5,
+    "sections_passed": 1,
+    "sections_warned": 5,
+    "sections_failed": 2,
+    "positive_observation_count": 2,
+    "hard_failure_patterns_validated": {
+      "text_disappears_on_reflow": true,
+      "contrast_fails_on_real_surfaces": true,
+      "focus_vanishes_in_high_contrast": true,
+      "place_lost_on_reflow": true
+    }
+  },
+  "findings": [
+    {
+      "id": "LV-01",
+      "title": "Sticky header consumes critical viewport share at 400% zoom",
+      "severity": "high",
+      "section": "zoom_and_reflow",
+      "surface": "Sticky navigation + breadcrumbs bar (header.page-layout__header)",
+      "load_displaced_to": ["navigation", "visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "CSS declares --navigation-height:4.125rem and --breadcrumbs-bar-height:2rem; --sticky-header-height is their sum (~6.125rem). At 400% zoom on 1080p: effective viewport ≈270px; sticky header ≈98px; ratio ≈36.3%.",
+      "lv_reflow_pattern": "sticky_block"
+    },
+    {
+      "id": "LV-02",
+      "title": "Promotional banner adds a third sticky-chrome layer at desktop",
+      "severity": "medium",
+      "section": "zoom_and_reflow",
+      "surface": "Banner slot (div.page-layout__banner > mdn-placement-top)",
+      "load_displaced_to": ["visual decoding", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": ".page-layout__banner height:calc(5.625rem + 1px) declared in styles-page-layout CSS. mdn-placement-top web component present in HTML. When populated, total sticky chrome rises to ~11.75rem.",
+      "lv_reflow_pattern": "sticky_block"
+    },
+    {
+      "id": "LV-03",
+      "title": "Code syntax token contrast below 7:1 on dense monospace surface (light theme)",
+      "severity": "high",
+      "section": "contrast_under_density",
+      "surface": "Code examples (.code-example pre code) — light theme",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Token color #d30038 on background #edeef0 (--color-gray-80). Estimated contrast ~5.2:1. Below 7:1 rubric threshold for dense small-font surface. Values are hex literals in styles-content-section.d72b98b58747a002.css."
+    },
+    {
+      "id": "LV-04",
+      "title": "Secondary text color below 7:1 on dense reference surface",
+      "severity": "medium",
+      "section": "contrast_under_density",
+      "surface": "Blockquotes, secondary labels (--color-text-secondary elements)",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "--color-text-secondary resolves to --color-gray-40:#51565d in light mode. Contrast on white background ~5.5:1; on secondary background #edeef0 ~4.7:1. Both below 7:1 AAA threshold."
+    },
+    {
+      "id": "LV-05",
+      "title": "No forced-colors media query: focus indicators disappear in Windows High Contrast Mode",
+      "severity": "critical",
+      "section": "focus_visibility",
+      "surface": "All interactive elements — navigation buttons, theme toggle, language switcher, sidebar toggle",
+      "load_displaced_to": ["visual decoding", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Static grep of all seven MDN Yari CSS files returned zero matches for 'forced-colors'. Inline shadow DOM CSS also returned zero matches. All interactive hover/focus states use background-color changes that forced-colors strips."
+    },
+    {
+      "id": "LV-06",
+      "title": "Navigation toolbar focus uses only background-color change — inadequate at zoom",
+      "severity": "high",
+      "section": "focus_visibility",
+      "surface": "Top navigation bar buttons and menu dropdowns",
+      "load_displaced_to": ["visual decoding", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "styles-navigation CSS: .navigation__button has outline-offset:-2px but no explicit outline width/color. :hover/:focus states apply background-color:var(--color-background-secondary) only. Shadow DOM color-theme and language-switcher buttons use the same pattern."
+    },
+    {
+      "id": "LV-07",
+      "title": "In-page TOC disappears at 200% zoom, removing orientation landmark",
+      "severity": "high",
+      "section": "spatial_orientation",
+      "surface": "Right sidebar TOC (aside.layout__right-sidebar.reference-layout__toc)",
+      "load_displaced_to": ["navigation", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "270.66bae6059a1c23f9.css: .layout__2-sidebars .layout__right-sidebar receives display:none at width < calc(1rem*2+15rem+2rem+31rem) ≈768px. At 200% zoom on 1440px display, effective viewport ≈720px — below threshold. No fallback TOC path exists."
+    },
+    {
+      "id": "LV-08",
+      "title": "No forced-colors accommodation: system high-contrast theme unsupported",
+      "severity": "critical",
+      "section": "mode_switching",
+      "surface": "All interactive elements — cross-listed with LV-05",
+      "load_displaced_to": ["visual decoding", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Cross-listed from LV-05. Zero forced-colors media queries found in all MDN Yari CSS. Interactive states (hover, focus, selected, active) rely on background-color, border-color, and mask-image — all overridden by forced-colors system defaults."
+    },
+    {
+      "id": "LV-09",
+      "title": "Dark-theme navigation focus states not validated — ~1.5:1 contrast ratio",
+      "severity": "medium",
+      "section": "mode_switching",
+      "surface": "Navigation bar and breadcrumbs bar (dark theme)",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Dark mode: --color-background-secondary:#2d3034 (hover/focus state) vs --color-background-page:#18191b (page). Estimated contrast ~1.5:1 — below 2.4.11 minimum. No explicit outline on navigation buttons in dark theme."
+    },
+    {
+      "id": "LV-10",
+      "title": "Theme toggle moves two clicks deep at 200% zoom",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "mdn-color-theme element in breadcrumbs bar and navigation popup",
+      "load_displaced_to": ["configuration", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "styles-breadcrumbs-bar CSS: mdn-color-theme visible at default widths. At ≤769px (effective viewport at 200% on 1440px = 720px), theme toggle is accessible only via hamburger navigation popup — two interaction steps deeper than at 100%."
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "zoom_and_reflow",
+      "summary": "TOC reachability at 320 CSS px: the right-sidebar TOC is hidden at ~768px; it is unknown whether any alternative path to in-page navigation exists at the WCAG 1.4.10 reflow threshold of 320 CSS px.",
+      "resolution_path": "Headless browser (Playwright setViewport({width:320,height:568})): confirm (1) TOC presence or absence; (2) left sidebar toggle button visibility; (3) horizontal scrolling requirement for body text lines."
+    },
+    {
+      "id": "OQ-02",
+      "section": "contrast_under_density",
+      "summary": "Dark-theme code syntax contrast: token color #ff97a0 on estimated dark background #2d3034 — estimated ~5.1:1 — may be High if confirmed below 7:1 at small code font sizes.",
+      "resolution_path": "DevTools with forced dark theme: compute contrast of #ff97a0 against the actual rendered background inside .code-example pre at 200% zoom."
+    },
+    {
+      "id": "OQ-03",
+      "section": "focus_visibility",
+      "summary": "Skip link focus ring visibility: .a11y-menu focus ring relies on browser default. Under dark theme or forced-colors, default ring may be invisible. Skip link is the first focusable element and critical for keyboard access.",
+      "resolution_path": "Focus skip link via Tab in Chrome: inspect focus ring appearance under dark theme and Windows High Contrast Mode. Confirm background contrast of the skip link popup against the page background."
+    },
+    {
+      "id": "OQ-04",
+      "section": "focus_visibility",
+      "summary": "Sidebar toggle button: at 400% zoom, the sidebar toggle appears in the breadcrumbs bar. Whether sticky header covers the focused element post-activation and whether the button's focus state survives forced-colors is unknown.",
+      "resolution_path": "At 400% zoom in Chrome, Tab to sidebar toggle button; check sticky header coverage; activate toggle; confirm focus placement."
+    },
+    {
+      "id": "OQ-05",
+      "section": "spatial_orientation",
+      "summary": "Reading-anchor behavior on zoom/theme change: whether Chrome scroll-anchoring preserves the user's reading position when the layout reflowss from 3-column to 1-column on zoom is unknown.",
+      "resolution_path": "In Chrome at the ARIA page, focus a mid-article paragraph, zoom 100%→200%, observe position. Repeat for light→dark theme change via mdn-color-theme toggle."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "font_and_spacing",
+      "summary": "All font sizes are rem-based tokens (--font-size-normal:1rem etc.), not viewport units. Browser text-size resize works correctly. Direct pass on WCAG Failure F94."
+    },
+    {
+      "id": "PO-02",
+      "section": "font_and_spacing",
+      "summary": "Article content uses line-height:1.75 (--font-line-content), exceeding the WCAG 1.4.12 1.5x minimum and reducing spacing-collapse risk under sustained magnification."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 10,
+    "every_finding_maps_to_rubric_section": true,
+    "at_least_one_scanner_invisible_finding": true,
+    "scanner_invisible_findings": ["LV-01 (sticky-block reflow at 400%)", "LV-05 (forced-colors absence)", "LV-06 (background-color-only focus indicator)", "LV-07 (TOC disappears at 200% zoom)", "LV-08 (WHCM mode switching)"],
+    "real_magnification_tested": false,
+    "real_magnification_note": "Path 2 DOM-fallback — no live zoom session. Zoom levels were modeled from CSS-declared heights and standard display assumptions. Compliant with Section 7 caveat.",
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_questions_count": 5,
+    "report_obeys_plain_language_conventions": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidates": [
+      "Breakpoint-exact reflow check: rubric could specify the user's zoom-induced effective viewport width as the reflow test width, not only the 320 CSS px WCAG floor.",
+      "Promotional/ad banner as sticky contributor: the LV-STICKY-BLOCK failure-mode list could name dynamic-content banner slots above the nav as a distinct sticky pattern.",
+      "Forced-colors absence as standalone check: absence of any forced-colors media query on a site with custom interactive-state CSS could be a High/Critical pattern, not just box-shadow-specific."
+    ]
+  }
+}

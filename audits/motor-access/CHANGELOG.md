@@ -8,7 +8,24 @@ The rubric ([`RUBRIC.md`](RUBRIC.md)) is canonical. The skill ([`skill/SKILL.md`
 
 ## [Unreleased]
 
-Draft rubric authored (study-swarm, research-grounded); not yet pressure-tested.
+### Pressure-tested — 2026-06-02 PT0 on GOV.UK Design System
+
+**Status:** Draft → **Pressure-tested**. Rubric `0.1.0` unchanged; revision candidates parked.
+
+**Run:** [`evidence/pt0-govuk-multi-step-form/`](evidence/pt0-govuk-multi-step-form/) · `ma-20260602-govuk-multi-step-form-pt0` · target: `https://design-system.service.gov.uk/patterns/complete-multiple-tasks/` (the original `/patterns/multi-step-form/` URL returned 404; the canonical equivalent is `/patterns/complete-multiple-tasks/` — noted for the PT0 candidate file). Path 2 / WebFetch DOM-fallback; component examples fetched as rendered iframes; `govuk-frontend` CSS + JS source fetched from the live site and npm CDN.
+
+**Findings:** 8 (Critical 0 · High 2 · Medium 2 · Low 4) + 4 open questions + **12 positive observations**. Sections: 2 pass, 6 warn, **0 fail**. Overall: **warn** (the only audit of the four to land sub-Fail).
+
+**Calibration result: a healthy target.** GOV.UK is a motor-access-conscious design system. The two High findings are at the *pattern/guidance level* (no session-timeout mechanism documented; no post-submission undo distinct from in-flow Back links), not at the component-markup level. Twelve positive observations recorded: semantic HTML throughout, 44×44px radio/checkbox inputs, full-row task-list touch targets, click-event (up-event) button binding, plain-text date input (no calendar picker), native file upload. This is the analog of cog-load's Dogfood-1 result — *the audit produces honest bounded findings on a healthy target without inventing drama*. PT0 evidence on a healthy target is exactly the calibration signal that the rubric is not over-firing.
+
+**Hard-failure patterns exercised (2):** `target_too_small_or_crowded` (Medium — MA-02, MA-03), `misactivation_no_recovery` (High — MA-05, post-submit). `keyboard_trap` and `drag_only_no_alternative` correctly absent — GOV.UK forms have no drag and no traps.
+
+**Rubric-revision candidates surfaced (parked for next PT, NOT applied):**
+
+- **RC-MA-01.** Section 3 — pattern-level vs implementation-level timeout distinction; when auditing a design pattern that is silent on timeouts (not a live service), the current rubric gives no scoring guidance.
+- **RC-MA-02.** Section 4 — explicitly address post-submission undo as distinct from in-flow Back links; the current language covers reversible actions but the check-your-answers submission shape is a distinct failure.
+- **RC-MA-03.** Section 7 — clarify that CSS-computed height is weaker evidence than live `getBoundingClientRect()`; both are Inferred but at different confidence levels.
+- **RC-MA-04.** `interaction_cost_class` extension field should be *recommended* (not default `n/a`) to prompt active classification on every finding.
 
 ### Hardened — 2026-06-02 external-verifier pass
 

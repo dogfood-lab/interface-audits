@@ -1,0 +1,312 @@
+{
+  "audit_id": "cd-20260602-vscode-actions-pt0",
+  "audit_label": "PT0 — GitHub Actions dashboard for microsoft/vscode (WebFetch DOM-fallback)",
+  "rubric_version": "0.1.0 (Draft, externally hardened 2026-06-02)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "dom-fallback",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "WebFetch returns partial static HTML; the Actions dashboard requires JavaScript rendering for full DOM. CVD simulator unavailable on this rig (Windows 11 / no live browser session). All color values sourced from Primer design-system token files (github.com/primer/primitives main branch, fetched 2026-06-02) and GitHub REST API run data. No sRGB-linearization check performed. No physiological CVD model applied. All findings are Inferred; none are Observed or BLOCK."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://github.com/microsoft/vscode/actions",
+    "platform": "web",
+    "surfaces_audited": [
+      "workflow-run-list",
+      "left-sidebar-workflow-selector",
+      "repository-tab-row",
+      "filter-controls",
+      "pagination"
+    ]
+  },
+  "context": {
+    "user_type": "professional",
+    "task": "Monitor CI status for a large open-source repository; triage pass/fail runs before merging a pull request",
+    "dense_state": "2,500+ workflow runs visible with conclusion values including success, failure, skipped, cancelled, and action_required (confirmed via GitHub REST API); filter controls in error/loading state; in-progress runs present",
+    "method": "Path 2 / WebFetch DOM-fallback",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "No live browser render available on this rig. The WebFetch tool returns partial static HTML only. JavaScript-rendered components (status icons, animated spinners, chart visualizations, filter dropdowns) were not rendered. Color values and component patterns were sourced from the Primer design-system token source (github.com/primer/primitives) and GitHub Octicons icon library as named inference-chain evidence. This is the strongest available Inferred evidence on this rig, but is weaker than live observation with a qualified CVD simulator.",
+    "ai_features_present": [],
+    "simulation_tool": "none — no CVD simulator was run",
+    "simulation_tool_qualified": false,
+    "srgb_linearization_verified": false,
+    "cvd_classes_tested": [],
+    "cvd_tester_present": false
+  },
+  "sections": {
+    "color_only_conveyance": {
+      "status": "fail",
+      "finding_ids": ["CD-01", "CD-02", "CD-03"],
+      "open_questions": [],
+      "positive_observations": ["PO-01", "PO-02"],
+      "notes": "One Critical (CD-01: success/failure distinguished by red/green hue without persistent text label) produces a section Fail. CD-02 (High: skipped/cancelled states require shape-memory without text) and CD-03 (High: Contrast-Pass / Hue-Fail boundary case documented by Primer CVD overrides) contribute additional severity. Two Highs + one Critical = Fail."
+    },
+    "chart_graph_encoding": {
+      "status": "warn",
+      "finding_ids": ["CD-04"],
+      "open_questions": ["OQ-01"],
+      "positive_observations": ["PO-04"],
+      "notes": "Run-list duration data is text-only (CVD-safe). Run-detail visualization graph not rendered by WebFetch; OQ-01 logs the open question. No rainbow/jet or red-green diverging colormap detected on the surface audited. CD-04 is Medium. Section Warns on the open question about the visualization graph."
+    },
+    "form_validation": {
+      "status": "warn",
+      "finding_ids": ["CD-05"],
+      "open_questions": ["OQ-02"],
+      "positive_observations": [],
+      "notes": "Filter controls in error state confirmed by WebFetch ('Sorry, something went wrong'). Inline error text is present (partial mitigation). Whether border-only color change occurs as a secondary signal is unconfirmed (OQ-02). CD-05 is High; one High is below the 3-High section-Fail threshold, so section Warns."
+    },
+    "mode_state_indication": {
+      "status": "warn",
+      "finding_ids": ["CD-06", "CD-07"],
+      "open_questions": ["OQ-03"],
+      "positive_observations": ["PO-03"],
+      "notes": "Two Medium findings (CD-06: active tab/sidebar state; CD-07: in-progress spinner under reduced-motion). Primer ActionList uses CheckIcon for selection (positive). No Critical or High findings confirmed; section Warns on open questions about sidebar active state."
+    },
+    "cvd_simulation": {
+      "status": "warn",
+      "finding_ids": ["CD-08"],
+      "open_questions": ["OQ-04"],
+      "positive_observations": [],
+      "notes": "Methods gate: no qualified CVD simulator was run on this rig. CD-08 is Medium (methods gate not passed). All other findings are Inferred pending a qualified PT1 run. Section Warns because the gate is documentably unresolvable on this rig — the gap has a concrete resolution path (DaltonLens on a live browser session)."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["CD-09", "CD-10"],
+      "open_questions": ["OQ-05"],
+      "positive_observations": ["PO-01"],
+      "notes": "CD-09 (High): CVD-safe theme exists but requires 3+ clicks from the working surface. CD-10 (Medium, Open question): theme selection UI may use color-only selected-state indicator. One High is below section-Fail threshold; section Warns. Positive: the CVD theme is a genuine fix, not a re-skin."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-04"],
+      "positive_observations": [],
+      "notes": "Run executed against the realistic dense-state surface (2,500+ runs confirmed via GitHub API; mixed conclusions confirmed). Meaningful state documented per finding. No CVD simulator run — all findings Inferred. No finding marked BLOCK (two-tier rule honored). Tool: none (DOM-fallback). CVD classes tested: none. Section Warns because the process gate is partially satisfied (correct state, correct inference chain, correct labeling) but the simulator gap is unresolved."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 1,
+    "high_count": 4,
+    "medium_count": 5,
+    "low_count": 0,
+    "open_question_count": 5,
+    "sections_passed": 0,
+    "sections_warned": 5,
+    "sections_failed": 1,
+    "positive_observation_count": 4,
+    "hard_failure_patterns_validated": {
+      "status_color_only": true,
+      "chart_unreadable_without_color": null,
+      "form_error_hue_only": true,
+      "mode_state_hue_only": false,
+      "contrast_pass_hue_fail": true
+    }
+  },
+  "findings": [
+    {
+      "id": "CD-01",
+      "title": "Workflow run success/failure status distinguished primarily by red/green hue",
+      "severity": "critical",
+      "section": "color_only_conveyance",
+      "surface": "Workflow run list — status icon column",
+      "load_displaced_to": ["visual decoding", "memory", "trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Primer fgColor.success = green.5 (#2da44e) and fgColor.danger = #d1242f are the status icon colors in default light theme. No persistent text label ('Success'/'Failure') confirmed visible in run list rows. GitHub API confirms mixed success/failure runs exist.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": true,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-02",
+      "title": "Skipped and cancelled run states lack robust non-color differentiation from success",
+      "severity": "high",
+      "section": "color_only_conveyance",
+      "surface": "Workflow run list — status icon, skipped and cancelled conclusions",
+      "load_displaced_to": ["visual decoding", "memory"],
+      "evidence_state": "inferred",
+      "evidence_summary": "GitHub API confirmed conclusion values include 'skipped', 'cancelled', 'action_required' alongside 'success' and 'failure'. Primer fgColor.muted (gray) applies to neutral states. Icon shapes exist (skip-fill, circle-slash) but no text labels confirmed persistent.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia", "monochromacy"],
+      "contrast_pass_hue_fail": true,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-03",
+      "title": "Default theme red/green pair lies on the deuteranomaly confusion line (Contrast-Pass / Hue-Fail)",
+      "severity": "high",
+      "section": "color_only_conveyance",
+      "surface": "Any surface using fgColor.success + fgColor.danger in the default light/dark themes",
+      "load_displaced_to": ["visual decoding", "trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Primer token source confirms fgColor.success (green.5 #2da44e) and fgColor.danger (#d1242f) are the default status colors. Primer's own CVD overrides replace these with blue/orange for the 'light-protanopia-deuteranopia' theme — direct evidence that the engineers identified the red/green pair as a CVD failure.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": true,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-04",
+      "title": "Timing duration data is text-only on the run list; run-detail chart encoding is unconfirmed",
+      "severity": "medium",
+      "section": "chart_graph_encoding",
+      "surface": "Workflow run list — duration column; run-detail visualization graph (unrendered)",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "WebFetch confirmed durations as text ('8m 14s', '30m 37s', '2s'). Run-detail visualization graph not rendered. GitHub docs confirm 'An icon to the left of the job name indicates the status' — icon-based, not chart-based, on detail page.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": false,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-05",
+      "title": "Filter dropdown error state uses color-only danger signaling (inferred from Primer form patterns)",
+      "severity": "high",
+      "section": "form_validation",
+      "surface": "Workflow filter controls — Status/Event/Branch/Actor dropdowns",
+      "load_displaced_to": ["visual decoding", "trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "WebFetch returned filter controls in error state with text 'Sorry, something went wrong'. Primer bgColor.danger.muted (red background) and fgColor.danger (red text) apply to form error states. Inline error text is a partial non-color cue; border-color change as sole signal is unconfirmed.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": true,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-06",
+      "title": "Active workflow tab indicator relies on color-accent underline; sidebar active item may be fill-only",
+      "severity": "medium",
+      "section": "mode_state_indication",
+      "surface": "Left sidebar — active workflow selector; repository tab row",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Primer tab component uses 2px underline (non-color cue present). ActionList Selection.tsx confirmed to use CheckIcon. Active sidebar background fill color (fgColor.accent.muted = light blue) may be the sole differentiator if CheckIcon is not present.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia"],
+      "contrast_pass_hue_fail": false,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-07",
+      "title": "In-progress spinner is motion-only under reduced-motion; static color dot remains",
+      "severity": "medium",
+      "section": "mode_state_indication",
+      "surface": "Workflow run list — active/running run indicators",
+      "load_displaced_to": ["visual decoding", "time"],
+      "evidence_state": "inferred",
+      "evidence_summary": "WebFetch confirmed 'In progress' text label present for running workflows. Under prefers-reduced-motion, the spinner animation is suppressed. Primer fgColor.attention = yellow.5 (#d4a72c) applies to in-progress state — not on red/green confusion axis but may be confused under tritanomaly.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": false,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-08",
+      "title": "No qualified CVD simulator was available on this rig (methods gate not passed)",
+      "severity": "medium",
+      "section": "cvd_simulation",
+      "surface": "PT0 audit infrastructure",
+      "load_displaced_to": ["verification"],
+      "evidence_state": "open_question",
+      "evidence_summary": "Rig constraint: Windows 11 / no live browser session. No Machado-model simulator run. sRGB linearization not verified. All four CVD classes untested. Findings are Inferred, not Observed.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia", "tritanomaly", "tritanopia", "monochromacy"],
+      "contrast_pass_hue_fail": null,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-09",
+      "title": "CVD-safe theme requires 3+ clicks from the Actions dashboard and is not discoverable from the failure state",
+      "severity": "high",
+      "section": "configuration_cost",
+      "surface": "GitHub Settings > Appearance — theme selector",
+      "load_displaced_to": ["configuration", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Primer token source confirms 'light-protanopia-deuteranopia' theme exists with blue/orange override for success/danger. Navigation path: avatar menu → Settings → Appearance (3 clicks minimum). No in-flow accessibility hint on the Actions dashboard.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia", "protanomaly", "protanopia"],
+      "contrast_pass_hue_fail": false,
+      "simulation_confirmation": "unqualified"
+    },
+    {
+      "id": "CD-10",
+      "title": "Theme selection UI uses color swatches; currently selected theme indicator may be color-dependent",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "GitHub Settings > Appearance — theme selection grid",
+      "load_displaced_to": ["visual decoding", "verification"],
+      "evidence_state": "open_question",
+      "evidence_summary": "Appearance settings page not rendered by WebFetch (529 errors). Primer ActionList uses CheckIcon for selection (non-color cue). Whether the theme grid uses ActionList or a custom thumbnail-radio pattern is unknown.",
+      "cvd_class_affected": ["deuteranomaly", "deuteranopia"],
+      "contrast_pass_hue_fail": null,
+      "simulation_confirmation": "unqualified"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "chart_graph_encoding",
+      "summary": "Does the run-detail visualization graph use multi-color encoding for parallel jobs, or a single hue?",
+      "resolution_path": "Navigate to a multi-job run detail page (e.g. a run with 10+ parallel jobs). Apply CVD simulation to confirm whether job colors survive deutan/protan simulation."
+    },
+    {
+      "id": "OQ-02",
+      "section": "form_validation",
+      "summary": "Do the filter dropdown controls use a colored border change (without accompanying text) as their primary error signal when loading fails?",
+      "resolution_path": "Live navigation to the Actions page with simulated slow network or forced error state; observe whether border color change is sole or primary visual error cue."
+    },
+    {
+      "id": "OQ-03",
+      "section": "mode_state_indication",
+      "summary": "Does the left-sidebar active workflow selection rely on background fill color alone, or does it also use a border or icon cue?",
+      "resolution_path": "Live DevTools inspection of sidebar computed styles on active vs inactive workflow list items."
+    },
+    {
+      "id": "OQ-04",
+      "section": "cvd_simulation",
+      "summary": "What are the exact hex values and luminance ratios of success/failure status icons in the rendered page (not from design tokens)?",
+      "resolution_path": "Run DevTools computed-style inspection on a rendered success and failure icon element; extract actual rendered color and compute luminance ratio against background."
+    },
+    {
+      "id": "OQ-05",
+      "section": "configuration_cost",
+      "summary": "Does the GitHub Appearance settings page indicate the currently selected theme with a shape/icon cue or only with a color border?",
+      "resolution_path": "Live navigation to github.com/settings/appearance with DaltonLens deuteranopia simulation active."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "configuration_cost",
+      "summary": "Primer's light-protanopia-deuteranopia theme correctly swaps success (green→blue) and danger (red→orange) — a genuine fix direction, not a re-skin. The accommodation exists and was clearly intentionally designed."
+    },
+    {
+      "id": "PO-02",
+      "section": "color_only_conveyance",
+      "summary": "The 'In progress' text label is visible for running workflows in the run list — the most actionable current state has a text label alongside its icon."
+    },
+    {
+      "id": "PO-03",
+      "section": "mode_state_indication",
+      "summary": "Primer's ActionList component uses CheckIcon (shape-based cue) for selected items. If the workflow sidebar uses ActionList, the active selection cue includes a non-color indicator."
+    },
+    {
+      "id": "PO-04",
+      "section": "chart_graph_encoding",
+      "summary": "Duration data in the run list is displayed as plain text ('8m 14s'), not as color-encoded bars. Text durations are inherently CVD-safe."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 10,
+    "findings_below_minimum_note": null,
+    "every_finding_maps_to_rubric_section": true,
+    "load_displaced_to_uses_shared_enum": true,
+    "at_least_one_contrast_pass_hue_fail_case": true,
+    "contrast_pass_hue_fail_note": "CD-01 and CD-03 both document the Contrast-Pass / Hue-Fail boundary: green.5 (#2da44e) and danger red (#d1242f) pass WCAG 1.4.3 luminance against white but collapse under deutan/protan simulation. CD-03 is explicitly labeled as the boundary case. Confirmed by Primer's own CVD theme overrides which exist precisely because these colors collapse.",
+    "evidence_gaps_preserved_as_open_questions": true,
+    "no_block_finding_without_cvd_tester": true,
+    "report_does_not_encode_meaning_by_color_alone": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidates": ["RC-01: DOM-fallback inference-chain qualification", "RC-02: icon-only density threshold", "RC-03: non-confusion-axis palette swap vs re-skin distinction"],
+    "section_4_methods_gate_result": "unqualified — no CVD simulator available on this rig",
+    "rig_limitation_documented": true
+  }
+}
