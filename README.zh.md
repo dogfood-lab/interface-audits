@@ -92,25 +92,16 @@ npm run verify     # runs schema + link + shipcheck checks
 | [screen-reader-task](audits/screen-reader-task/) | 已进行压力测试 v0.1.0 | 通过屏幕阅读器实现的任务连续性和完成——不仅仅是 ARIA 有效性 | PT0 (react.dev/learn)——13 个发现结果，2C/5H，命中 3/4 个严重故障模式 |
 | [color-dependence](audits/color-dependence/) | 已进行压力测试 v0.1.0 | 仅通过颜色传达的含义，包括对比度通过/色调失败的边界 | PT0 (microsoft/vscode GitHub Actions)——10 个发现结果，1C/4H，命中 3/5 个严重故障模式 |
 | [motor-access](audits/motor-access/) | 已进行压力测试 v0.1.0 | 对于运动障碍用户的交互成本（键盘路径、目标大小、拖动依赖、超时、撤销） | PT0 (GOV.UK 设计系统多步骤模式)——8 个发现结果 + 12 个积极的观察结果，0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | 已进行压力测试 v0.1.0 | 强制信任、不透明的人工智能行为、无法从人工智能错误中恢复、缺乏溯源信息。 | PT0（Bing SSR + 第一方人工智能信任文档）——9项发现（5个高优先级/4个中等优先级），4项已观察，第7部分通过了可重复的故障测试。 |
+| [motion-sensitivity](audits/motion-sensitivity/) | 已进行压力测试 v0.1.0 | 前庭触发因素、动画效果优化、偏好减少动态效果、闪烁/癫痫阈值。 | PT0（linear.app）——3项发现（1个高优先级/2个低优先级）+ 4项积极观察结果，0个严重问题。 |
 
 ## 审计系列
 
 每个审计都必须声明*此审计检测到的、通用扫描工具忽略的负担是什么？* 对于认知负荷，答案是负荷转移。
 
-### 正在进行中的草稿（于 2026-06-02 编写，尚未进行压力测试）
-
-仓库中包含四个草稿审计，每个审计都包含完整的四要素框架（评分标准 + 技能 + 模式 + PT0 候选人列表），但不包含证据。根据生命周期，在至少进行一次压力测试之前，它们不会列在上面的《当前审计》表中。请查看每个审计的 CHANGELOG，以了解每个审计的改进记录（引文已通过检索工具与 arXiv/DOI/W3C 资源进行验证；在提交之前，已更正了一个伪造的 DOI 和多个错误的归属）。
-
-| 草稿审计 | 前缀 | 检测内容 |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | 在实际密度下进行视觉访问——缩放和重排、照片和图表中的对比度、自定义主题下的焦点可见性、放大状态下的空间方向 |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | 通过屏幕阅读器完成任务——不仅仅是 ARIA 验证 |
-| [color-dependence](audits/color-dependence/) | `CD` | 仅通过颜色传达的含义——包括扫描器无法识别的对比度合格/色调不合格的边界 |
-| [motor-access](audits/motor-access/) | `MA` | 对于运动障碍用户的交互成本——键盘路径、目标精度、拖动依赖性、超时压力、撤销 |
-
 ### 未来的审计（尚未编写）
 
-运动敏感性（前庭触发器、`prefers-reduced-motion`）和 AI 可信度（强制信任、不透明的 AI 行为、来源）仍然在 [ROADMAP](ROADMAP.md) 中。审计会逐个添加，并包含证据，只有当实际目标证明了这项工作时才会进行——而不是基于推测。
+目前已确定的所有七次审计都已添加到代码库中，并且进行了**压力测试或更高级别的测试**（参见上文的《当前审计》），没有未完成的草稿审计。最近添加的两项，即**人工智能信任范围** (`AT`) 和**动态敏感性** (`MO`)，由一个研究团队撰写（研究 → 外部引用验证 → 作者），并以与前四次相同的方式进行了压力测试。后续审计是根据需求进行，而不是基于推测——每次只添加一项，并且在有实际目标和基于研究的评估标准的情况下，才开始进行相关工作。 [路线图](ROADMAP.md) 跟踪候选对象以及已在此处进行的审计的生命周期推进工作（PT1 → 冻结）。
 
 ## 仓库结构
 
@@ -137,14 +128,16 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## 这不是

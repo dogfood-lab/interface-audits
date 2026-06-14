@@ -19,22 +19,22 @@
 
 ## De quoi il s'agit
 
-`interface-audits` est une bibliothèque de critères d'audit et des outils exécutables qui les mettent en œuvre. Chaque audit détecte une catégorie spécifique de problèmes d'interface utilisateur que les outils d'accessibilité génériques ne détectent pas. Les outils détectent les violations des WCAG ; ces audits détectent les interfaces qui **passent les tests des outils, mais qui restent difficiles à utiliser**.
+`interface-audits` est une bibliothèque de critères d'audit et des outils exécutables qui les mettent en œuvre. Chaque audit détecte un type spécifique de problème rencontré par les utilisateurs, que les analyseurs d'accessibilité génériques ne parviennent pas à identifier. Les analyseurs détectent les violations du WCAG ; ces audits détectent les interfaces qui **passent les tests des analyseurs mais qui restent difficiles à utiliser**.
 
-Le premier audit de cette bibliothèque est **Charge cognitive**, qui détecte le déplacement de la charge cognitive : les interfaces qui transfèrent la charge sur la mémoire, la recherche, la confiance, la vérification, la navigation, la configuration, la récupération des sources, le décodage visuel, le temps, la récupération/annulation ou la perte de fonctionnalités.
+Le premier audit de cette bibliothèque est **Charge cognitive**, qui détecte le déplacement de la charge : les interfaces qui transfèrent une partie de la charge sur la mémoire, la recherche, la confiance, la vérification, la navigation, la configuration, la récupération des sources, le décodage visuel, le temps, la restauration/annulation ou la perte de fonctionnalités.
 
 Chaque audit comprend quatre éléments :
 
 1. **Critères** — principes, sections, règles de gravité ([`audits/cognitive-load/RUBRIC.md`](audits/cognitive-load/RUBRIC.md))
 2. **Outil** — contrat d'invocation et procédure ([`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md))
 3. **Schéma** — schéma JSON pour les résultats et les tableaux de bord ([`shared/schemas/`](shared/schemas/))
-4. **Preuves** — au moins un test de performance ou une utilisation en conditions réelles ([`audits/cognitive-load/evidence/`](audits/cognitive-load/evidence/))
+4. **Preuves** — au moins un test sous pression ou une phase de test utilisateur réussie ([`audits/cognitive-load/evidence/`](audits/cognitive-load/evidence/))
 
-Sans preuves, il n'y a pas d'audit officiel. Voir [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) pour la machine d'état et [`ROADMAP.md`](ROADMAP.md) pour connaître les prochaines étapes.
+Sans preuves, il n'y a pas d'audit officiel. Consultez [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) pour connaître le diagramme d'état et [`ROADMAP.md`](ROADMAP.md) pour savoir ce qui est prévu ensuite.
 
 ## Installation
 
-La plupart des utilisateurs n'« installent » pas ce dépôt ; ils le consultent. Les audits sont des critères et des outils au format Markdown, interprétés par [Claude](https://claude.ai) ou un autre outil d'IA compatible, avec les outils MCP appropriés (navigation dans le navigateur, capture d'écran, lecture du DOM).
+La plupart des utilisateurs n'« installent » pas ce dépôt ; ils le consultent. Les audits sont des critères et des outils présentés au format Markdown, interprétés par [Claude](https://claude.ai) ou un autre outil d'IA compatible doté des outils MCP appropriés (navigation dans le navigateur, capture d'écran, lecture du DOM).
 
 Pour les responsables qui souhaitent exécuter les outils de vérification locaux (validation du schéma, vérification des liens, audit shipcheck) :
 
@@ -45,72 +45,63 @@ npm install        # installs ajv, ajv-formats, glob (dev-only)
 npm run verify     # runs schema + link + shipcheck checks
 ```
 
-**Prérequis :** Node 20+ pour les outils de vérification. Les audits eux-mêmes sont indépendants de la plateforme et sont au format Markdown.
+**Prérequis :** Node 20+ pour les outils de vérification. Les audits eux-mêmes sont indépendants de la plateforme et au format Markdown.
 
 ## Utilisation
 
 ### Exécution d'un audit
 
-Invoquer via Claude (ou un outil compatible) :
+Invoquer via Claude (ou un outil compatible) :
 
-> Exécuter l'audit de charge cognitive sur `<target-url-or-surface>`
+> Exécuter l’audit de charge cognitive sur `<target-url-or-surface>`
 
-Voir [`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md) pour la liste complète des déclencheurs, des entrées, des sorties et de la procédure.
+Consultez [`audits/cognitive-load/skill/SKILL.md`](audits/cognitive-load/skill/SKILL.md) pour obtenir la liste complète des déclencheurs, des entrées, des sorties et de la procédure.
 
 ### Consultation des audits existants
 
-Les exécutions d'audit précédentes se trouvent dans `audits/<name>/evidence/<run-id>/` et consistent en trois fichiers :
+Les exécutions d'audit précédentes se trouvent dans `audits/<name>/evidence/<run-id>/` et consistent en trois fichiers :
 
 - `<audit>-findings.md` — résultats complets au format des critères
-- `<audit>-scorecard.json` — résultats par section (réussi/avertissement/échec) + résumé
-- `remediation-priority-list.md` — résultats triés par gravité × impact
+- `<audit>-scorecard.json` — nombre de sections réussies/avec avertissement/échouées + résumé
+- `remediation-priority-list.md` — résultats classés par gravité × impact
 
 Les audits actuels et leurs preuves sont présentés dans le tableau [Audits actuels](#current-audits) ci-dessous.
 
-### Création d'un nouvel audit
+### Création d’un nouvel audit
 
-Un nouvel audit passe par cinq états de cycle de vie : Brouillon → Testé → Figé → Utilisé en conditions réelles → Révisé. Voir [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) pour la machine d'état, [`shared/pressure-test-protocol.md`](shared/pressure-test-protocol.md) pour la procédure, et l'audit de charge cognitive à `audits/cognitive-load/` comme exemple d'implémentation.
+Un nouvel audit passe par cinq états de cycle de vie : Brouillon → Testé sous pression → Figé → Testé en conditions réelles → Révisé. Consultez [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) pour connaître le diagramme d’état, [`shared/pressure-test-protocol.md`](shared/pressure-test-protocol.md) pour la procédure et l’audit de charge cognitive à `audits/cognitive-load/` comme exemple.
 
 ## Surface de menace
 
-Lorsqu'un outil d'audit est invoqué, l'outil (Claude avec les outils MCP appropriés) effectue des opérations sur la cible fournie par l'utilisateur :
+Lorsqu'un outil d'audit est invoqué, l'outil (Claude avec les outils MCP appropriés) effectue des opérations sur la cible fournie par l'utilisateur :
 
-- **Échange de données réseau** — uniquement vers l'URL cible spécifiée par l'utilisateur. Les outils n'appellent pas d'autres services.
-- **Capture du DOM et de captures d'écran** — l'outil peut lire le DOM de la page, prendre des captures d'écran et inspecter les classes CSS réactives. Le contenu capturé peut inclure tout ce qui est visible dans la session authentifiée de l'utilisateur sur l'URL cible, y compris les noms, le corps des messages et l'état du compte.
-- **Écriture de fichiers locaux** — les fichiers de preuve sont écrits dans `audits/<name>/evidence/<run-id>/` dans l'arborescence de travail du dépôt uniquement. Les outils n'écrivent pas en dehors de cette portée.
-- **Aucune transmission de preuves vers l'extérieur** — les fichiers de preuve restent sur le disque local, sauf si l'utilisateur les valide et les publie explicitement.
-- **Aucune télémétrie, aucune gestion des informations d'identification** — ce dépôt ne collecte aucune donnée analytique et ne lit aucune information d'identification.
+- **Échange réseau** — uniquement vers l’URL cible spécifiée par l’utilisateur. Les outils n’appellent pas d’autres services.
+- **Capture du DOM et de captures d’écran** — l’outil peut lire le DOM de la page, prendre des captures d’écran et inspecter les classes CSS réactives. Le contenu capturé peut inclure tout ce qui est visible dans la session authentifiée de l’utilisateur sur l’URL cible, y compris les noms, le corps des messages et l’état du compte.
+- **Écriture de fichiers locaux** — les fichiers de preuve sont écrits dans `audits/<name>/evidence/<run-id>/` dans l’arborescence de travail du dépôt uniquement. Les outils n’écrivent pas en dehors de cette portée.
+- **Aucune transmission externe des preuves** — les fichiers de preuve restent sur le disque local, sauf si l’utilisateur les valide et les publie explicitement.
+- **Pas de télémétrie, pas de gestion des secrets** — ce dépôt ne collecte aucune donnée analytique et ne lit aucun identifiant.
 
-Avant de valider les fichiers de preuve dans un dépôt public, l'utilisateur est responsable de la vérification du contenu capturé. Voir [`SECURITY.md`](SECURITY.md) pour le modèle de menace complet, la politique de signalement des vulnérabilités et la portée.
+Avant de valider les fichiers de preuve dans un référentiel public, l’utilisateur est responsable de la vérification du contenu capturé. Consultez [`SECURITY.md`](SECURITY.md) pour obtenir le modèle de menace complet, la politique de signalement des vulnérabilités et la portée.
 
 ## Audits actuels
 
 | Audit | État | Détecte | Preuves |
 |---|---|---|---|
-| [cognitive-load](audits/cognitive-load/) | Version 0.2 figée + utilisé une fois en conditions réelles | Déplacement de la charge, complexité cachée, charge de confiance en l'IA, échec de la transition d'état | PT0 (claude.ai), PT1 (GitHub), PT2-doc-fallback (Outlook), Dogfood-1 (manuel de recherche) |
-| [low-vision](audits/low-vision/) | Testé en conditions réelles, version 0.1.0 | Accès visuel dans des conditions de densité réelles (zoom/redimensionnement, contraste sur les photos et les graphiques, focus dans les thèmes personnalisés, orientation spatiale) | PT0 (documents MDN ARIA) — 10 problèmes, 2C/4H, a détecté 4 des 4 modèles d'échec critiques |
-| [screen-reader-task](audits/screen-reader-task/) | Testé en conditions réelles, version 0.1.0 | Continuité et achèvement des tâches avec un lecteur d'écran — pas seulement la validité d'ARIA | PT0 (react.dev/learn) — 13 problèmes, 2C/5H, a détecté 3 des 4 modèles d'échec critiques |
-| [color-dependence](audits/color-dependence/) | Testé en conditions réelles, version 0.1.0 | Signification véhiculée uniquement par la couleur, y compris la limite entre le contraste acceptable et l'échec de la teinte | PT0 (actions GitHub de microsoft/vscode) — 10 problèmes, 1C/4H, a détecté 3 des 5 modèles d'échec critiques |
-| [motor-access](audits/motor-access/) | Testé en conditions réelles, version 0.1.0 | Coût d'interaction pour les utilisateurs ayant une déficience motrice (parcours au clavier, taille de la cible, dépendance du glissement, délai d'attente, annulation) | PT0 (modèle en plusieurs étapes du système de conception GOV.UK) — 8 problèmes + 12 observations positives, 0C/2H |
+| [cognitive-load](audits/cognitive-load/) | Version 0.2 gelée + testé une fois en conditions réelles | Déplacement de la charge, complexité cachée, fardeau de confiance dans l’IA, échec du changement d’état | PT0 (claude.ai), PT1 (GitHub), PT2-doc-fallback (Outlook), Test utilisateur 1 (manuel de recherche) |
+| [low-vision](audits/low-vision/) | Testé sous pression v0.1.0 | Accès visuel dans des conditions de densité réelles (zoom/redimensionnement, contraste sur les photos et les graphiques, focus avec des thèmes personnalisés, orientation spatiale) | PT0 (documents MDN ARIA) — 10 résultats, 2C/4H, a détecté 4 des 4 modèles d’échec critiques |
+| [screen-reader-task](audits/screen-reader-task/) | Testé sous pression v0.1.0 | Continuité et achèvement des tâches à l’aide d’un lecteur d’écran — pas seulement la validité de l’ARIA | PT0 (react.dev/learn) — 13 résultats, 2C/5H, a détecté 3 des 4 modèles d’échec critiques |
+| [color-dependence](audits/color-dependence/) | Testé sous pression v0.1.0 | Signification véhiculée uniquement par la couleur, y compris la limite entre le contraste acceptable et l’échec de la teinte | PT0 (actions GitHub de microsoft/vscode) — 10 résultats, 1C/4H, a détecté 3 des 5 modèles d’échec critiques |
+| [motor-access](audits/motor-access/) | Testé sous pression v0.1.0 | Coût d’interaction pour les utilisateurs ayant une déficience motrice (parcours au clavier, taille de la cible, dépendance du glissement, délai d’attente, annulation) | PT0 (modèle en plusieurs étapes du système de conception GOV.UK) — 8 résultats + 12 observations positives, 0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | Testé sous pression v0.1.0 | Confiance forcée, comportement opaque de l’IA, pas de récupération des erreurs de l’IA, pas de traçabilité | PT0 (Bing SSR + documents sur la confiance dans l’IA) — 9 résultats (5H/4M), 4 observés, la section 7 a échoué lors d’une erreur reproductible |
+| [motion-sensitivity](audits/motion-sensitivity/) | Testé sous pression v0.1.0 | Déclencheurs vestibulaires, respect de l’animation, préférence pour une animation moins rapide, seuils de sensibilité aux scintillements/crises d’épilepsie | PT0 (linear.app) — 3 résultats (1H/2L) + 4 observations positives, 0C |
 
-## Famille d'audits
+## Famille d’audits
 
-Chaque audit doit indiquer *quel type de problème cet audit détecte-t-il que les outils génériques ne détectent pas ?* Pour la charge cognitive, la réponse est le déplacement de la charge.
+Chaque audit doit indiquer *quels problèmes cet audit permet de détecter que les outils d’analyse génériques ne détectent pas ?* Pour la charge cognitive, la réponse est le déplacement de la charge.
 
-### Brouillons en cours (créés le 2026-06-02, pas encore testés en conditions réelles)
+### Audits futurs (pas encore créés)
 
-Quatre audits préliminaires sont disponibles dans le dépôt, chacune comprenant la structure complète à quatre éléments (grille d’évaluation + compétence + schéma + liste restreinte de candidats PT0), à l’exception des preuves. Conformément au cycle de vie, elles ne sont pas répertoriées dans le tableau « Audits en cours » ci-dessus tant qu’elles n’ont pas subi au moins un test de performance. Consultez le fichier CHANGELOG de chaque audit pour connaître le suivi des améliorations spécifiques à chaque audit (les références ont été vérifiées par un oracle de récupération par rapport aux sources arXiv/DOI/W3C ; un DOI fabriqué et plusieurs erreurs d’attribution ont été corrigés avant la validation).
-
-| Audit préliminaire | Préfixe | Détecte |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | Accès visuel dans des conditions de densité réalistes : zoom et redimensionnement, contraste sur les photos et les graphiques, visibilité du focus avec des thèmes personnalisés, orientation spatiale avec zoom |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | Réalisation des tâches à l’aide d’un lecteur d’écran – et pas seulement validation ARIA |
-| [color-dependence](audits/color-dependence/) | `CD` | Signification véhiculée uniquement par la couleur, y compris la limite entre le contraste acceptable et la couleur inacceptable, que les scanners ne peuvent pas détecter |
-| [motor-access](audits/motor-access/) | `MA` | Coût de l’interaction pour les utilisateurs ayant des troubles moteurs : parcours au clavier, précision de la cible, dépendance au glisser-déposer, pression du délai d’attente, annulation |
-
-### Audits futurs (pas encore élaborés)
-
-La sensibilité au mouvement (déclencheurs vestibulaires, `prefers-reduced-motion`) et la surface de confiance de l’IA (confiance forcée, comportement opaque de l’IA, provenance) restent dans la [FEUILLE DE ROUTE](ROADMAP.md). Les audits sont ajoutés un par un, avec des preuves, lorsqu’une cible réelle justifie le travail, et non par simple spéculation.
+Les sept audits actuellement définis sont désormais disponibles dans le dépôt et ont été **testés en conditions réelles ou mieux** (voir *Audits actuels* ci-dessus) — aucun audit n’est en cours d’élaboration. Les deux plus récemment ajoutés, **AI Trust Surface** (`AT`) et **Motion Sensitivity** (`MO`), ont été créés par un groupe de chercheurs (recherche → vérification des citations externes → auteur) et testés de la même manière que les quatre précédents. Les audits suivants sont réalisés à la demande, et non sur une base spéculative — ils sont ajoutés un par un, avec des preuves, lorsqu’un objectif réel et une grille d’évaluation basée sur la recherche justifient le travail. Le [ROADMAP](ROADMAP.md) suit les candidats et l’avancement du cycle de vie (PT1 → Gel) pour les audits déjà présents.
 
 ## Structure du dépôt
 
@@ -137,32 +128,34 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## Ce que ce n’est pas
 
-- Ce n’est pas un scanner de conformité WCAG (utilisez [axe](https://www.deque.com/axe/), [Lighthouse](https://developer.chrome.com/docs/lighthouse), [Pa11y](https://pa11y.org/) à cette fin)
+- Ce n’est pas un outil d’analyse de conformité WCAG (utilisez [axe](https://www.deque.com/axe/), [Lighthouse](https://developer.chrome.com/docs/lighthouse), [Pa11y](https://pa11y.org/) à cette fin)
 - Ce n’est pas une évaluation de la conception visuelle
 - Ce n’est pas une liste de contrôle d’accessibilité générique
-- Ce n’est pas un package npm publié (pour l’instant – `package.json` indique `private: true` jusqu’à ce qu’un package d’exécution soit créé)
+- Ce n’est pas un package npm publié (pour l’instant — `package.json` indique `private: true` jusqu’à ce qu’un package d’exécution soit créé)
 
-Les audits de ce dépôt sont conçus pour être appliqués aux interfaces qui **passent les scanners mais qui, malgré tout, obligent les utilisateurs à chercher**.
+Les audits dans ce dépôt sont conçus pour être appliqués aux interfaces qui **passent les tests des outils d’analyse, mais qui obligent toujours les utilisateurs à chercher**.
 
 ## Contribution
 
-Ce dépôt est actuellement maintenu par [dogfood-lab](https://github.com/dogfood-lab). Les contributions externes sont les bienvenues – ouvrez d’abord un problème pour discuter de tout nouvel audit ou changement de grille d’évaluation. Conformément au cycle de vie : pas de preuves, pas d’audit officiel.
+Ce dépôt est actuellement maintenu par [dogfood-lab](https://github.com/dogfood-lab). Les contributions externes sont les bienvenues — ouvrez d’abord un problème pour discuter de tout nouvel audit ou changement de grille d’évaluation. Conformément au cycle de vie : pas de preuves, pas d’audit officiel.
 
 ## Licence
 
-[MIT](LICENSE) – Copyright (c) 2026 dogfood-lab.
+[MIT](LICENSE) — Copyright (c) 2026 dogfood-lab.
 
 ---
 

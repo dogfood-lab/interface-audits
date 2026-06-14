@@ -92,25 +92,16 @@ Prima di committare i file di evidenza in un repository pubblico, l'utente è re
 | [screen-reader-task](audits/screen-reader-task/) | Test di pressione versione 0.1.0 | Continuità e completamento delle attività tramite un lettore di schermo — non solo validità ARIA | PT0 (react.dev/learn) — 13 risultati, 2C/5H, ha individuato 3/4 modelli di errore critici |
 | [color-dependence](audits/color-dependence/) | Test di pressione versione 0.1.0 | Significato trasmesso esclusivamente tramite il colore, inclusa la soglia tra "contrasto sufficiente" e "fallimento del colore" | PT0 (Microsoft/vscode GitHub Actions) — 10 risultati, 1C/4H, ha individuato 3/5 modelli di errore critici |
 | [motor-access](audits/motor-access/) | Test di pressione versione 0.1.0 | Costo di interazione per gli utenti con disabilità motorie (percorso della tastiera, dimensione del bersaglio, dipendenza dal trascinamento, timeout, annullamento) | PT0 (modello multi-step del sistema di progettazione GOV.UK) — 8 risultati + 12 osservazioni positive, 0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | Test di pressione versione 0.1.0 | Fiducia imposta, comportamento dell'IA opaco, nessuna possibilità di correggere gli errori dell'IA, assenza di tracciabilità | PT0 (Bing SSR + documentazione sull'affidabilità dell'IA di prima parte) — 9 risultati (5H/4M), 4 osservazioni, la sezione 7 ha superato il test su un errore riproducibile |
+| [motion-sensitivity](audits/motion-sensitivity/) | Test di pressione versione 0.1.0 | Fattori scatenanti vestibolari, rispetto delle animazioni, preferenza per movimenti ridotti, soglie di lampeggio/crisi epilettiche | PT0 (linear.app) — 3 risultati (1H/2L) + 4 osservazioni positive, 0C |
 
 ## Famiglia di audit
 
 Ogni audit deve dichiarare *quale tipo di problema individua questo audit che gli strumenti di scansione generici non rilevano?* Per il Cognitive Load, la risposta è il sovraccarico cognitivo.
 
-### Bozze in corso di elaborazione (create il 2026-06-02, non ancora sottoposte a test di pressione)
-
-Nel repository sono presenti quattro bozze di audit, ciascuna con la struttura completa (Rubrica + Competenza + Schema + elenco ristretto di candidati PT0), a cui manca però la parte relativa alle evidenze. In base al ciclo di vita, non sono elencate nella tabella *Audit in corso* fino a quando non hanno superato almeno un test di verifica. Consultare la sezione CHANGELOG di ciascun audit per visualizzare la cronologia delle modifiche (le citazioni sono state verificate tramite un sistema di recupero dati rispetto alle fonti arXiv/DOI/W3C; un DOI fabbricato e diverse attribuzioni errate sono state corrette prima del commit).
-
-| Bozza di audit | Prefisso | Individua |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | Accessibilità visiva in condizioni di densità reale: zoom e ridisposizione del contenuto, contrasto su foto e grafici, visibilità a fuoco con temi personalizzati, orientamento spaziale con ingrandimento |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | Completamento di un compito tramite un lettore di schermo, non solo verifica della validità ARIA |
-| [color-dependence](audits/color-dependence/) | `CD` | Significato comunicato esclusivamente tramite il colore, compresa la soglia di superamento/mancato superamento del contrasto che gli scanner non riescono a rilevare |
-| [motor-access](audits/motor-access/) | `MA` | Costo dell’interazione per gli utenti con difficoltà motorie: percorso tramite tastiera, precisione del targeting, dipendenza dal trascinamento, pressione dei tempi limite, funzione di annullamento |
-
 ### Audit futuri (non ancora completati)
 
-Sensibilità al movimento (stimoli vestibolari, `prefers-reduced-motion`) e livello di fiducia nell’IA (fiducia forzata, comportamento opaco dell’IA, provenienza) rimangono nella [ROADMAP](ROADMAP.md). Gli audit vengono aggiunti uno alla volta, con le relative evidenze, quando un obiettivo reale giustifica il lavoro, e non sulla base di mere speculazioni.
+Tutte le sette verifiche attualmente previste sono ora presenti nel repository e hanno superato i test di stress o sono migliori (vedere *Verifiche attuali* sopra); non ci sono verifiche in bozza. Le due più recenti aggiunte, **Superficie di fiducia dell'IA** (`AT`) e **Sensibilità al movimento** (`MO`), sono state create da un gruppo di studio (ricerca → verifica delle citazioni esterne → autore) e sono state sottoposte a test di stress nello stesso modo in cui lo sono state le quattro precedenti. Ulteriori verifiche vengono effettuate su richiesta, non in modo speculativo: vengono aggiunte una alla volta, con prove, quando un obiettivo reale e una griglia basata sulla ricerca giustificano il lavoro. Il [ROADMAP](ROADMAP.md) tiene traccia dei candidati e del lavoro di avanzamento del ciclo di vita (PT1 → Congelamento) per le verifiche già presenti.
 
 ## Struttura del repository
 
@@ -137,14 +128,16 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## Cosa non è

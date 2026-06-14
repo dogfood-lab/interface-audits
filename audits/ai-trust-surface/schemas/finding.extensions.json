@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/ai-trust-surface/schemas/finding.extensions.json",
+  "title": "AI Trust Surface Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds fields; does not redefine the base contract. Does NOT extend the shared load_displaced_to enum — AI-trust failures map onto the fixed shared enum (see the mapping table in RUBRIC.md).",
+  "type": "object",
+  "properties": {
+    "at_trust_pattern": {
+      "type": "string",
+      "enum": [
+        "forced_trust",
+        "manufactured_trust",
+        "invalid_provenance",
+        "placebo_control",
+        "manipulative_personalization",
+        "no_recovery",
+        "n/a"
+      ],
+      "description": "Optional. Classifies the trust-failure pattern the finding exemplifies: forced_trust = no inspect/undo/trace path, the user must accept AI output (S1/S2/S5); manufactured_trust = confidence/explanation that raises trust without conveying decision-relevant information, placebic (S3); invalid_provenance = citation/source shown but unverified or unfaithful, or a 'hallucination-free' overclaim (S0/S2); placebo_control = control present but no observable effect on output (S5); manipulative_personalization = covert adaptation that steers the user and benefits the operator (S4/S5); no_recovery = irreversible AI action or correction loop with no visible state change (S1). Optional/omitted (or 'n/a') when no single pattern applies."
+    },
+    "hax_phase": {
+      "type": "string",
+      "enum": [
+        "initially",
+        "during",
+        "when_wrong",
+        "over_time",
+        "n/a"
+      ],
+      "description": "Optional. Maps the finding to one of the four temporal phases of the HAX guidelines (Amershi et al. 2019, DOI:10.1145/3290605.3300233): initially = set expectations / make capabilities clear (G1-G2); during = contextual, relevant, mitigate social bias (G3-G6); when_wrong = scope services, support efficient invocation/dismissal/correction, convey why (G7-G11); over_time = remember interactions, learn from behavior, convey consequences, provide global controls, notify about changes (G12-G18). Optional/omitted (or 'n/a') when the finding does not localize to a single phase."
+    }
+  }
+}

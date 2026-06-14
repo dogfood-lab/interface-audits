@@ -92,25 +92,16 @@ Antes de confirmar los archivos de evidencia en un repositorio público, el usua
 | [screen-reader-task](audits/screen-reader-task/) | Probada v0.1.0 | Continuidad y finalización de las tareas a través de un lector de pantalla: no solo la validez de ARIA | PT0 (react.dev/learn): 13 resultados, 2C/5H, se detectaron 3 de 4 patrones de fallo graves |
 | [color-dependence](audits/color-dependence/) | Probada v0.1.0 | Significado transmitido únicamente por el color, incluido el límite de contraste-superado/tono-fallido | PT0 (Microsoft/vscode GitHub Actions): 10 resultados, 1C/4H, se detectaron 3 de 5 patrones de fallo graves |
 | [motor-access](audits/motor-access/) | Probada v0.1.0 | Coste de interacción para usuarios con movilidad reducida (ruta de teclado, tamaño del objetivo, dependencia del arrastre, tiempo de espera, deshacer) | PT0 (sistema de diseño de GOV.UK, patrón de varios pasos): 8 resultados + 12 observaciones positivas, 0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | Probada v0.1.0 | Confianza impuesta, comportamiento de la IA opaco, sin posibilidad de recuperación de los errores de la IA, sin trazabilidad | PT0 (Bing SSR + documentación de confianza en la IA de primera parte) — 9 hallazgos (5H/4M), 4 observados, la sección 7 superó una prueba reproducible |
+| [motion-sensitivity](audits/motion-sensitivity/) | Probada v0.1.0 | Desencadenantes vestibulares, respeto por la animación, prefiere movimiento reducido, umbrales para destellos/convulsiones | PT0 (linear.app) — 3 hallazgos (1H/2L) + 4 observaciones positivas, 0C |
 
 ## Familia de auditorías
 
 Cada auditoría debe declarar *¿qué carga detecta esta auditoría que los analizadores genéricos no detectan?* Para la carga cognitiva, la respuesta es la redistribución de la carga.
 
-### Borradores en curso (creados el 2 de junio de 2026, aún no probados)
-
-Hay cuatro borradores de auditorías en el repositorio, cada uno con la estructura completa de cuatro elementos (rúbrica + habilidad + esquema + lista corta de candidatos para PT0), pero sin las pruebas. Según el ciclo de vida, no se incluyen en la tabla de *auditorías actuales* hasta que tengan al menos una prueba de validación. Consulte el archivo CHANGELOG de cada auditoría para ver el historial de mejoras específicas de cada auditoría (las citas fueron verificadas por un oráculo de recuperación en fuentes de arXiv/DOI/W3C; se corrigió un DOI falso y varias atribuciones incorrectas antes de la confirmación).
-
-| Borrador de auditoría | Prefijo | Detecta |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | Acceso visual con densidad real: zoom y ajuste automático, contraste en fotos y gráficos, visibilidad del enfoque con temas personalizados, orientación espacial con aumento. |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | *Finalización* de la tarea mediante un lector de pantalla, no solo validación de ARIA. |
-| [color-dependence](audits/color-dependence/) | `CD` | Significado transmitido únicamente por el color, incluido el límite de contraste/tono que los escáneres no pueden detectar. |
-| [motor-access](audits/motor-access/) | `MA` | Costo de interacción para usuarios con discapacidades motoras: ruta del teclado, precisión del objetivo, dependencia del arrastre, presión de tiempo de espera, función de deshacer. |
-
 ### Auditorías futuras (aún no creadas)
 
-Sensibilidad al movimiento (disparadores vestibulares, `prefers-reduced-motion`) y superficie de confianza de la IA (confianza forzada, comportamiento opaco de la IA, procedencia) siguen estando en la [HOJA DE RUTA](ROADMAP.md). Las auditorías se añaden una a la vez, con pruebas, cuando un objetivo real justifica el trabajo, no por especulación.
+Las siete auditorías especificadas actualmente ya están en el repositorio y son **"Sometidas a pruebas de estrés o mejores"** (ver *Auditorías actuales* arriba); no hay auditorías pendientes en estado "Borrador". Las dos más recientes, **"Superficie de confianza de la IA"** (`AT`) y **"Sensibilidad al movimiento"** (`MO`), fueron elaboradas por un grupo de estudio (investigación → verificación de citas externas → autor) y se sometieron a pruebas de estrés de la misma manera que las cuatro anteriores. Las auditorías adicionales se realizan según la demanda, no son especulativas; se añaden una a la vez, con evidencia, cuando un objetivo real y una rúbrica basada en la investigación justifican el trabajo. El [MAPA DE CARRETERA](ROADMAP.md) realiza un seguimiento de los candidatos y del trabajo de avance del ciclo de vida (PT1 → Congelación) para las auditorías que ya están aquí.
 
 ## Estructura del repositorio
 
@@ -137,14 +128,16 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## Esto no es

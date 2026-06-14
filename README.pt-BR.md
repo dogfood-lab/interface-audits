@@ -92,25 +92,16 @@ Antes de enviar os arquivos de evidência para um repositório público, o usuá
 | [screen-reader-task](audits/screen-reader-task/) | Testada em ambiente de teste v0.1.0 | Continuidade e conclusão da tarefa por meio de um leitor de tela — não apenas validade ARIA | PT0 (react.dev/learn) — 13 resultados, 2C/5H, atingiu 3/4 padrões de falha grave |
 | [color-dependence](audits/color-dependence/) | Testada em ambiente de teste v0.1.0 | Significado transmitido apenas pela cor, incluindo a fronteira entre contraste aprovado e cor falha | PT0 (microsoft/vscode GitHub Actions) — 10 resultados, 1C/4H, atingiu 3/5 padrões de falha grave |
 | [motor-access](audits/motor-access/) | Testada em ambiente de teste v0.1.0 | Custo de interação para usuários com deficiência motora (caminho do teclado, tamanho do alvo, dependência de arrastar, tempo limite, desfazer) | PT0 (sistema de design GOV.UK, padrão de várias etapas) — 8 resultados + 12 observações positivas, 0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | Testada em ambiente de teste v0.1.0 | Confiança imposta, comportamento opaco da IA, sem possibilidade de correção de erros da IA, sem rastreabilidade. | PT0 (Bing SSR + documentação interna sobre confiança em IA) — 9 descobertas (5H/4M), 4 observadas, a seção 7 foi aprovada com base em um erro reproduzível. |
+| [motion-sensitivity](audits/motion-sensitivity/) | Testada em ambiente de teste v0.1.0 | Gatilhos vestibulares, respeito à animação, preferência por movimento reduzido, limites de flash/convulsões. | PT0 (linear.app) — 3 descobertas (1H/2L) + 4 observações positivas, 0C. |
 
 ## Família de auditorias
 
 Cada auditoria deve declarar *que fardo esta auditoria detecta que os verificadores genéricos não detectam?* Para Carga Cognitiva, a resposta é o deslocamento da carga.
 
-### Rascunhos em andamento (criados em 2026-06-02, ainda não testados em ambiente de pressão)
-
-Quatro auditorias em versão preliminar estão disponíveis no repositório, cada uma com a estrutura completa de quatro elementos (Critérios + Competência + Esquema + Lista de candidatos PT0), exceto as evidências. De acordo com o ciclo de vida, elas não são listadas na tabela *Auditorias atuais* acima até que tenham pelo menos um teste de validação. Consulte o arquivo CHANGELOG de cada auditoria para obter o histórico de aprimoramentos de cada auditoria (as citações foram verificadas por um oráculo de recuperação em relação às fontes arXiv/DOI/W3C; um DOI fabricado e várias atribuições incorretas foram corrigidas antes do envio).
-
-| Auditoria em versão preliminar | Prefixo | Detecta |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | Acesso visual em condições de densidade real — zoom e redimensionamento, contraste em fotos e gráficos, visibilidade do foco em temas personalizados, orientação espacial com ampliação |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | Conclusão de tarefa por meio de um leitor de tela — não apenas validação ARIA |
-| [color-dependence](audits/color-dependence/) | `CD` | Significado transmitido apenas pela cor — incluindo o limite de aprovação/reprovação de contraste que os scanners não conseguem detectar |
-| [motor-access](audits/motor-access/) | `MA` | Custo de interação para usuários com deficiência motora — caminho do teclado, precisão do alvo, dependência de arrastar, pressão de tempo limite, desfazer |
-
 ### Auditorias futuras (ainda não criadas)
 
-Sensibilidade ao movimento (gatilhos vestibulares, `prefers-reduced-motion`) e Superfície de Confiança em IA (confiança forçada, comportamento opaco da IA, rastreabilidade) permanecem no [ROTEIRO](ROADMAP.md). As auditorias são adicionadas uma de cada vez, com evidências, quando um alvo real justifica o trabalho — não por especulação.
+As sete auditorias atualmente especificadas estão agora no repositório e foram **testadas sob pressão ou melhor** (veja *Auditorias atuais* acima) — não há auditorias em fase de rascunho pendentes. As duas mais recentes, **Superfície de Confiança da IA** (`AT`) e **Sensibilidade ao Movimento** (`MO`), foram elaboradas por um grupo de estudo (pesquisa → verificação de citações externas → autor) e testadas sob pressão da mesma forma que as quatro anteriores. Auditorias adicionais são solicitadas conforme a necessidade, não especulativas — adicionadas uma de cada vez, com evidências, quando um objetivo real e uma rubrica baseada em pesquisa justificam o trabalho. O [ROADMAP](ROADMAP.md) acompanha os candidatos e o trabalho de avanço do ciclo de vida (PT1 → Congelamento) para as auditorias já existentes.
 
 ## Estrutura do repositório
 
@@ -137,14 +128,16 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## O que isto não é

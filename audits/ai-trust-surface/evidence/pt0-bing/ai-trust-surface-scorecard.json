@@ -1,0 +1,313 @@
+{
+  "audit_id": "at-20260613-pt0-bing",
+  "audit_label": "AI Trust Surface PT0 — Bing SSR search (live server-rendered) + first-party trust-doc triangulation. Supersedes the 403-walled pt0-perplexity doc-fallback.",
+  "rubric_version": "v0.1 (Draft)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "Path 2 — fetched SSR DOM (Observed) + first-party vendor trust docs (Inferred)",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "observed",
+    "limitations": "Bing's server-rendered results page returns the AI provenance label and the absence of any confidence cue directly in the HTTP body, so Bing-surface findings are Observed (the affordance, or its documented absence, is literally in the fetched bytes). The DuckDuckGo instant answer and its cited Wikipedia source were both fetched, enabling a real Observed citation-faithfulness check. Findings drawn from first-party vendor help docs (Google AI Overviews opt-out scope; TikTok/YouTube/Netflix recommendation controls) are Inferred — the doc describes the control's existence and scope, but the live behavioral tests (the [F23] placebo test: does toggling change output; the [F22] previewable-effect test) were not exercised. No live authenticated session, no AT/OS toggles, no pixel/render access. The cleaner path for the recommender findings is a signed-in live session toggling each control and observing output change; for AT-05 a live attempt to opt out of AI Overviews. action_stakes for the DECISIONS these surfaces inform is medium-to-high (the mRNA-vaccine query is health-adjacent); the AI ACTION itself (reading an answer / receiving a recommendation) is non-destructive and reversible, so the S0/S1/S3 Critical preconditions (which require a high-stakes AND irreversible AI-driven action) do not trigger. No Critical is fired."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://www.bing.com/search?q=how+does+mRNA+vaccine+work",
+    "platform": "web (live server-rendered AI-mediated search surface) + first-party vendor trust documentation",
+    "primary_sources": [
+      "https://www.bing.com/search?q=does (AI label persists on ambiguous single-word query, no disambiguation)",
+      "https://www.bing.com/search?q=why+did+the+roman+empire+adopt+the+euro+currency (false-premise query; AI label persists, no premise correction)",
+      "https://www.bing.com/search?q=what+year+did+the+berlin+wall+fall (clean query; same AI label, same absence of confidence cue — confirms invariance)",
+      "https://support.google.com/websearch/answer/14901683 (Google AI Overviews: fallibility statement [F28]; no opt-out for core feature [F26]; click-gated sources [F18]; no confidence framing)",
+      "https://html.duckduckgo.com/html/?q=what+is+retrieval+augmented+generation (instant answer; single top-level Wikipedia citation; faithfulness check [F17]; no AI label / confidence cue)",
+      "https://en.wikipedia.org/wiki/Retrieval-augmented_generation (cited source for the DDG faithfulness check — near-verbatim match, correct AND faithful)",
+      "https://support.tiktok.com/en/using-tiktok/exploring-videos/how-tiktok-recommends-content (For You adaptation disclosed; full opt-out geo-gated to EU+Kazakhstan [F26]; vague feedback effect [F22])",
+      "https://support.google.com/youtube/answer/6342839 (adaptation disclosed; no complete algorithmic opt-out; no 'why this video' inspection [F9/F21]; vague feedback effect [F22])",
+      "https://help.netflix.com/en/node/100639 (adaptation disclosed; NO opt-out mechanism documented [F26]; no 'why this title' inspection [F21]; vague feedback effect [F22])",
+      "https://claude.com/blog/introducing-citations-api (first-party copy qualified 'minimize hallucinations'; platforms customer 'reduced... from 10% to 0%' overclaim [F15]; no fallibility statement)"
+    ],
+    "surfaces_audited": [
+      "Bing SSR results page-footer AI provenance label 'Content was generated with AI. Learn more' (Observed, 4 queries)",
+      "Bing query interpretation / graceful-failure on ambiguous, false-premise, and misfiring queries (Observed)",
+      "DuckDuckGo HTML instant-answer box + its single Wikipedia citation (Observed; faithfulness checked against source)",
+      "Google AI Overviews opt-out / control / source-display documentation (Inferred from first-party doc)",
+      "TikTok / YouTube / Netflix recommendation disclosure, feedback-effect, opt-out, and inspection controls (Inferred from first-party docs)",
+      "Anthropic Citations announcement provenance/overclaim copy (Observed in fetched bytes)"
+    ]
+  },
+  "context": {
+    "user_type": "A user adopting a synthesized or AI-labeled factual result, or acting on an algorithmic recommendation, on a surface that announces AI involvement but gives no per-instance reliability signal — often on a consequential (health/factual/purchase-adjacent) topic where being wrong has real cost",
+    "task": "Read an AI-mediated search result or recommendation and decide whether to rely on it; or attempt to govern/opt out of the AI mediation",
+    "dense_state": "Bing SSR results across four answer states (clean / ambiguous / false-premise / hard misfire), all carrying the same static AI provenance footer; first-party recommender and opt-out documentation for the control surfaces Bing's footer does not reach",
+    "low_bandwidth_state": "A user who reads the 'Content was generated with AI' label as a reason to weight the output, on a query where the engine misfired and offers no confidence cue, no disambiguation, and no graceful-failure path",
+    "ai_features_present": [
+      "AI-mediated search results with a page-level AI provenance label (Bing)",
+      "AI Overviews / instant answers with click-gated sources (Google / DuckDuckGo)",
+      "Algorithmic personalized recommendation feeds (TikTok / YouTube / Netflix)",
+      "RAG-with-citations product copy (Anthropic Citations)"
+    ],
+    "method": "Path 2 — fetched SSR DOM (Observed) + first-party vendor trust docs (Inferred)",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "No live authenticated session, AT, or pixel/render access. Bing-surface and DDG-instant-answer findings are Observed (in the fetched HTTP body); first-party-doc-derived control findings are Inferred (documented scope read, live behavioral test not run). action_stakes for the downstream decision is medium-to-high; the AI action itself is non-destructive/reversible, so the S0/S1/S3 Critical preconditions (high-stakes AND irreversible) do not trigger and no Critical is fired."
+  },
+  "sections": {
+    "source_provenance": {
+      "status": "warn",
+      "finding_ids": ["AT-03"],
+      "open_questions": ["AT-OQ-01"],
+      "positive_observations": ["PO-01", "PO-02"],
+      "notes": "One High (AT-03: Anthropic Citations first-party copy is qualified 'minimize hallucinations' — correctly S0-compliant — but the post platforms a customer 'reduced... from 10% to 0%' elimination claim that collides with the empirical floor [F15], and carries no fallibility statement). The S0 Critical-via-overclaim precondition was evaluated and does NOT trigger: the first-party voice is qualified (so the first-party-overclaim path does not open) and the platformed customer claim drives no irreversible action. Calibrated to High, not Critical — this is the run's explicit honest-scoring case. The DDG citation was checked for faithfulness against its cited Wikipedia source and PASSED (PO-01); no faithfulness failure was manufactured. Does not reach the 1-Critical / 3-High Fail threshold."
+    },
+    "reversibility": {
+      "status": "warn",
+      "finding_ids": ["AT-02"],
+      "notes": "One High (AT-02: no graceful-failure path on ambiguous / false-premise / misfiring queries — the surface assumes correctness and stamps AI provenance on failed output [F30], with no disambiguation or false-premise correction). The classic 'irreversible AI edit with no undo' [F8/F13] does NOT apply — reading a result changes no user state — so this fires the graceful-failure mode [F30], not the no-undo mode. Exercised directly on failure cases. Does not reach Fail threshold."
+    },
+    "inspection_affordances": {
+      "status": "warn",
+      "finding_ids": ["AT-04", "AT-08"],
+      "notes": "One Medium (AT-04: DDG instant-answer citation is top-level only, faithfulness uncheckable in-place [F17]; the live faithfulness check passed for this instance — PO-01 — so the finding is the structural gap, not a manufactured failure) and one Medium (AT-08: no 'why this' inspection on YouTube/Netflix recommenders — control without inspection of the signal it acts on [F21]). Two Mediums; no High; does not reach Fail threshold."
+    },
+    "confidence_communication": {
+      "status": "warn",
+      "finding_ids": ["AT-01"],
+      "notes": "One High (AT-01: Bing's AI provenance label persists byte-identically across clean / ambiguous / false-premise / misfire outputs with NO per-decision confidence or uncertainty cue — fires the S3 absence-of-signal rule [F1]). Deliberately did NOT fire [F2] (miscalibrated displayed number) or [F3] (placebic explanation) because there is NO confidence display to miscalibrate — the failure is ABSENCE of a signal, which caps at High. Held High not Critical: the AI action is non-destructive/reversible (S3 Critical needs high-stakes AND irreversible). This is the run's Section 7 observable failure case. Does not reach Fail threshold."
+    },
+    "adaptation_transparency": {
+      "status": "warn",
+      "finding_ids": ["AT-06"],
+      "positive_observations": ["PO-03"],
+      "notes": "One Medium (AT-06: TikTok/YouTube/Netflix describe feedback effects only vaguely — 'helps improve' — with no immediate/previewable visible effect [F22], and the placebo risk [F23] means satisfaction-language cannot verify the control works). The silent-adaptation High [F20] was explicitly NOT fired: all three recommenders DISCLOSE the fact of adaptation in their doc text (Observed → PO-03), so these surfaces are not silent. Firing [F20] would contradict the evidence. Does not reach Fail threshold."
+    },
+    "user_control": {
+      "status": "warn",
+      "finding_ids": ["AT-05", "AT-07"],
+      "notes": "Two Highs — AT-05 (Google AI Overviews: 'Features cannot be turned off'; the only opt-out toggles experimental Labs features, not the core AI Overview — absent opt-out from AI mediation [F26]) and AT-07 (recommender controls are all-or-nothing [F24]; TikTok's full opt-out is geo-gated to EU+Kazakhstan and Netflix documents NO opt-out at all [F26]). Two Highs is below the 3-High section-Fail threshold and there is no Critical, so the section WARNS, not Fails. This is the correct calibration: both are documented (Inferred) absences/restrictions, strong enough for High on the documented scope but not escalated to a behavioral-proof Critical."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["AT-09"],
+      "notes": "One Medium (AT-09: provenance/sources are click-gated across Google AI Overviews, Bing, and DuckDuckGo — verification requires leaving the answer surface, which the literature shows makes non-verification rational [F18, F5]). This is the recursive-trap / cost dimension. Medium, not a second independent High. Does not reach Fail threshold."
+    },
+    "evidence": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": ["AT-OQ-02"],
+      "notes": "PROCESS PASS — this is the gate the pt0-perplexity run FAILED. A sub-optimal/wrong AI-adjacent output WAS exercised: the Bing 'how does mRNA vaccine work' misfire (returned grammar/dictionary results for 'does') and the false-premise query, with the page-level AI affordance tested ON those failures (it persisted unchanged, no confidence cue). The DDG citation was validated for both existence AND faithfulness against its cited source (not merely observed as present) — the [F16]/[F17] validation the rubric requires for Section 7. Every finding carries an evidence state; evidence gaps are preserved as open questions (AT-OQ-01, AT-OQ-02), not laundered. The recommender behavioral tests ([F22]/[F23]) were not run live — recorded as the standing resolution path (AT-OQ-02), which warns the Inferred recommender findings but does not block the Section 7 process pass, because the consequential primary surface (Bing) WAS exercised under failure."
+    }
+  },
+  "summary": {
+    "overall_status": "warn",
+    "critical_count": 0,
+    "high_count": 5,
+    "medium_count": 4,
+    "low_count": 0,
+    "open_question_count": 2,
+    "sections_passed": 1,
+    "sections_warned": 7,
+    "sections_failed": 0,
+    "positive_observation_count": 3,
+    "hard_failure_patterns_validated": {
+      "forced_trust": true,
+      "manufactured_trust": false,
+      "invalid_provenance": true,
+      "placebo_control": false
+    }
+  },
+  "findings": [
+    {
+      "id": "AT-01",
+      "title": "AI provenance label persists on misfiring output with no confidence channel",
+      "severity": "high",
+      "section": "confidence_communication",
+      "surface": "Bing SSR search results page-footer label 'Content was generated with AI. Learn more'",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "observed",
+      "evidence_summary": "Observed in the fetched bytes of four queries (2026-06-13). The verbatim footer 'Content was generated with AI. Learn more' rendered byte-identically on a clean query (berlin wall), an ambiguous word (does), a false-premise query (roman empire euro), and a HARD MISFIRE (q=how+does+mRNA+vaccine+work returned grammar/dictionary results for 'does', not vaccine content). On every one, no confidence indicator, certainty score, or uncertainty hedge was present. The label is answer-quality-invariant — it fires whether the AI is right or catastrophically wrong. This is the Section 7 observable failure case.",
+      "severity_note": "Fires the S3 absence-of-signal rule [F1] (no per-decision confidence on consequential output). NOT [F2]/[F3] — there is no confidence DISPLAY to miscalibrate or to be placebic; the failure is ABSENCE, which caps at High. Held High not Critical: the AI action is non-destructive/reversible, so the S3 Critical precondition (high-stakes AND irreversible) does not open.",
+      "at_trust_pattern": "forced_trust",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-02",
+      "title": "No disambiguation or false-premise handling; AI label renders on top of unhandled query failures",
+      "severity": "high",
+      "section": "reversibility",
+      "secondary_section": "confidence_communication",
+      "surface": "Bing SSR search — query interpretation on ambiguous / false-premise / misfiring queries",
+      "load_displaced_to": ["recovery / undo", "trust"],
+      "evidence_state": "observed",
+      "evidence_summary": "Observed (2026-06-13). q=how+does+mRNA+vaccine+work collapsed to dictionary results for 'does' with no error/disambiguation and the AI label present; q=does returned dictionary entries with no 'did you mean verb/plural-of-doe' disambiguation; q=why+did+the+roman+empire+adopt+the+euro+currency returned unrelated results with no false-premise correction, AI label present. The surface proceeds as if it succeeded and stamps AI provenance on the failed output. No inspect-and-correct loop and no graceful-failure path. Tested directly on failure cases (Section 7).",
+      "severity_note": "Fires the S1 graceful-failure mode [F30] crossed with the S3 absence mode [F1]. The 'irreversible AI edit with no undo' [F8/F13] does NOT apply (reading a result changes no user state). High on the graceful-failure absence, not Critical (non-destructive surface).",
+      "at_trust_pattern": "no_recovery",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-03",
+      "title": "Anthropic Citations platforms a customer '10% to 0% hallucination' claim that collides with the empirical floor",
+      "severity": "high",
+      "section": "source_provenance",
+      "surface": "claude.com Citations API blog post — customer testimonial (Endex)",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "observed",
+      "evidence_summary": "Observed (2026-06-13) in fetched bytes of https://claude.com/blog/introducing-citations-api. Anthropic first-party copy QUALIFIED: 'Cited text will reference source documents to minimize hallucinations.' Platformed customer (Endex) claim ABSOLUTE: 'we reduced source hallucinations and formatting issues from 10% to 0%.' No fallibility statement that Claude can still err with Citations enabled. The 'to 0%' elimination claim collides with the empirical floor [F15] (legal RAG marketed as eliminating hallucination still hallucinated 17-33%, Magesh et al. 2024).",
+      "severity_note": "High, not Critical. The S0 Critical precondition requires the surface's OWN claim to imply a non-inspectable/unfaithful verifiable basis AND (for escalation) a high-stakes irreversible action. The first-party voice is qualified (so the first-party-overclaim Critical path does NOT open), the overclaim is a PLATFORMED customer claim, and no irreversible action is driven. High under [F15] is the calibrated, honest call — this is the run's explicit non-over-firing case.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "initially"
+    },
+    {
+      "id": "AT-04",
+      "title": "DuckDuckGo instant answer: citation is top-level only (no span grounding) and carries no AI label or confidence cue",
+      "severity": "medium",
+      "section": "inspection_affordances",
+      "secondary_section": "source_provenance",
+      "surface": "DuckDuckGo HTML instant-answer box (Wikipedia-sourced definition)",
+      "load_displaced_to": ["verification", "source recovery"],
+      "evidence_state": "observed",
+      "evidence_summary": "Observed (2026-06-13). The instant answer for 'what is retrieval augmented generation' is sourced to a single top-level Wikipedia link (no span anchor) and carries NO 'AI-generated' label and NO confidence cue. FAITHFULNESS CHECK PERFORMED: fetched the cited article; the instant-answer text ('...a technique that enables large language models to retrieve and incorporate new information from external data sources') is a near-verbatim match to the Wikipedia lead sentence — correct AND faithful for THIS instance (recorded as PO-01; no faithfulness failure manufactured). The finding is the STRUCTURAL gap: no span anchor for the user to run that check themselves [F17], provenance reachable only by click-out [F18].",
+      "severity_note": "Medium — the faithfulness check passed here, so the finding is the uncheckable-by-the-user structure, not an exercised faithfulness failure. [F17] Medium-to-High band, held at Medium because the instance was correct and faithful.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-05",
+      "title": "Google AI Overviews: core feature has no opt-out; only an experimental-features Labs toggle exists",
+      "severity": "high",
+      "section": "user_control",
+      "secondary_section": "configuration_cost",
+      "surface": "Google AI Overviews help page — opt-out / control documentation",
+      "load_displaced_to": ["configuration", "feature loss"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inferred from first-party doc (2026-06-13). Verbatim from https://support.google.com/websearch/answer/14901683: 'AI Overviews are a core Google Search feature, like knowledge panels'; 'Features cannot be turned off.' The only documented opt-out toggles 'AI in Search' in Google Labs and applies, per the same page, only to EXPERIMENTAL features, not the core AI Overviews (requires signed-in account, desktop, Incognito off). So a user has no opt-out from core AI mediation of their results.",
+      "severity_note": "High under [F26] (absent opt-out from a consequential AI-mediated surface). Inferred: documented scope read, live opt-out flow not exercised. Held High not Critical (non-destructive surface; no irreversible action).",
+      "at_trust_pattern": "forced_trust",
+      "hax_phase": "over_time"
+    },
+    {
+      "id": "AT-06",
+      "title": "Recommender feeds adapt but describe feedback effects only vaguely; no previewable effect",
+      "severity": "medium",
+      "section": "adaptation_transparency",
+      "secondary_section": "user_control",
+      "surface": "TikTok / YouTube / Netflix recommendation help pages",
+      "load_displaced_to": ["memory", "trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inferred from first-party docs (2026-06-13). All three DISCLOSE the fact of adaptation (Observed in doc text -> PO-03), so the silent-adaptation High [F20] is NOT fired. But feedback effects are described only vaguely: TikTok 'helps TikTok suggest similar content' / 'we'll show you less content like that'; YouTube feedback 'helps us improve your YouTube experience in the future'; Netflix signals 'improve the accuracy of their prediction.' None describes an immediate/previewable/highlighted visible effect of a single feedback action [F22]. Per [F23] the placebo risk means 'helps improve' language cannot verify the control works. Sources: support.tiktok.com/.../how-tiktok-recommends-content, support.google.com/youtube/answer/6342839, help.netflix.com/en/node/100639.",
+      "severity_note": "Medium per [F22] (feedback whose effect is neither immediate nor highlighted). NOT a silent-adaptation High [F20] — adaptation IS disclosed. Inferred: behavioral previewable-effect test not run live.",
+      "at_trust_pattern": "placebo_control",
+      "hax_phase": "over_time"
+    },
+    {
+      "id": "AT-07",
+      "title": "Recommender controls are all-or-nothing, and the full opt-out is geo-gated or absent",
+      "severity": "high",
+      "section": "user_control",
+      "surface": "TikTok / YouTube / Netflix recommendation controls",
+      "load_displaced_to": ["configuration", "feature loss"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inferred from first-party docs (2026-06-13). TikTok documents a full personalization off-switch but, verbatim, it is 'Limited to EU and Kazakhstan' and offers no granular per-signal toggle; YouTube, per its own page, cannot fully opt out — disabling history 'doesn't disable Google Activity-based recommendations'; Netflix documents NO opt-out mechanism for personalized recommendations at all. All-or-nothing control with no adaptable (user-authored) alternative [F24]; geo-gated/absent opt-out [F26]. Sources as above.",
+      "severity_note": "High under [F26] (opt-out absent for most users — geo-gated equals absent outside EU+Kazakhstan; Netflix none) and [F24] (all-or-nothing). Inferred: documented scope, not the live behavioral placebo test [F23]. The Netflix no-opt-out and TikTok geo-gating are the load-bearing documented facts that justify High without the live toggle.",
+      "at_trust_pattern": "placebo_control",
+      "hax_phase": "over_time"
+    },
+    {
+      "id": "AT-08",
+      "title": "No 'why this' inspection on recommender surfaces; the signal driving the output is not inspectable",
+      "severity": "medium",
+      "section": "inspection_affordances",
+      "secondary_section": "user_control",
+      "surface": "YouTube / Netflix recommendation surfaces (per help docs)",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inferred from first-party docs (2026-06-13). YouTube help 'contains no why am I seeing this explanation feature or inspection tool'; Netflix help 'contains no mechanism for users to inspect why specific titles appear or are ranked.' The user can act on / give feedback on a recommendation but cannot inspect the signal that produced it. Control without inspection of the signal it acts on [F21]. Sources: support.google.com/youtube/answer/6342839, help.netflix.com/en/node/100639.",
+      "severity_note": "Medium per [F21] (control without paired inspection scores worse than inspect+control; the documented absence is the finding). Inferred: documented absence, not a live hunt for an undocumented control.",
+      "at_trust_pattern": "forced_trust",
+      "hax_phase": "over_time"
+    },
+    {
+      "id": "AT-09",
+      "title": "Provenance and AI answers are click-gated; no inline glanceable grounding",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "Google AI Overviews (sources behind a click) + Bing/DuckDuckGo (verification via click-out)",
+      "load_displaced_to": ["navigation", "time", "verification"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inferred from first-party docs + fetched markup (2026-06-13). Google AI Overviews: 'click the links to supporting information from the web' — sources behind a click (support.google.com/websearch/answer/14901683). Bing/DuckDuckGo: no inline span-anchored citation in the fetched answer markup, so confirming a claim requires a click-out plus a passage-hunt. Per [F18] click-gated provenance goes unverified across all citation designs; per [F5] verification counts only if it is cheaper than blind acceptance.",
+      "severity_note": "Medium — the cost/recursive-trap dimension (S6), not a second independent High. Inferred: step-count reasoned from documented/observed structure, not timed live.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "when_wrong"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "AT-OQ-01",
+      "section": "source_provenance",
+      "summary": "Does the Bing AI label, or any Bing AI-synthesized answer block, ever render a per-instance confidence/quality signal under different query conditions or in an authenticated session? The fetched SSR pages showed only the static footer label with no answer block and no confidence cue; whether a logged-in or Copilot-integrated state behaves differently is unverified.",
+      "resolution_path": "Live signed-in / Copilot-enabled Bing session: run the same four queries (clean / ambiguous / false-premise / misfire) and inspect for any per-answer confidence display. If a confidence display appears, re-run S3 against [F2] (calibrated?) and [F3] (placebic?). If absent, confirms AT-01 holds across states."
+    },
+    {
+      "id": "AT-OQ-02",
+      "section": "evidence",
+      "summary": "The recommender behavioral tests were not run live: the [F23] placebo test (does toggling a control change output?) and the [F22] previewable-effect test (does feedback produce a visible/immediate effect?). AT-06/AT-07/AT-08 are Inferred from documented scope, not behaviorally proven.",
+      "resolution_path": "Signed-in live sessions on TikTok/YouTube/Netflix: toggle each documented control and observe whether output changes (the [F23] behavioral placebo test); give a single feedback action and observe whether any immediate visible effect is shown (the [F22] test); attempt to locate any undocumented 'why this' inspection. Promotes AT-06/07/08 to Observed and could escalate AT-07 to a behavioral-proof finding."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "source_provenance",
+      "summary": "The DuckDuckGo instant-answer citation was checked for faithfulness against its cited Wikipedia source and PASSED — the answer text is a near-verbatim, faithful lift of the cited lead sentence (correct AND faithful for this instance). The auditor ran the actual [F17] check and did NOT manufacture a faithfulness failure where none existed. The remaining gap (AT-04) is structural (no span anchor for the user to run the check themselves), not an exercised faithfulness failure."
+    },
+    {
+      "id": "PO-02",
+      "section": "source_provenance",
+      "summary": "Bing renders a verbatim, machine-readable AI provenance label ('Content was generated with AI. Learn more') directly in the server-rendered page body. Disclosing AI involvement in inspectable markup is the precondition for provenance and is a genuine positive; the gap (AT-01) is the absence of a coupled per-instance confidence signal, not the absence of a provenance label."
+    },
+    {
+      "id": "PO-03",
+      "section": "adaptation_transparency",
+      "summary": "All three recommenders (TikTok, YouTube, Netflix) DISCLOSE the fact of adaptation in their first-party help text — they do not present curated feeds as neutral/complete. This is the S4 positive that prevents the silent-adaptation High [F20] from firing; the remaining gaps (AT-06 vague feedback effect, AT-07 opt-out granularity, AT-08 no 'why this') are downstream of an honest disclosure baseline."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 9,
+    "every_finding_maps_to_rubric_section": true,
+    "at_least_one_judgment_behavioral_finding": true,
+    "judgment_behavioral_findings": [
+      "AT-01 (answer-quality-invariant AI label with no per-instance confidence — calibration absence, exercised on a misfire, not control presence)",
+      "AT-03 (platformed-customer overclaim vs empirical floor — a judgment severity call, held High not Critical)",
+      "AT-04 (citation faithfulness CHECKED against the cited source — correctness-vs-faithfulness, with the check passing)"
+    ],
+    "observed_findings_count": 4,
+    "observed_findings": ["AT-01", "AT-02", "AT-03", "AT-04"],
+    "failure_case_exercised": true,
+    "failure_case_note": "YES — the Bing 'how does mRNA vaccine work' query MISFIRED (returned grammar/dictionary results for 'does', not vaccine content), and the page-level AI affordance was tested ON that failure (it persisted unchanged with no confidence cue). The false-premise query (roman empire euro) and ambiguous query (does) corroborate. The DDG citation was validated for existence AND faithfulness against its cited source. This is the Section 7 gate the pt0-perplexity run FAILED — it is now PASSED.",
+    "section_7_unblocked": true,
+    "supersedes_perplexity_doc_fallback": true,
+    "s0_critical_precondition_evaluated": true,
+    "s0_critical_precondition_result": "Does NOT trigger anywhere. The Anthropic overclaim (AT-03) is a PLATFORMED CUSTOMER claim (Anthropic's own copy is qualified 'minimize hallucinations') on a non-destructive surface, so the first-party-overclaim Critical path does not open and there is no high-stakes irreversible action to escalate. Bing's AI label is an absence-of-confidence-signal case [F1] that caps at High, not a claimed-but-unfaithful-basis Critical. No Critical is fired; the precondition correctly stopped a candidate-driven overclaim Critical.",
+    "hard_failure_patterns_at_least_two_non_null": true,
+    "hard_failure_patterns_validated_detail": {
+      "forced_trust": "true — AT-01/AT-05/AT-08: the user must accept AI-mediated output (Bing label with no confidence channel; AI Overviews with no opt-out; recommenders with no 'why this' inspection) with no inspect/trace/govern path.",
+      "manufactured_trust": "false — no placebic/manufactured-trust confidence display was found; Bing's failure is ABSENCE of a confidence signal [F1], not a fluent fake one [F3]. The pattern was looked for and not exercised on these targets.",
+      "invalid_provenance": "true — AT-03 (platformed 10%->0% overclaim vs empirical floor [F15]) and AT-04 (citation faithfulness checkable structure [F17]).",
+      "placebo_control": "false — the placebo BEHAVIORAL test [F23] (toggle a control, watch output) was NOT run live (Inferred recommender findings, AT-OQ-02). AT-06/AT-07 are documented-scope findings; the placebo pattern is parked as not-yet-behaviorally-exercised, not claimed true."
+    },
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_questions_count": 2,
+    "report_obeys_plain_language_conventions": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_unchanged_during_pt0": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidates": [
+      "An 'answer-quality-invariant provenance label' sub-pattern in S0/S3 — a label that renders identically whether the AI is right or a hard misfire (Bing's footer): not an absent label, not a miscalibrated number, but a DECOUPLED label asserting AI authorship without coupling to instance quality. Currently scored via the S3 [F1] absence rule; a named sub-pattern would sharpen it.",
+      "A 'platformed third-party overclaim' note in S0 — the Anthropic case (first-party copy qualified, customer testimonial absolute) is a recurring marketing shape the current S0 overclaim language (which centers the surface's OWN claim) does not explicitly name.",
+      "A 'geo-gated opt-out' refinement under S5 [F26] — the TikTok 'EU and Kazakhstan only' case is a third shape (present but regionally restricted = functionally absent for most users) beyond the existing buried/absent bands.",
+      "An evidence-strength ladder distinguishing first-party vendor doc (strong Inferred) from vendor marketing (weak Inferred) from SSR markup (Observed) from live runtime, to calibrate future Path-2 runs."
+    ],
+    "reclassification_trail_recorded": true,
+    "reclassification_summary": "AT-01 started Inferred (label maybe tied to answer quality?) -> Observed after confirming byte-identical rendering across 4 answer states; fired [F1] only, NOT [F2]/[F3] (no confidence display exists). AT-03 held High not Critical (first-party copy qualified; overclaim is platformed customer; non-destructive surface) — the explicit non-over-firing calibration case. AT-04: ran the actual faithfulness check, it PASSED -> recorded PO-01, did NOT manufacture a failure; the surviving finding is the structural span-anchor gap at Medium. AT-06: silent-adaptation High [F20] NOT fired because adaptation IS disclosed (PO-03); fired the weaker [F22]/[F23] feedback-effect Medium. Recommender findings held Inferred (documented scope), not Observed, because the behavioral placebo/preview tests were not run live (AT-OQ-02). No Critical fired anywhere; the S0 precondition correctly stopped a candidate-driven Critical.",
+    "this_run_supersedes": "pt0-perplexity (403-walled doc-fallback: 0 Observed findings, Section 7 process Fail). This run: 4 Observed findings, Section 7 process Pass, real reproducible failure case (Bing mRNA-vaccine misfire)."
+  }
+}

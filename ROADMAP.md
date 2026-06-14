@@ -14,7 +14,7 @@ Each audit ships four things — Rubric, Skill, Schema, Evidence — and advance
 
 ---
 
-## Current state (v0.1.0)
+## Current state (v0.3.0)
 
 | Audit | State | Catches | Calibration evidence |
 |---|---|---|---|
@@ -23,6 +23,8 @@ Each audit ships four things — Rubric, Skill, Schema, Evidence — and advance
 | screen-reader-task | Pressure-tested v0.1.0 (PT0 on react.dev/learn, 2026-06-02) | Task continuity and completion through a screen reader — not just ARIA validity | PT0 — 13 findings (2C/5H), exercised 3/4 hard-failure patterns; rubric unchanged |
 | color-dependence | Pressure-tested v0.1.0 (PT0 on microsoft/vscode GitHub Actions, 2026-06-02) | Meaning conveyed by color alone, including the contrast-pass / hue-fail boundary scanners cannot see | PT0 — 10 findings (1C/4H), exercised 3/5 hard-failure patterns; direct CP-HF evidence from Primer's own token source; rubric unchanged |
 | motor-access | Pressure-tested v0.1.0 (PT0 on GOV.UK Design System, 2026-06-02) | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout pressure, undo) | PT0 — 8 findings + 12 positive observations (0C/2H), overall **warn**; calibration result on a healthy target; rubric unchanged |
+| ai-trust-surface | Pressure-tested v0.1.0 (PT0 on Bing SSR + first-party AI-trust docs, 2026-06-14) | Forced trust, opaque AI behavior, no recovery from AI mistakes, no provenance | PT0 — 9 findings (5H/4M), 4 Observed, Section 7 passed on a reproducible Bing misfire; overall **warn**; rubric unchanged |
+| motion-sensitivity | Pressure-tested v0.1.0 (PT0 on linear.app, 2026-06-14) | Vestibular triggers, animation respect, prefers-reduced-motion, flash/seizure thresholds | PT0 — 3 findings (1H/2L) + 4 positive observations (0C); overall **warn**; rubric unchanged |
 
 The 4 new audits were authored by a parallel study swarm (16 research agents → 4 verifier agents → 4 author agents), hardened by a two-stage external-verifier pass (retrieval-oracle WebFetch against arXiv/DOI/W3C — caught 1 fabricated DOI and 5 misattributions; plus a decorrelated different-family LLM lens, which produced only false positives), and then **pressure-tested** by a 4-target dogfood swarm on 2026-06-02. PT0 produced 41 findings total (5 Critical, 15 High, 14 Medium, 5 Low, 19 open questions) on real public targets. **All 4 audits advanced Draft → Pressure-tested in the same day.** 13 rubric-revision candidates were surfaced across the 4 PT0s and are parked per the discipline rule — none load-bearing — for a future PT2 that produces calibrating evidence. The PT0 evidence is in each audit's `evidence/pt0-<target>/`.
 
@@ -47,9 +49,9 @@ The `simple_mode_removes_power` hard-failure pattern remains uncalibrated. PT2 w
 
 Carried forward through PT0, PT1, PT2-doc-fallback, Dogfood-1. Section 1 (Measurable Defaults) cannot fully Pass without quantitative WCAG conformance numbers. Plan: add `npm run verify:wcag` step that runs Lighthouse + axe-core against the repo's own handbook URL, attaches a JSON report to `audits/cognitive-load/evidence/<run-id>/scanner-pass.json`. Treat scanner output as Section 1 measurement, not Section 1 judgment.
 
-### NT-3 · Second-PT freeze candidate for the 4 new audits
+### NT-3 · Second-PT freeze candidate for the 6 newer audits
 
-PT0 done for all four on 2026-06-02 (see *Current state* above). Each is now at **Pressure-tested v0.1.0** — the next state transition is **Pressure-tested → Frozen**, which per [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) requires a *second* PT where the rubric did NOT change.
+PT0 done for LV/SR/CD/MA on 2026-06-02 and for AT/MO on 2026-06-13/14 (see *Current state* above). All six are now at **Pressure-tested v0.1.0** — the next state transition is **Pressure-tested → Frozen**, which per [`shared/audit-lifecycle.md`](shared/audit-lifecycle.md) requires a *second* PT where the rubric did NOT change.
 
 Two paths forward, per audit (advisor's call, not a hard sequence):
 
@@ -60,6 +62,8 @@ Two paths forward, per audit (advisor's call, not a hard sequence):
 - **SR PT1** on a route-driven SPA with **a working live-region implementation** (calibrate against a passing example, not just react.dev's failures).
 - **CD PT1** with **a qualified CVD simulator on a live session** (close out PT0's Section 4 open question — the methods gate is currently unexercised).
 - **MA PT1** on a **live service with an actual session timeout** (GOV.UK pattern docs were silent on timeouts; calibrate Section 3 against a real one).
+- **AT PT1** on a **live signed-in AI surface where a wrong/fabricated answer can be triggered and its citations inspected end-to-end** (converts the PT0 open questions AT-OQ-01/02 to Observed; the Bing PT0 reached Section-7 via a misfire, but faithfulness-on-failure is still an open question).
+- **MO PT1** on a **motion-heavier target with flashing media** — run a PEAT pass to exercise the Section 0 seizure Critical on real evidence, and a live-browser run with the OS Reduce Motion toggle flipped to resolve the JS/WAAPI-reintroduction open questions the linear.app CSS-only fetch could not.
 
 ### NT-4 · Close the open questions PT0 left on the table
 
@@ -71,40 +75,9 @@ Two paths forward, per audit (advisor's call, not a hard sequence):
 
 Each audit declares the same three header fields in its README: `state:`, `audit_prefix:`, `catches:`. Each audit adds its own extension schema; it does not redefine base fields.
 
-The 4 Draft audits (`low-vision`, `screen-reader-task`, `color-dependence`, `motor-access`) authored 2026-06-02 used to live in this section as proposals; they are now real Drafts in the repo (see **Current state** above). The remaining medium-term proposals are:
+The four Draft audits (`low-vision`, `screen-reader-task`, `color-dependence`, `motor-access`) authored 2026-06-02 used to live here as proposals; they are now Pressure-tested in the repo. The two remaining proposals — **AI Trust Surface** (`AT`, 8 sections) and **Motion Sensitivity** (`MO`, 7 sections) — were authored and pressure-tested on 2026-06-13/14 (study swarm → external citation verification → author → PT0) and **shipped in v0.3.0**. See **Current state** above and [`CHANGELOG.md`](CHANGELOG.md) for their hardening + PT0 trails.
 
-### AI Trust Surface Audit (prefix: `AT`)
-
-**Catches:** Forced trust, opaque AI behavior, no recovery from AI mistakes, no provenance.
-
-Proposed sections:
-
-0. Source provenance (the cognitive-load audit's Section 4 generalized)
-1. Reversibility (can the user undo or revert an AI-driven action?)
-2. Inspection affordances (can the user see what the AI used? what it removed?)
-3. Confidence communication (is uncertainty visible, or hidden behind confident phrasing?)
-4. Adaptation transparency (when the AI adapts, is the user told? can they opt out?)
-5. User control (granular vs all-or-nothing)
-6. Configuration cost
-7. Evidence
-
-**Reference inputs:** Microsoft HAX Toolkit (Amershi et al. CHI 2019 — Guidelines for Human-AI Interaction, G1–G18 across four phases: Initially / During / When Wrong / Over Time), Anthropic's safety/policy guidance, the cognitive-load audit's Section 4 (already calibrated by PT0 + the severity precondition).
-
-### Motion Sensitivity Audit (prefix: `MO`)
-
-**Catches:** Vestibular triggers, animation respect, prefers-reduced-motion handling.
-
-Proposed sections:
-
-0. Animation (parallax, scroll-jacking, transitions over 250ms)
-1. Loading motion (spinners, skeletons, progress)
-2. Vestibular trigger patterns (large area movement, depth illusions)
-3. `prefers-reduced-motion` respect
-4. Auto-playing media
-5. Configuration cost
-6. Evidence
-
-**Reference inputs:** WCAG 2.3 (Seizures and Physical Reactions), Vestibular Disorders Association motion-trigger taxonomies.
+There are no outstanding audit-family proposals. New audits are added one at a time, with a research-grounded rubric and a real calibration target — not by speculation. When a concrete surface justifies the next audit (a notifications / interruption-cost audit, a privacy / consent-surface audit, or a motion-sensitivity sibling, for example), it earns a proposal in this section first, then a study-swarm grounding pass, then a PT0.
 
 ---
 
@@ -191,4 +164,4 @@ A pressure test that revises the rubric earns a new minor version. A dogfood run
 
 ---
 
-*Last updated: 2026-05-12. v0.1.0 ship state.*
+*Last updated: 2026-06-14. v0.3.0 ship state (added ai-trust-surface + motion-sensitivity, both Pressure-tested).*

@@ -1,0 +1,236 @@
+{
+  "audit_id": "mo-20260613-pt0-linear",
+  "audit_label": "Motion Sensitivity PT0 — linear.app homepage (fetched DOM/CSS)",
+  "rubric_version": "v0.1 (Draft)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "dom-css-fetch",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "Path 2 / fetched-DOM+CSS run. Raw HTML (2.38 MB) and all 17 external stylesheets (static.linear.app/web/_next/static/css/*.css, 544 KB total) were fetched via curl and analyzed statically. No live browser, no OS Reduce Motion toggle, no assistive technology, and no PEAT/Harding frame-level analysis was run. Confirmable from bytes (Observed): presence/absence and exact text of all prefers-reduced-motion blocks, the marquee/grid-dot/VideoBackground/view-transition CSS, which classes are applied on the homepage, and the absence of any <video autoplay> on this surface. NOT reachable (kept as open questions): JS/WAAPI/canvas motion that ignores matchMedia (MO-JS-REINTRO), JS scroll-jacking of the section narrative, the actual flash rate of any media, and rendered-pixel motion area/speed. The OS Reduce Motion preference was never toggled, so Sections 3 and 5 are scored on fetched reduce-block evidence and cannot earn a runtime-confirmed clean Pass."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://linear.app/",
+    "platform": "web",
+    "primary_sources": [
+      "https://linear.app/ (raw HTML, 2.38 MB)",
+      "17 external stylesheets under https://static.linear.app/web/_next/static/css/"
+    ],
+    "surfaces_audited": [
+      "hero + scroll narrative (Intake / Plan / Build / Diffs / Monitor sections)",
+      "customer-logos marquee (.Marquee_root .Marquee_content, Logos_marqueeItem)",
+      "decorative grid-dot field (.grid-dot-N-N-{upDown,pong,agent} on <circle> SVG)",
+      "external stylesheet animation + reduced-motion guards (17 CSS files)",
+      "view-transition rules",
+      "VideoBackground component CSS (defined, not instantiated on this surface)"
+    ]
+  },
+  "context": {
+    "user_type": "motion-sensitive / vestibular user (e.g. vestibular migraine, undiagnosed vestibular dysfunction) browsing a product marketing homepage",
+    "task": "reading the Linear marketing homepage and its scroll-driven feature sections without being made dizzy or nauseated by page motion",
+    "dense_state": "homepage on first paint + full scroll; default OS Reduce Motion off; logos marquee mid-scroll; grid-dot field animating",
+    "low_bandwidth_state": "a user who has NOT set OS prefers-reduced-motion (the undiagnosed majority, ~48% symptomatic vs <5% diagnosed) — gets full motion and only the in-page controls the page provides",
+    "ai_features_present": [],
+    "method": "Path 2",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "Windows rig, no live browser render. All severity multipliers that need observation (motion area %, scroll speed, axis-count) were modeled from CSS, not measured. The single most load-bearing signal — presence/absence and exact text of @media (prefers-reduced-motion) blocks — was confirmed by static grep of the HTML and all 17 stylesheets and is treated as Observed. Runtime behaviors (JS-reintroduced motion, scroll-jacking) are kept as open questions.",
+    "test_path": "fetched_css",
+    "reduce_motion_states": ["not toggled (CSS reduce-gating read statically)"],
+    "flash_tool": "none",
+    "medium": "web",
+    "motion_state": "homepage hero + scroll narrative, logos marquee mid-scroll, grid-dot field animating, OS Reduce Motion off",
+    "conformance_target": "AA"
+  },
+  "sections": {
+    "animation": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-03", "OQ-04"],
+      "positive_observations": [],
+      "notes": "No animation finding. No flashing asset exists on this surface (no <video>, no rapid color-cycle; the only repeating motion is opacity-pulsing dots at ~0.36 Hz and a 30s linear marquee) — far below the 3 Hz flash floor, so flash_seizure is not exercisable (null, not false). Warn (not Pass) because OQ-04 (flash not tool-verifiable from fetch — though no candidate asset exists) and OQ-03 (rendered motion area/speed not measured) are unresolved. No Critical asserted from absence of evidence, per the discipline rule."
+    },
+    "loading_motion": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "No standalone spinner/skeleton-shimmer loader is present in the fetched homepage markup. The skeleton component that exists in CSS (.skeleton) is correctly reduce-gated (@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}). No finding and no open question for this surface — section passes."
+    },
+    "vestibular_trigger_patterns": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-02", "OQ-03"],
+      "positive_observations": [],
+      "notes": "The marquee is single-axis translateX (not multi-speed decoupled parallax, not multi-axis) and is correctly reduce-gated, so its vestibular-trigger severity does not stack — the surviving defect is the missing pause control, filed under Section 4 (autoplaying_media), not here. The decorative grid-dot field is opacity-only (Low, filed under Section 3). Warn on two open questions: OQ-02 (possible JS scroll-jacking of the section narrative — only native scroll-snap/sticky CSS is fetch-visible, no wheel handler) and OQ-03 (rendered area/speed not measured). No S2 finding asserted from fetch alone."
+    },
+    "reduced_motion_respect": {
+      "status": "warn",
+      "finding_ids": ["MO-02", "MO-03"],
+      "open_questions": ["OQ-01"],
+      "positive_observations": ["PO-01", "PO-02", "PO-03"],
+      "notes": "Two Low findings: MO-02 (inline grid-dot field animates with no reduce guard — but opacity-only, so Low per F3/F9, downgraded from a first-pass High) and MO-03 (Observed: the marquee duplicate-track cleanup rule is behind a typo'd @media (prefers-reduced-motion:reduced) value that never matches — a correctness slip, not motion re-exposure, so Low). OQ-01 holds the MO-JS-REINTRO gap (JS/WAAPI motion ignoring matchMedia — not fetch-visible). Three positive observations capture the thorough, mostly-correct CSS reduce implementation. Two Lows + one open question = Warn, well below the Fail threshold."
+    },
+    "autoplaying_media": {
+      "status": "warn",
+      "finding_ids": ["MO-01"],
+      "open_questions": [],
+      "positive_observations": [],
+      "notes": "One High: MO-01 — the homepage customer-logos marquee auto-scrolls (translateX, 30s linear infinite) in parallel with content for far longer than 5s, and the homepage instance lacks the Marquee_pauseOnHover class, so there is no pause/stop/hide control at all (not even hover-pause) for users who have not set OS prefers-reduced-motion. WCAG 2.2.2 Level-A failure [F25]. No <video autoplay> and no auto-rotating carousel exist on this surface (checked: zero autoplay attributes, zero <video> tags). One High is below the 3-High section-Fail threshold — Warn."
+    },
+    "configuration_cost": {
+      "status": "pass",
+      "finding_ids": [],
+      "open_questions": [],
+      "positive_observations": ["PO-04"],
+      "notes": "Motion safety is honored automatically from the OS prefers-reduced-motion preference, not gated behind an opt-in in-page toggle — the correct zero-cost default per the Motion Sensitivity Law and S5 [F23, F31]. This is the opposite of the opt_in_only_safety failure pattern, which passed cleanly here. PO-04 records it. (The one element that still leaves non-reduce users without an in-page control is the marquee, filed under S4 as MO-01, not as an S5 opt-in-only failure — because the OS path IS honored.) Section passes."
+    },
+    "evidence": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["OQ-01", "OQ-02", "OQ-03", "OQ-04"],
+      "positive_observations": [],
+      "notes": "Path 2 fetched-DOM/CSS run. Findings correctly evidence-stated: MO-03 Observed (determinable from static text), MO-01/MO-02 Inferred (visual/behavioral effect modeled from CSS, not watched in motion). No flash claim was laundered into a pass — flash_seizure is recorded null (no candidate asset to analyze), never as a clean pass from visual inspection. Four open questions preserve the genuine runtime gaps (JS-reintro, scroll-jack, motion area/speed, flash). Warn due to the no-live-session / no-PEAT gap, consistent with the prior repo PT0 (pt0-mdn-aria)."
+    }
+  },
+  "summary": {
+    "overall_status": "warn",
+    "critical_count": 0,
+    "high_count": 1,
+    "medium_count": 0,
+    "low_count": 2,
+    "open_question_count": 4,
+    "sections_passed": 2,
+    "sections_warned": 5,
+    "sections_failed": 0,
+    "positive_observation_count": 4,
+    "hard_failure_patterns_validated": {
+      "flash_seizure": null,
+      "unstoppable_motion": true,
+      "reduced_motion_ignored": true,
+      "opt_in_only_safety": false
+    }
+  },
+  "findings": [
+    {
+      "id": "MO-01",
+      "title": "Logos marquee auto-scrolls with no pause/stop/hide control",
+      "severity": "high",
+      "section": "autoplaying_media",
+      "surface": "Homepage customer-logos band (.Marquee_root .Marquee_content, Logos_marqueeItem)",
+      "load_displaced_to": ["time", "visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "css_3.css: @media (prefers-reduced-motion:no-preference){.Marquee_content__n0Vyj{animation:Marquee_scroll__lpjIn var(--Marquee-duration) linear infinite}}; --Marquee-duration:30s. Pause rule exists only as @media (any-hover:hover){.Marquee_pauseOnHover:hover .Marquee_content{animation-play-state:paused}}, but the homepage marquee instance class string is 'Marquee_root__pXJQM Marquee_noFade__6oc03 Flex_root__DOQCW' — no Marquee_pauseOnHover. No pause/stop/hide button in the fetched markup. Inferred: 30s infinite loop and absence of control read from CSS/HTML, not watched live.",
+      "severity_note": "High on the WCAG 2.2.2 Level-A pause/stop/hide failure [F25]: auto-motion >5s in parallel with content, no mechanism to pause for non-reduce users. Reduce-gating protects only users who set the OS flag; the undiagnosed majority get no control.",
+      "mo_trigger_pattern": "autoplay",
+      "wcag_sc": "2.2.2"
+    },
+    {
+      "id": "MO-02",
+      "title": "Decorative grid-dot field animates with no reduced-motion guard (opacity-only)",
+      "severity": "low",
+      "section": "reduced_motion_respect",
+      "surface": "Inline-rendered decorative dot grid (.grid-dot-N-N-{upDown,pong,agent} on <circle> SVG)",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Inline HTML <style>: 175 @keyframes + ~350 animation: declarations, e.g. .grid-dot-0-0-upDown{animation:grid-dot-0-0-upDown 2800ms steps(1, end) infinite}. grep -c prefers-reduced-motion over the HTML = 0 (zero reduce guards inline). Property check across all 175 inline keyframes: opacity only, zero transform/translate/scale/rotate. Per F3/F9, opacity motion of stationary elements is Low/Pass — so this ungated motion is a real but mild S3 gap.",
+      "severity_note": "Downgraded from a first-pass High (MO-NO-REDUCE auto-High [F18]) to Low after confirming the keyframes are opacity-only [F3, F9]. The preference IS ignored here, so it remains a finding — at its true (Low) severity. Calibration trail in the findings file.",
+      "mo_trigger_pattern": "n/a",
+      "mo_trigger_note": "Ambient decorative opacity-pulsing field — not a spatial vestibular trigger and not a loader; no enum value fits, so n/a. The defect is the missing reduce guard (S3), not the motion shape.",
+      "wcag_sc": "2.3.3"
+    },
+    {
+      "id": "MO-03",
+      "title": "Marquee reduce-cleanup rule disabled by typo'd media value (reduced not reduce)",
+      "severity": "low",
+      "section": "reduced_motion_respect",
+      "surface": "Customer-logos marquee duplicate track (.Marquee_content[aria-hidden=true])",
+      "load_displaced_to": ["visual decoding"],
+      "evidence_state": "observed",
+      "evidence_summary": "css_3.css: @media (prefers-reduced-motion:reduced){.Marquee_content__n0Vyj[aria-hidden=true]{display:none}}. 'reduced' is not a defined value for the media feature (valid is 'reduce'), so the block never matches. Cross-file: 6 correct 'reduce', 12 'no-preference', exactly 1 'reduced' typo. HTML confirms the duplicate: <div class=\"Marquee_content__n0Vyj\" aria-hidden=\"true\">. The marquee animation itself is stopped by a separate, correctly-spelled no-preference gate, so no motion is re-exposed — only a redundant static duplicate band remains under reduce.",
+      "severity_note": "Low (not Medium): the dead rule governs only display:none on a static duplicate track, not a motion reset, so no motion is re-exposed. Observed — fully determinable from static text. A latent risk if the same typo gated a real motion rule.",
+      "mo_trigger_pattern": "n/a",
+      "wcag_sc": "2.3.3"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "OQ-01",
+      "section": "reduced_motion_respect",
+      "summary": "MO-JS-REINTRO: the CSS reduce-gating is thorough, but a CSS reduce block creates a false impression of compliance if JS/WAAPI/canvas motion runs regardless of window.matchMedia('(prefers-reduced-motion: reduce)') [F21]. Linear ships hashed JS chunks; no framer-motion/gsap/lottie name is visible in fetched src attributes, so this is undetermined from fetch.",
+      "resolution_path": "Headless browser with prefers-reduced-motion: reduce forced on; record whether any element still moves (scroll-fade, hero motion, section transitions) after CSS is neutralized. If motion persists, promote to High."
+    },
+    {
+      "id": "OQ-02",
+      "section": "vestibular_trigger_patterns",
+      "summary": "JS scroll-jacking of the multi-section narrative. The page ships native scroll-snap (5), position:sticky (7), scroll-behavior:smooth (1), overscroll (6) — browser-controlled, not the wheel-preventDefault hijacking NN/g found disorienting [F28]. No JS wheel handler or scrollTrigger hint is fetch-visible; whether the narrative additionally JS-scroll-jacks cannot be confirmed from fetch.",
+      "resolution_path": "Live observation — scroll and check whether wheel/trackpad input is intercepted/remapped, especially on sticky/pinned sections. If native scroll is overridden: Medium (desktop), escalating to High on mobile or over reading content [F28]."
+    },
+    {
+      "id": "OQ-03",
+      "section": "animation",
+      "summary": "Rendered area and on-screen speed of the marquee (and grid-dot field). S0/S2 severity scales with viewport-coverage %, speed, and axis-count [F3, F5, F9]; these were modeled from CSS, not measured. The marquee's translateX motion area as a fraction of the viewport, and its px/s scroll speed at 30s duration, are unconfirmed.",
+      "resolution_path": "Live capture at a known viewport; measure the marquee band height as % of viewport and its px/s scroll speed to confirm MO-01 sits at High vs Medium."
+    },
+    {
+      "id": "OQ-04",
+      "section": "animation",
+      "summary": "flash_seizure (Section 0). No flashing asset exists on this surface to analyze: no <video>, no rapid color-cycling animation; the only repeating motion is opacity-pulsing dots at ~0.36 Hz and a 30s linear marquee. Per the discipline rule, a seizure Critical may not be asserted from absence of evidence — there is simply no candidate flashing media here, so flash_seizure is not exercisable (recorded null, not false).",
+      "resolution_path": "n/a for this target (no flashing asset). Would require a target that ships a strobing/rapid-cycling asset, then a PEAT pass over captured frames."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "reduced_motion_respect",
+      "summary": "Every animation in the 17 external stylesheets is prefers-reduced-motion-guarded — 12 'no-preference' gates and 6 'reduce' resets. The site treats the OS preference as the default signal (C39 sufficient-technique pattern [F18, F23])."
+    },
+    {
+      "id": "PO-02",
+      "section": "reduced_motion_respect",
+      "summary": "The video-background component substitutes a static image for the video under reduce (@media not (prefers-reduced-motion:no-preference){.VideoBackground_video{display:none}} + inverse) — the MDN 'substitute, don't delete' pattern [F23], not a blanket removal. Component defined; not instantiated on this homepage."
+    },
+    {
+      "id": "PO-03",
+      "section": "reduced_motion_respect",
+      "summary": "View transitions are explicitly neutralized under reduce: @media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-new(*),::view-transition-old(*){animation:none!important}}."
+    },
+    {
+      "id": "PO-04",
+      "section": "configuration_cost",
+      "summary": "Motion safety is honored automatically from the OS prefers-reduced-motion preference rather than gated behind an opt-in in-page toggle — the correct zero-cost default per the Motion Sensitivity Law and S5 [F23, F31]. The opt_in_only_safety failure pattern passed cleanly here."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 3,
+    "findings_count_note": "3 findings + 4 open questions + 4 positive observations. Below the nominal 5-finding floor because the target is mostly healthy — the skill permits 'fewer findings because target was clean' with the passing sections listed (loading_motion, configuration_cost passed; reduced_motion_respect is largely correct per PO-01..PO-03). This is the successful-calibration outcome, not a deficiency.",
+    "every_finding_maps_to_rubric_section": true,
+    "prefers_reduced_motion_block_checked": true,
+    "prefers_reduced_motion_result": "Present and thorough in external CSS (18 guards across 7 files); ABSENT in the inline HTML grid-dot block (MO-02); one block has a typo'd 'reduced' value (MO-03). The single most load-bearing signal was grepped across the HTML and all 17 stylesheets.",
+    "at_least_one_scanner_invisible_finding": true,
+    "scanner_invisible_findings": [
+      "MO-01 (autoplay marquee with no pause/stop/hide — a WCAG 2.2.2 behavioral failure axe/Lighthouse do not flag)",
+      "MO-03 (typo'd reduce media value that silently never matches — invisible to presence/absence scanners)"
+    ],
+    "flash_media_tool_pass_or_open_question": true,
+    "flash_media_note": "No flashing/fast/large-area media candidate exists on this surface; flash_seizure recorded as not-exercisable (null) per OQ-04, never laundered into a clean pass.",
+    "observed_in_motion_both_reduce_states": false,
+    "observed_in_motion_note": "Path 2 fetched-DOM/CSS — no live render, OS Reduce Motion never toggled. Limitation recorded in context.viewport_render_limitation and evidence_mode.limitations. Reduce-gating was read statically from CSS.",
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_questions_count": 4,
+    "report_obeys_plain_language_conventions": true,
+    "report_uses_no_flagged_motion": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_unchanged": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidates": [
+      "RC-1 — Name misspelled/invalid media-feature values (reduced, reduce-motion, no-preferences) as a distinct Section 3 sub-pattern: a reduce rule that silently never fires.",
+      "RC-2 — State explicitly in Section 3 that S0's opacity-is-Low rule [F3] caps the MO-NO-REDUCE severity for an opacity-only ungated element, so the auto-High does not over-fire on twinkle/fade effects.",
+      "RC-3 — Name hover-only / any-hover-gated pause as an explicit non-satisfaction of WCAG 2.2.2 in Section 4 (pause present but unreachable on touch/keyboard)."
+    ],
+    "discipline_rule_applied": true,
+    "reclassification_trail": "MO-02 High->Low (opacity-only [F3,F9]); marquee S2-parallax-High candidate -> narrowed to S4 pause-High (MO-01, single-axis + reduce-gated); MO-03 Medium->Low (dead rule governs a static duplicate, not motion re-exposure); zero Criticals (no flash asset, no Critical-from-absence). Full trail in motion-sensitivity-findings.md auditor notes."
+  }
+}

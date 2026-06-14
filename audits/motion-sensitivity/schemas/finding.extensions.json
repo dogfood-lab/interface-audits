@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dogfood-lab/interface-audits/audits/motion-sensitivity/schemas/finding.extensions.json",
+  "title": "Motion-Sensitivity Audit — Finding extensions",
+  "description": "Audit-specific extensions to the base finding schema (shared/schemas/finding.base.schema.json). Adds OPTIONAL fields; does not redefine the base contract. Does NOT extend the shared load_displaced_to enum — the shared enum is cognitive-load-centric and has no perfect 'vestibular' value, so motion failures map onto the fixed 11-value enum as follows: must-wait-out / avoid the motion before acting -> time; motion forces decoding through movement -> visual decoding; user must hunt for a reduce-animations toggle -> configuration; scroll-jack place loss -> navigation; motion-induced task abandonment -> time + visual decoding; carousel auto-advances content out of view -> time + recovery / undo; reduce block deletes functional feedback -> memory + verification; capability dropped in a reduced mode -> feature loss. The mapping table is canonical in RUBRIC.md.",
+  "type": "object",
+  "properties": {
+    "mo_trigger_pattern": {
+      "type": "string",
+      "enum": [
+        "flash_seizure",
+        "large_area_motion",
+        "parallax",
+        "scroll_jack",
+        "autoplay",
+        "spin_zoom",
+        "loading_motion",
+        "multi_axis",
+        "n/a"
+      ],
+      "description": "Optional. Classifies the motion trigger the finding concerns: flash_seizure = content flashing >3x/sec over the area+luminance (or red-flash) threshold (Section 0, Critical physical harm); large_area_motion = full-screen wipe / viewport-spanning transform motion (Section 0); parallax = multi-speed decoupled-layer movement (Section 2); scroll_jack = native scroll hijacked to drive choreographed motion (Section 2); autoplay = auto-starting animation/video/carousel/slider, motion the user did not initiate (Section 4); spin_zoom = scaling/zoom or spinning/vortex motion (Section 2, or as a loader shape in Section 1); loading_motion = continuous/looping spinner or skeleton shimmer (Section 1, grounded in 2.3.3 not 2.2.2); multi_axis = decoupled multi-axis motion (the worst vestibular case, Section 2). Optional/omitted (or 'n/a') for process-only findings (e.g. Section 6 evidence)."
+    },
+    "wcag_sc": {
+      "type": "string",
+      "description": "Optional. The WCAG success criterion the finding maps to, as a dotted string, e.g. '2.3.1' (Three Flashes or Below Threshold, Level A), '2.3.2' (Three Flashes, Level AAA), '2.3.3' (Animation from Interactions, Level AAA), or '2.2.2' (Pause, Stop, Hide, Level A). Naming the SC lets a reader trace the finding to its normative anchor; omitted for findings with no single governing criterion."
+    }
+  }
+}

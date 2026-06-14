@@ -6,6 +6,28 @@ This file follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-06-14
+
+### Added — 2 new Pressure-tested audits (study swarm → external verification → author → PT0)
+
+Two audits authored and pressure-tested in one swarm, taking the family from 5 to **7 audits**. Both are **Pressure-tested v0.1.0** (PT0 landed, rubric unchanged) and are now in the [README](README.md) "Current audits" table.
+
+- **`audits/ai-trust-surface/`** (`AT`) — forced trust, opaque AI behavior, no recovery from AI mistakes, no provenance. 8 sections (Source provenance · Reversibility · Inspection affordances · Confidence communication · Adaptation transparency · User control · Configuration cost · Evidence); **30 verified findings**; `at_trust_pattern` + `hax_phase` extension fields; reference-and-extend boundary with cognitive-load Section 4 — adopts its Critical precondition so it does not over-fire on generic unsourced output.
+- **`audits/motion-sensitivity/`** (`MO`) — vestibular triggers, animation respect, `prefers-reduced-motion`, and the flash/seizure thresholds (the only physical-injury Critical in the repo). 7 sections (Animation · Loading motion · Vestibular trigger patterns · prefers-reduced-motion respect · Auto-playing media · Configuration cost · Evidence); **33 verified findings**; `mo_trigger_pattern` + `wcag_sc` extension fields; sibling-but-non-overlapping boundary with low-vision Section 5 (`forced-colors` vs `prefers-reduced-motion`).
+
+### Pressure-tested — 2 PT0s, 2026-06-14
+
+| Audit | Target | Findings | Overall |
+|---|---|---|---|
+| ai-trust-surface | Bing SSR search + 6 fetch-verified first-party AI-trust docs | 9 (5H / 4M), **4 Observed**, 2 OQ, 3 positive obs | **warn** |
+| motion-sensitivity | linear.app (Path 2 — HTML + all 17 stylesheets) | 3 (1H / 2L), 4 OQ, 4 positive obs | **warn** |
+
+Both pressure tests exercised the discipline rule **without over-firing — no Critical fired on either.** AT's Section 0 Critical-precondition was evaluated and correctly did not trigger (the one overclaim candidate, an Anthropic blog post, keeps its first-party copy qualified), and MO downgraded four findings on second pass (e.g. an opacity-only grid-dot field High → Low). The AT run's **Section 7 passed on a reproducible Bing misfire** — a query returned dictionary results while still rendering the "Content was generated with AI" label with no confidence cue — and its DuckDuckGo citation was validated for existence AND faithfulness against the cited Wikipedia source. An initial AT attempt against Perplexity 403-walled WebFetch and is retained as `audits/ai-trust-surface/evidence/pt0-perplexity/` (the doc-fallback that motivated a target-discovery study swarm → the fetchable Bing re-target).
+
+### Grounding + external verification
+
+Authored by a study swarm: **10 parallel research agents** (5 per audit) produced 77 candidate citations; **2 external-verifier agents** then ran the research-grounded-advisor protocol's Step-4 gate — a retrieval oracle (WebFetch against arXiv / DOI / W3C, family-independent) plus two decorrelated non-Claude groundedness families (`mistral-small:24b` + `granite4.1:30b`, reasoning-stripped, receiving only `{claim, source_title, abstract_snippet}`). Result: **63 verified KEEP findings** (AT 30, MO 33), 6 dropped, **0 fabricated, 0 flagged**. The oracle did real work — it dropped a Bisdorff-2013 prevalence claim because the retrieved source reports the *opposite*, caught a misattributed Si-2023 numeric, and baked in several year / author / URL corrections (preserved verbatim in the rubrics). Per-audit hardening + PT0 trails are in each audit's CHANGELOG.
+
 ## [0.2.0] - 2026-06-02
 
 ### npm
@@ -69,5 +91,7 @@ Authored by a parallel study swarm (16 research agents → 4 same-stage verifier
 - Documented threat surface in [`SECURITY.md`](SECURITY.md): skills perform network egress only to the user-supplied target URL; evidence files are local-only; no telemetry; no secret handling.
 - Per-audit `private_content_captured: false` field on the scorecard schema documents whether a run captured sensitive content before commit.
 
-[Unreleased]: https://github.com/dogfood-lab/interface-audits/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/dogfood-lab/interface-audits/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/dogfood-lab/interface-audits/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/dogfood-lab/interface-audits/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/dogfood-lab/interface-audits/releases/tag/v0.1.0

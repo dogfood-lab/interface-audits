@@ -1,0 +1,292 @@
+{
+  "audit_id": "at-20260613-pt0-perplexity",
+  "audit_label": "AI Trust Surface PT0 — Perplexity.ai (documented-architecture / doc-fallback)",
+  "rubric_version": "v0.1 (Draft)",
+  "rubric_path": "../../RUBRIC.md",
+  "evidence_mode": {
+    "class": "doc-fallback / documented-architecture",
+    "live_session": false,
+    "private_content_captured": false,
+    "default_evidence_state": "inferred",
+    "limitations": "The live rendered Perplexity answer surface (https://www.perplexity.ai/) and all www.perplexity.ai/hub/* help/blog/legal pages returned HTTP 403 to WebFetch (bot-walled); the bare app shell exposes no server-rendered answer content. No live browser, AT, OS toggles, or pixel/render access were available. Evidence is drawn from the docs.perplexity.ai API/response-schema documentation (HTTP 200), which describes the response CONTRACT backing the rendered answer surface (the citations array, the search_results objects, and the absence of any confidence field), plus the rubric's empirical floors. This is documented-architecture evidence: it establishes what the answer pipeline returns (hence what the UI can render), but is NOT the rendered DOM and NOT a triggered failure case. Findings about the answer/citation/search contract are Inferred; findings about rendered-UI specifics that could not be fetched are Open questions. No finding is Observed. Section 7 is a process Fail because no wrong/fabricated answer was exercised. The cleaner path — a signed-in live session triggering a wrong answer and checking each citation for existence and support — is preferred and should replace this run for the S0-faithfulness and S2-inline-grounding confirmations."
+  },
+  "target": {
+    "type": "url",
+    "value": "https://www.perplexity.ai/",
+    "platform": "web (consumer AI-search answer surface)",
+    "primary_sources": [
+      "https://www.perplexity.ai/ (HTTP 403 to WebFetch — bot-walled app shell)",
+      "https://docs.perplexity.ai/api-reference/chat-completions-post (HTTP 200 — answer response contract: citations[], search_results[])",
+      "https://docs.perplexity.ai/api-reference/search-post (HTTP 200 — search result schema; no faithfulness/relevance field)",
+      "https://docs.perplexity.ai/getting-started/overview (HTTP 200 — capability claims; no accuracy/grounding/hallucination claim)",
+      "https://www.perplexity.ai/hub/faq (HTTP 403), https://www.perplexity.ai/hub/legal/privacy-policy (HTTP 403)"
+    ],
+    "surfaces_audited": [
+      "Synthesized answer body (rendered prose) — inferred from response contract",
+      "Inline numbered citation markers — inferred from citations[] / search_results[]",
+      "'Sources' list — inferred from citations[] (flat URL list)",
+      "Per-answer feedback / regenerate controls — open question (not fetched)",
+      "Personalization / data settings + opt-out — open question (403-walled)",
+      "Product landing / API docs (fetched copy)"
+    ]
+  },
+  "context": {
+    "user_type": "A user adopting a synthesized factual claim from an AI-search answer, often on a fast-moving / news / health / legal / purchase-adjacent topic where being wrong has real cost",
+    "task": "Ask a question, read the synthesized answer + inline citations, and decide whether to rely on the answer",
+    "dense_state": "A consequential answer with inline numbered citations and a Sources list (modeled from the documented response contract; not rendered live)",
+    "ai_features_present": ["AI search / RAG answer synthesis", "inline citations", "retrieved web search results", "per-answer feedback (inferred)"],
+    "method": "Path 2 / documented-architecture (doc-fallback)",
+    "session_continuous_minutes": 0,
+    "viewport_render_limitation": "No live rendered surface was reachable (HTTP 403 on the answer surface and all hub/help/legal pages). All contract-level findings are Inferred from the docs.perplexity.ai API response schema; all rendered-UI specifics are Open questions. No live browser, AT, or pixel access. action_stakes for the DECISION the answer drives is medium-to-high; the answer ACTION itself is non-destructive (reading an answer changes no user state), so the S1/S3 Critical preconditions (which require a high-stakes AND irreversible AI-driven action) do not trigger on this surface.",
+    "action_stakes": "medium-to-high (the downstream decision), low (the non-destructive answer action itself)",
+    "reversibility": "the answer action is reversible/non-destructive; no irreversible AI-driven edit/send/delete is present on this surface",
+    "provenance_claim": "cited (flat URL citations[] + search_results[]); NO 'hallucination-free / grounded / accurate' overclaim found in fetched copy — strongest fetched claim is 'real-time, web-wide research'. Consumer marketing copy was 403-walled (open question AT-09).",
+    "failure_case_tested": "NONE exercised — the rendered answer surface was 403-walled, so no wrong/fabricated answer could be triggered. Section 7 is a process Fail. Open question AT-08 is the resolution path."
+  },
+  "sections": {
+    "source_provenance": {
+      "status": "warn",
+      "finding_ids": ["AT-01", "AT-02"],
+      "open_questions": ["AT-08", "AT-09"],
+      "positive_observations": ["PO-01", "PO-02"],
+      "notes": "One High (AT-01: citations are a flat URL list with no span-level grounding, so faithfulness is uncheckable [F14, F17]) and one Medium (AT-02: no up-front error-profile statement on fetched surfaces [F28]). Does NOT reach the 1-Critical / 3-High Fail threshold. The S0 Critical-via-overclaim precondition was evaluated and does NOT trigger: no 'hallucination-free / grounded' overclaim was found in fetched copy (the consumer marketing page was 403-walled — parked as AT-09). Firing an S0 Critical from absence-of-span-grounding plus an unexercised failure case would be manufacturing drama; the precondition correctly stopped it."
+    },
+    "reversibility": {
+      "status": "warn",
+      "finding_ids": ["AT-03"],
+      "open_questions": ["AT-11"],
+      "notes": "One Medium (AT-03: thumbs/feedback with no documented visible state change — the ask-then-swallow risk [F11]), held provisional because the surface is non-destructive and the feedback control's behavior is unobserved. The classic 'irreversible AI edit with no undo' [F8/F13] does NOT apply — reading an answer changes no user state. Not over-fired."
+    },
+    "inspection_affordances": {
+      "status": "warn",
+      "finding_ids": ["AT-04"],
+      "open_questions": ["AT-12"],
+      "notes": "One High (AT-04: provenance reachable only by click-out, no inline glanceable claim-aligned span [F18, F19]). This is the user-facing verification-cost sibling of AT-01's contract-structural finding. Does not reach Fail threshold."
+    },
+    "confidence_communication": {
+      "status": "warn",
+      "finding_ids": ["AT-05"],
+      "open_questions": ["AT-10"],
+      "notes": "One High (AT-05: no per-decision confidence/uncertainty signal in the documented contract — uniform confident prose [F1]). Deliberately did NOT fire the higher-severity S3 patterns ([F2] uncalibrated displayed number, [F3] placebic explanation, [F6] one-sided steering) because those require observing a confidence DISPLAY, and the contract has no confidence field to display. The failure is ABSENCE of a signal [F1], not a miscalibrated one. Held at High not Critical (non-destructive action; S3 Critical needs high-stakes AND irreversible)."
+    },
+    "adaptation_transparency": {
+      "status": "warn",
+      "finding_ids": [],
+      "open_questions": ["AT-13"],
+      "notes": "ZERO findings. Whether Perplexity personalizes from account activity, and whether that fact is disclosed, was not establishable — the privacy/personalization pages were 403-walled. A silent-adaptation High [F20] would be pure invention here; the honest output is open question AT-13. Warn (unresolved open question), not Pass."
+    },
+    "user_control": {
+      "status": "warn",
+      "finding_ids": ["AT-06"],
+      "open_questions": ["AT-14"],
+      "notes": "One Medium (AT-06: personalization/data opt-out discoverability unverified and placebo-control test not runnable — settings/legal pages 403-walled), held provisional. Did NOT fire a placebo-control High [F23] or a buried-opt-out High [F26] on an unfetched control surface — that is exactly the over-fit the discipline rule guards against. Promotes to High if a live run finds a buried opt-out or a control with no observable effect."
+    },
+    "configuration_cost": {
+      "status": "warn",
+      "finding_ids": ["AT-07"],
+      "open_questions": [],
+      "notes": "One Medium (AT-07: per-claim click-out verification cost makes non-verification rational [F5, F18]). This is the recursive-trap / cost dimension of AT-04; Medium because it is the cost reading of an already-counted High, not a second independent High."
+    },
+    "evidence": {
+      "status": "fail",
+      "finding_ids": [],
+      "open_questions": ["AT-08"],
+      "notes": "PROCESS FAIL. No sub-optimal/wrong/fabricated AI output was exercised on the live surface (it was 403-walled), so no citation was checked for existence or support. Per the rubric: 'No failure case exercised at all on a consequential surface — section Fail on process grounds.' Every finding is Inferred from the documented architecture or held as an open question; none is validated against a triggered wrong answer. Recorded as Fail, not laundered into a pass. AT-08 is the resolution path."
+    }
+  },
+  "summary": {
+    "overall_status": "fail",
+    "critical_count": 0,
+    "high_count": 3,
+    "medium_count": 4,
+    "low_count": 0,
+    "open_question_count": 7,
+    "sections_passed": 0,
+    "sections_warned": 7,
+    "sections_failed": 1,
+    "positive_observation_count": 2,
+    "hard_failure_patterns_validated": {
+      "forced_trust": true,
+      "manufactured_trust": null,
+      "invalid_provenance": true,
+      "placebo_control": null
+    }
+  },
+  "findings": [
+    {
+      "id": "AT-01",
+      "title": "Citations are a flat URL list with no span-level grounding; faithfulness is uncheckable",
+      "severity": "high",
+      "section": "source_provenance",
+      "secondary_section": "inspection_affordances",
+      "surface": "Answer + 'Sources' list (rendered; inferred from documented response contract)",
+      "load_displaced_to": ["verification", "source recovery", "trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Documented response schema (docs.perplexity.ai/api-reference/chat-completions-post, HTTP 200): citations = 'Array of citations - URLs of sources used to generate the response' (flat, response-level). search_results[] = title/url/snippet/date/last_updated, with NO claim-support, relevance, or faithfulness field (confirmed at search-post: 'no field indicating faithfulness, claim verification, or whether a result supports a specific assertion'). No documented per-claim/span mapping; no field for whether a listed source was actually used vs retrieved. The per-answer faithfulness rate is unexercised (AT-08) — this finding is the contract's structural inability to express span-level grounding [F14, F17].",
+      "severity_note": "High, not Critical: the S0 Critical precondition requires a claimed verifiable basis that is not inspectable/faithful; no 'grounded/hallucination-free' overclaim was found (AT-09) and no unfaithful citation was exercised (AT-08). Asserting Critical from absence-of-span-grounding would be manufacturing.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-02",
+      "title": "No up-front error-profile / fallibility statement on the fetched surfaces",
+      "severity": "medium",
+      "section": "source_provenance",
+      "surface": "Product landing / API docs (fetched)",
+      "load_displaced_to": ["trust"],
+      "evidence_state": "inferred",
+      "evidence_summary": "docs.perplexity.ai/getting-started/overview (HTTP 200): capability claims ('real-time, web-wide research and Q&A') with 'No claims regarding accuracy levels, reliability guarantees, hallucination prevention, the possibility that answers could be wrong.' Consumer help/onboarding (hub/*) 403-walled — whether the rendered answer surface shows an 'AI can make mistakes' disclaimer is AT-10. Medium because this is an ABSENT fallibility statement, not a FALSE grounding claim [F28].",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "initially"
+    },
+    {
+      "id": "AT-03",
+      "title": "Per-answer feedback with no documented visible state change (ask-then-swallow risk)",
+      "severity": "medium",
+      "section": "reversibility",
+      "surface": "Per-answer feedback controls (thumbs / report / rewrite — inferred)",
+      "load_displaced_to": ["recovery / undo", "trust"],
+      "evidence_state": "open_question",
+      "evidence_summary": "No fetched artifact confirms the feedback control's presence or post-submit behavior on the rendered surface; the documented contract carries no feedback-effect field. Held provisional Medium per [F11] (soliciting correction with no visible state change lowers trust), NOT promoted to High because the surface is non-destructive and the control's behavior is unobserved (AT-11).",
+      "severity_note": "Held Medium-provisional. Promotion to High requires observing that feedback is the ONLY recovery path AND that it swallows the input with no visible change.",
+      "at_trust_pattern": "no_recovery",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-04",
+      "title": "Provenance gated behind a click-out, no inline glanceable supporting evidence",
+      "severity": "high",
+      "section": "inspection_affordances",
+      "surface": "Inline citation markers + 'Sources' list (rendered; inferred from contract)",
+      "load_displaced_to": ["verification", "source recovery", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Documented contract returns a url + page-level snippet per source but no claim-aligned span, so the documented verification path is a click-out to the source page + a manual passage-hunt. Per [F18] click-gated sources go unchecked across all citation designs; per [F19] a hover panel showing model prose instead of retrieved evidence drops verification accuracy below the no-AI baseline. Whether the rendered UI shows an inline claim-aligned span vs the page-snippet vs a model restatement is AT-12. Scoped to what the contract makes available.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-05",
+      "title": "No per-decision confidence or uncertainty signal on a consequential answer",
+      "severity": "high",
+      "section": "confidence_communication",
+      "surface": "Rendered answer (inferred from documented response contract)",
+      "load_displaced_to": ["trust", "verification"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Documented response schema has NO confidence/certainty/reliability/quality field ('No confidence, certainty, or reliability fields exist... no per-answer quality indicators'). Synthesized answers are rendered in uniform confident declarative prose regardless of source strength. Per [F1] a per-decision confidence signal is the minimum bar; its absence is an S3 finding and forces over-trust on weak claims [F2, F7]. Whether the rendered UI layers any hedging on top of the API answer is AT-10.",
+      "severity_note": "High, not Critical: S3 Critical requires high-stakes AND irreversible (the answer action is non-destructive). This fires [F1] (absence of signal) only — NOT [F2]/[F3], which require observing a confidence DISPLAY that does not exist here.",
+      "at_trust_pattern": "forced_trust",
+      "hax_phase": "when_wrong"
+    },
+    {
+      "id": "AT-06",
+      "title": "Personalization/data opt-out discoverability unverified; placebo-control test not runnable",
+      "severity": "medium",
+      "section": "user_control",
+      "surface": "Settings / privacy controls (not fetched — HTTP 403)",
+      "load_displaced_to": ["configuration", "navigation"],
+      "evidence_state": "open_question",
+      "evidence_summary": "www.perplexity.ai/hub/legal/privacy-policy and settings pages were 403-walled; no opt-out location and no control behavior was observed. Held provisional Medium reflecting the UNVERIFIED state of a required affordance [F26] on a consequential surface — NOT an observed placebo-control [F23] or buried-opt-out [F26] High, because the control surface was not fetched. Promotes to High if a live run (AT-14) finds a buried opt-out or a control with no observable effect.",
+      "severity_note": "Held Medium-provisional to avoid manufacturing a placebo-control High on an unfetched control surface.",
+      "at_trust_pattern": "placebo_control",
+      "hax_phase": "over_time"
+    },
+    {
+      "id": "AT-07",
+      "title": "Per-claim click-out verification cost makes non-verification rational",
+      "severity": "medium",
+      "section": "configuration_cost",
+      "surface": "Answer -> citation -> source-page verification path (inferred)",
+      "load_displaced_to": ["time", "verification", "navigation"],
+      "evidence_state": "inferred",
+      "evidence_summary": "Given the documented contract (url + page-level snippet, no claim-aligned span), per-claim verification costs a context-switch out to the source page plus a passage-hunt. Per [F5] verification reduces over-reliance only when cheaper than blind acceptance; per [F18] high-cost sources go unchecked. Exact rendered step-count / hover affordances unobserved (AT-12). Medium because this is the cost dimension of an already-counted High (AT-04), not a second independent High.",
+      "at_trust_pattern": "invalid_provenance",
+      "hax_phase": "when_wrong"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "AT-08",
+      "section": "evidence",
+      "summary": "Failure case never exercised (Section 7 blocker): no wrong/fabricated answer was triggered on the live surface and no citation was checked for existence or support.",
+      "resolution_path": "Signed-in live session: query a fast-moving news / niche topic where citation error is highest [F16]; for each citation confirm (a) the link resolves and (b) the linked content supports the specific claim it annotates. Promotes AT-01/AT-04 to Observed and unblocks Section 7."
+    },
+    {
+      "id": "AT-09",
+      "section": "source_provenance",
+      "summary": "'Grounded / accurate / hallucination-free' overclaim could not be checked on the 403-walled consumer marketing pages. Fetched docs made no such claim, so the S0 Critical-via-overclaim precondition does not trigger on what was seen.",
+      "resolution_path": "Fetch the rendered marketing homepage and feature pages via a live session; if a 'hallucination-free / fully grounded / no errors' claim appears, S0 escalates per [F15] (High, or Critical paired with a high-stakes irreversible action)."
+    },
+    {
+      "id": "AT-10",
+      "section": "confidence_communication",
+      "summary": "Does the rendered UI add any per-answer confidence/uncertainty language on top of the API answer (which has no confidence field)?",
+      "resolution_path": "Live session: inspect the rendered answer for any uncertainty signal. If a confidence display exists, re-run S3 against [F2]/[F3] (calibrated? placebic?). If absent, confirms AT-05 as Observed."
+    },
+    {
+      "id": "AT-11",
+      "section": "reversibility",
+      "summary": "Does answer feedback (thumbs / report) produce a visible state change, or vanish silently?",
+      "resolution_path": "Live session: submit 'this is wrong' on a wrong answer; observe whether the answer updates / is re-grounded or the input vanishes silently [F11]. Promotes/resolves AT-03."
+    },
+    {
+      "id": "AT-12",
+      "section": "inspection_affordances",
+      "summary": "Is provenance shown inline-glanceable (hover panel with a claim-aligned span) or only via click-out?",
+      "resolution_path": "Live session: hover/expand a citation marker; record whether the panel shows the claim-aligned supporting passage (retrieved evidence) vs a model restatement [F19] vs only a page-level snippet/link [F18]. Promotes/resolves AT-04."
+    },
+    {
+      "id": "AT-13",
+      "section": "adaptation_transparency",
+      "summary": "Does Perplexity personalize answers from account activity, and is the fact of adaptation disclosed?",
+      "resolution_path": "Live signed-in session across repeated/varied queries + read the (walled) privacy page; determine whether answers are tailored to history and whether the fact of adaptation is disclosed [F20]. If silent, S4 fires a High [F20]."
+    },
+    {
+      "id": "AT-14",
+      "section": "user_control",
+      "summary": "Is there a discoverable personalization opt-out, and does any control change output (the placebo test)?",
+      "resolution_path": "Live session: locate the personalization/data control; confirm it is reachable outside policy text [F26]; toggle it and verify output changes (the behavioral placebo test [F23]). Promotes/resolves AT-06."
+    }
+  ],
+  "positive_observations": [
+    {
+      "id": "PO-01",
+      "section": "source_provenance",
+      "summary": "Citations and retrieved search results are first-class fields in the documented answer contract (citations[] URLs + search_results[] title/url/snippet/date). Source URLs being present and machine-addressable is the precondition for provenance; the gap is span-level grounding and inline glanceability, not the total absence of sources."
+    },
+    {
+      "id": "PO-02",
+      "section": "source_provenance",
+      "summary": "search_results[] carry date and last_updated per source, giving the surface the material to signal source recency on fast-moving topics (where citation error is highest [F16]). Whether the rendered UI uses it is unverified, but the data is in the contract."
+    }
+  ],
+  "exit_criteria_check": {
+    "min_findings_met": true,
+    "findings_count": 7,
+    "every_finding_maps_to_rubric_section": true,
+    "at_least_one_judgment_behavioral_finding": true,
+    "judgment_behavioral_findings": [
+      "AT-01 (citation faithfulness uncheckable — correctness-vs-faithfulness, not presence)",
+      "AT-04 (inline-glanceable vs click-gated grounding — verification cost)",
+      "AT-05 (no per-decision confidence signal — calibration, not control presence)"
+    ],
+    "failure_case_exercised": false,
+    "failure_case_note": "No wrong/fabricated AI output was exercised — the rendered answer surface was 403-walled. Section 7 is a process FAIL. AT-08 is the standing resolution path. Per the rubric a happy-path-only (here: no-path) run cannot pass Section 7; this is recorded honestly, not laundered.",
+    "s0_critical_precondition_evaluated": true,
+    "s0_critical_precondition_result": "Does NOT trigger. No 'grounded/hallucination-free' overclaim found in fetched copy (strongest claim: 'real-time, web-wide research'); consumer marketing page was 403-walled (parked as AT-09). The faithfulness gap (AT-01) is real but Inferred-High, not Critical, absent a checked unfaithful citation. The precondition correctly stopped a candidate-driven Critical.",
+    "hard_failure_patterns_at_least_two_non_null": true,
+    "hard_failure_patterns_non_null": ["forced_trust=true", "invalid_provenance=true"],
+    "evidence_gaps_preserved_as_open_questions": true,
+    "open_questions_count": 7,
+    "report_obeys_plain_language_conventions": true,
+    "no_new_rubric_section_invented": true,
+    "rubric_unchanged_during_pt0": true,
+    "rubric_revision_candidates_logged": true,
+    "rubric_revision_candidates": [
+      "A 'documented-contract' evidence sub-lane (first-party API/response schema as evidence about the rendered trust surface — stronger than vendor marketing, weaker than rendered DOM).",
+      "An explicit 'absence-of-confidence-field' [F1, caps at High] vs 'miscalibrated-confidence-display' [F2, opens Critical path] split note in S3 to prevent conflation.",
+      "S0/S2 split guidance for one root cause scored in two sections (AT-01 vs AT-04) to prevent double-counting toward a section Fail."
+    ],
+    "reclassification_trail_recorded": true,
+    "reclassification_summary": "AT-01 split (structural Inferred-High vs per-answer faithfulness Open question AT-08); AT-03 held Medium-provisional not promoted to High (non-destructive, unobserved); AT-05 fired [F1] only, NOT [F2]/[F3] (no confidence display exists to mis-calibrate); AT-06 held Medium-provisional not a placebo-control High (control surface walled); S4 produced zero findings (silent-adaptation High would be invention). The S0 Critical was NOT fired — the precondition stopped a candidate-driven overclaim Critical the evidence does not earn."
+  }
+}

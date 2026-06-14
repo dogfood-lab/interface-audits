@@ -30,7 +30,7 @@ Every audit's `RUBRIC.md` follows this shape:
 
 ## Section 1 — <name>
 ...
-## Section 7 — Evidence (always last; the process gate)
+## Section N — Evidence (always last; the process gate — Section 6 or 7 depending on the audit)
 
 ## Finding format
 ## Severity definitions
@@ -159,5 +159,11 @@ CI validates every scorecard on every push. Malformed scorecards block the build
 | Audit | Finding prefix | Scorecard ID prefix |
 |---|---|---|
 | cognitive-load | `CL` | `cla` |
+| low-vision | `LV` | `lv` |
+| screen-reader-task | `SR` | `sr` |
+| color-dependence | `CD` | `cd` |
+| motor-access | `MA` | `ma` |
+| ai-trust-surface | `AT` | `at` |
+| motion-sensitivity | `MO` | `mo` |
 
 New audits should declare both in their README's `audit_prefix:` header.

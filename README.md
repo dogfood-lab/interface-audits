@@ -92,25 +92,16 @@ Before committing evidence files to a public repository, the user is responsible
 | [screen-reader-task](audits/screen-reader-task/) | Pressure-tested v0.1.0 | Task continuity and completion through a screen reader — not just ARIA validity | PT0 (react.dev/learn) — 13 findings, 2C/5H, hit 3/4 hard-failure patterns |
 | [color-dependence](audits/color-dependence/) | Pressure-tested v0.1.0 | Meaning conveyed by color alone, including the Contrast-Pass / Hue-Fail boundary | PT0 (microsoft/vscode GitHub Actions) — 10 findings, 1C/4H, hit 3/5 hard-failure patterns |
 | [motor-access](audits/motor-access/) | Pressure-tested v0.1.0 | Interaction cost for motor-impaired users (keyboard path, target size, drag dependence, timeout, undo) | PT0 (GOV.UK Design System multi-step pattern) — 8 findings + 12 positive observations, 0C/2H |
+| [ai-trust-surface](audits/ai-trust-surface/) | Pressure-tested v0.1.0 | Forced trust, opaque AI behavior, no recovery from AI mistakes, no provenance | PT0 (Bing SSR + first-party AI-trust docs) — 9 findings (5H/4M), 4 Observed, Section 7 passed on a reproducible misfire |
+| [motion-sensitivity](audits/motion-sensitivity/) | Pressure-tested v0.1.0 | Vestibular triggers, animation respect, prefers-reduced-motion, flash/seizure thresholds | PT0 (linear.app) — 3 findings (1H/2L) + 4 positive observations, 0C |
 
 ## Audit family
 
 Each audit must declare *what burden does this audit catch that generic scanners miss?* For Cognitive Load, the answer is load displacement.
 
-### Drafts in progress (authored 2026-06-02, not yet pressure-tested)
-
-Four Draft audits live in the repo, each with the full four-thing skeleton (Rubric + Skill + Schema + PT0 candidate shortlist) minus evidence. Per the lifecycle, they are not listed in the *Current audits* table above until they have at least one pressure test. See each audit's CHANGELOG for the per-audit hardening trail (the citations were verified by a retrieval oracle against arXiv/DOI/W3C sources; one fabricated DOI and several misattributions were corrected before commit).
-
-| Draft audit | Prefix | Catches |
-|---|---|---|
-| [low-vision](audits/low-vision/) | `LV` | Visual access under real density — zoom & reflow, contrast on photos and charts, focus visibility under custom themes, spatial orientation under magnification |
-| [screen-reader-task](audits/screen-reader-task/) | `SR` | Task *completion* through a screen reader — not just ARIA validity |
-| [color-dependence](audits/color-dependence/) | `CD` | Meaning conveyed by color alone — including the contrast-pass / hue-fail boundary that scanners cannot see |
-| [motor-access](audits/motor-access/) | `MA` | Interaction cost for motor-impaired users — keyboard path, target precision, drag dependence, timeout pressure, undo |
-
 ### Future audits (not yet authored)
 
-Motion Sensitivity (vestibular triggers, `prefers-reduced-motion`) and AI Trust Surface (forced trust, opaque AI behavior, provenance) remain on the [ROADMAP](ROADMAP.md). Audits are added one at a time, with evidence, when a real target justifies the work — not by speculation.
+All seven currently-specced audits are now in the repo and **Pressure-tested or better** (see *Current audits* above) — no Draft audits are outstanding. The two most recently added, **AI Trust Surface** (`AT`) and **Motion Sensitivity** (`MO`), were authored by a study swarm (research → external citation verification → author) and pressure-tested the same way the previous four were. Further audits are demand-driven, not speculative — added one at a time, with evidence, when a real target and a research-grounded rubric justify the work. The [ROADMAP](ROADMAP.md) tracks candidates and the lifecycle-advancement work (PT1 → Freeze) for the audits already here.
 
 ## Repository structure
 
@@ -137,14 +128,16 @@ interface-audits/
 │   └── schemas/
 │       ├── finding.base.schema.json
 │       └── scorecard.base.schema.json
-└── audits/
-    └── cognitive-load/                # first audit
-        ├── README.md
-        ├── RUBRIC.md
-        ├── CHANGELOG.md
-        ├── skill/SKILL.md
-        ├── schemas/finding.extensions.json
-        └── evidence/                  # pressure tests + dogfood runs
+└── audits/                            # one directory per audit; each has the same shape:
+    │                                  #   README.md · RUBRIC.md · CHANGELOG.md ·
+    │                                  #   skill/SKILL.md · schemas/finding.extensions.json · evidence/
+    ├── cognitive-load/                # Frozen v0.2 + Dogfooded
+    ├── low-vision/                    # Pressure-tested v0.1.0  (LV)
+    ├── screen-reader-task/            # Pressure-tested v0.1.0  (SR)
+    ├── color-dependence/              # Pressure-tested v0.1.0  (CD)
+    ├── motor-access/                  # Pressure-tested v0.1.0  (MA)
+    ├── ai-trust-surface/              # Pressure-tested v0.1.0  (AT)
+    └── motion-sensitivity/            # Pressure-tested v0.1.0  (MO)
 ```
 
 ## What this is not
