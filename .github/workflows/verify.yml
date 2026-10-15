@@ -38,6 +38,11 @@ jobs:
       - name: Markdown relative-link check
         run: node scripts/verify-links.mjs
 
+      # npm 10.8.2 (Node 20's bundled npm) crashes in `npx` on this tree with
+      # "Cannot read properties of null (reading 'edgesOut')"; npm 11 does not.
+      - name: Use npm 11
+        run: npm install -g npm@11.21.1
+
       - name: Shipcheck audit (hard gates A–D)
         run: npx -y @mcptoolshop/shipcheck audit
 
